@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+
+        <record id="seq_amazon_file_process_job" model="ir.sequence">
+            <field name="name">Amazon File Process Job Sequence</field>
+            <field name="code">amazon.file.process.job</field>
+            <field name="padding">5</field>
+            <field name="prefix">LOG</field>
+            <field name="company_id" eval="False"/>
+        </record>
+   </data>
+	
+  <data>
+	<record id="amazon_process_job_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Process Job</field>
+	    <field name="model">amazon.process.log.book</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Process Job" colors="red:skip_process==True;blue:skip_process==False;" create='false'>
+            	<field name="name"/>
+				<field name="application"/>
+				<field name="instance_id"/>
+				<field name="operation_type"/>
+				<field name="message"/>
+				<field name="create_date"/>
+				<field name="skip_process" invisible="1"></field>
+			</tree>
+		</field>
+	</record>
+	<record id="amazon_process_job_form_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Process Job</field>
+		<field name="model">amazon.process.log.book</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Process Job" create="false">
+				<header>
+					<button name="get_feed_result" attrs="{'invisible':['|',('is_feed_updated','!=',False),('request_feed_id','=',False)]}" type="object" string="Get Feed Result"/>
+				</header>
+				<sheet>
+					<group string="General Info">
+						<group>
+							<field name="name" readonly="1"></field>
+							<field name="application" readonly="1"/>
+							<field name="operation_type" readonly="1"/>
+						</group>
+						<group>
+							<field name="create_date" readonly="1"/>
+							<field name="instance_id" readonly="1"/>
+						</group>
+						<group>
+							<field name="is_feed_updated" invisible="1"/>
+							<field name="request_feed_id" invisible="1"/>
+						</group>
+					</group>
+					<group string="Note" colspan="4">
+						<field name="message" readonly="1" nolabel="1"/>
+					</group>
+					<group string="Transaction Lines Log" colspan="4">
+						<field name="transaction_log_ids" nolabel="1" readonly="1">
+							<tree colors="red:skip_record==True;blue:skip_record==False;">
+								<field name="operation_type" invisible="1"/>
+								<field name="amazon_order_reference"/>
+								<field name="model_id"/>
+								<field name="res_id"/>
+								<field name="log_type"/>		
+								<field name="action_type"/>
+								<field name="user_id"/>
+								<field name="skip_record"/>
+								<field name="message"/>
+							</tree>
+						</field>
+					</group>		
+				</sheet>
+			</form>
+		</field>    
+	</record> 
+	<record id="amazon_process_job_search_view_ept" model="ir.ui.view">
+            <field name="name">view.amazon.process.log.filter</field>
+            <field name="model">amazon.process.log.book</field>
+			<field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Amazon Process Job">
+					<field name="name"/>
+					<field name="application" />
+					<field name="operation_type"/>
+					<filter name="filter_app_sales" string="Sales" domain="[('application','=','sales')]"/>
+					<filter name="filter_app_sales_ret" string="Sales Return" domain="[('application','=','sales_return')]"/>
+					<filter name="filter_app_purchase" string="Purchase" domain="[('application','=','purchase')]"/>
+					<filter name="filter_app_product" string="Product" domain="[('application','=','product')]"/>
+					<filter name="filter_app_other" string="Other" domain="[('application','=','other')]"/>
+					<newline/>
+					<filter name="filter_operation_export" string="Export" domain="[('operation_type','=','export')]"/>
+					<filter name="filter_operation_import" string="Import" domain="[('operation_type','=','import')]"/>
+	                <group expand="0" string="Group By...">
+						 <filter string="Create Date" icon="terp-personal"  context="{'group_by':'create_date'}"/>
+						 <filter string="Application" icon="terp-personal" context="{'group_by':'application'}"/>
+						 <filter string="Operation" icon="terp-personal" context="{'group_by':'operation_type'}"/>
+					</group>  
+                </search>
+            </field>
+    	</record>        
+		<record id="action_amazon_process_job_ept" model="ir.actions.act_window">
+	        <field name="name">Amazon Process Job Log</field>
+			<field name="res_model">amazon.process.log.book</field>
+	        <field name="view_type">form</field>
+			<field name="view_id" ref="amazon_process_job_tree_view_ept"/>
+	        <field name="search_view_id" ref="amazon_process_job_search_view_ept"/>
+    	</record>
+    	
+    	<record id="action_amazon_instance_process_job_ept" model="ir.actions.act_window">
+	        <field name="name">Amazon Process Job Log</field>
+			<field name="res_model">amazon.process.log.book</field>
+	        <field name="view_type">form</field>
+			<field name="view_id" ref="amazon_process_job_tree_view_ept"/>
+	        <field name="search_view_id" ref="amazon_process_job_search_view_ept"/>
+	        <field name="domain">[('instance_id','=',active_id)]</field>
+    	</record>
+
+
+	<record id="amazon_transaction_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Transaction Log Job</field>
+	    <field name="model">amazon.transaction.log</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml" >
+            <tree string="File Process Job" create="false">
+				<field name="operation_type"/>
+				<field name="amazon_order_reference"/>
+				<field name="log_type"/>	
+				<field name="skip_record" readonly="1"/>			
+				<field name="message"/>				
+			</tree>
+		</field>
+	</record>
+	<record id="amazon_transaction_log_form_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Transaction File Log</field>
+		<field name="model">amazon.transaction.log</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Process Job" create='false'>
+				<sheet>				
+				<group readonly="1">
+					<group string="File Info">
+						<field name="job_id" readonly="1"/>
+						<field name="operation_type"  readonly="1"/>
+						<field name="file_name" readonly="1"/>
+						<field name="create_date" readonly="1"/>
+						<field name="log_type"  readonly="1"/>
+						<field name="required_qty" attrs="{'invisible':[('log_type','!=','mismatch')]}" readonly="1"/>
+						<field name="processed_qty" attrs="{'invisible':[('log_type','!=','mismatch')]}" readonly="1"/>
+						<field name="difference_qty" attrs="{'invisible':[('log_type','!=','mismatch')]}" readonly="1"/>
+						<field name="not_found_value" attrs="{'invisible':[('log_type','!=','not_found')]}" readonly="1"/>
+						<field name="action_type" readonly="1"/>
+					</group>
+					<group string="Order Info"> 
+						<field name="model_id" readonly="1"/>
+						<field name="res_id" readonly="1"/>
+						<field name="user_id" readonly="1"/>
+						<field name="skip_record" readonly="1"/>
+						<field name="amazon_order_reference" readonly="1"/>						
+					</group>
+					<group string="Message">
+						<field name="message" readonly="1"/>
+					</group>
+				</group>
+				<group string="Manually Processed">
+					<field name="manually_processed"/>					
+				</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	<record id="amazon_file_process_transaction_search_view_ept" model="ir.ui.view">
+            <field name="name">view.amazon.transaction.log.filter</field>
+            <field name="model">amazon.transaction.log</field>
+			<field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="File Process Job">
+					<field name="model_id" />
+					<field name="operation_type"/>
+					<field name="file_name"/>		
+					<filter name="filter_log_type_not_found" string="Not Found" domain="[('log_type','=','not_found')]"/>
+					<filter name="filter_log_type_mismatch" string="Mismatch" domain="[('log_type','=','mismatch')]"/>
+					<newline/>
+					<filter name="filter_action_type_create" string="Create New" domain="[('action_type','=','create')]"/>
+					<filter name="filter_action_type_skip_line" string="Skip Process" domain="[('action_type','=','skip_line')]"/>
+					<filter name="filter_action_type_terminate_process" string="Terminate Process" domain="[('action_type','=','terminate_process_with_log')]"/>
+					<newline/>
+					<filter name="filter_operation_export" string="Export" domain="[('operation_type','=','export')]"/>
+					<filter name="filter_operation_import" string="Import" domain="[('operation_type','=','import')]"/>
+	                <group expand="0" string="Group By...">
+						 <filter string="Create Date" icon="terp-personal"  context="{'group_by':'create_date'}"/>
+						 <filter string="Log Type" icon="terp-personal" context="{'group_by':'log_type'}"/>
+						 <filter string="Action Type" icon="terp-personal" context="{'group_by':'action_type'}"/>
+						 <filter string="Model ID" icon="terp-personal" context="{'group_by':'model_id'}"/>
+						 <filter string="Operation" icon="terp-personal" context="{'group_by':'operation_type'}"/>
+					</group>  
+                </search>
+            </field>
+    	</record>        
+	<record id="action_amazon_mismatch_log_ept" model="ir.actions.act_window">
+		<field name="name">Amazon Mismatch Details</field>
+		<field name="res_model">amazon.transaction.log</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">['|',('log_type','=','mismatch'),'|',('skip_record','=',True),('manually_processed','=',False)]</field>
+        <field name="search_view_id" ref="amazon_file_process_transaction_search_view_ept"/>
+	</record>
+	
+	<record id="action_amazon_instance_mismatch_log_ept" model="ir.actions.act_window">
+		<field name="name">Amazon Mismatch Details</field>
+		<field name="res_model">amazon.transaction.log</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('job_id.instance_id','=',active_id),'|',('log_type','=','mismatch'),'|',('skip_record','=',True),('manually_processed','=',False)]</field>
+        <field name="search_view_id" ref="amazon_file_process_transaction_search_view_ept"/>
+	</record>
+    
+    
+	<menuitem id="amazon_file_process_job_log" name="Amazon Process Job Log"
+      parent="menu_amazon_feed_submission_log_ept" sequence="3"
+	  action="action_amazon_process_job_ept"/>	  
+	  
+	<menuitem id="amazon_file_process_mismatch_log_ept" name="Mismatch Details"
+      parent="menu_amazon_feed_submission_log_ept" sequence="4"
+	  action="action_amazon_mismatch_log_ept"/>	  
+
+	</data>
+	
+ </odoo>	  
+

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="product_product_product_only_form_view" model="ir.ui.view">
+				<field name="model">product.product</field>
+				<field name="inherit_id" ref="product.product_normal_form_view"/>
+				<field name="arch" type="xml">
+					   <xpath expr="//notebook/page[1]" position="after">
+					   <page string="Product Images">
+			   <field name="images" mode="kanban" context="{'default_name': name}">
+				<kanban>
+					<field name="image" widget="image"/>
+					<templates>
+					<t t-name="kanban-box">
+						<div style="position: relative">
+						<div class="oe_module_vignette">
+							<a type="open">
+								<img t-att-src="kanban_image('res.partner', 'image', record.id.value, {'preview_image': 'image_small'})" class="oe_avatar oe_kanban_avatar_smallbox"/>
+							</a>
+							<div class="oe_module_desc">
+							<div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_color_border">
+								<table class="oe_kanban_table">
+								<tr>
+									<td class="oe_kanban_title1" align="left" valign="middle">
+									<h4><a type="open"><field name="name"/></a></h4>
+									<i><div t-if="record.description.raw_value">
+										<field name="description"/></div></i>
+									</td>
+								</tr>
+								</table>
+							</div>
+							</div>
+						</div>
+						</div>
+					</t>
+					</templates>
+				</kanban>
+			   </field>
+					   </page>
+					   </xpath>
+				</field>
+			</record>
+
+		<record id="b2b_product_variant_easy_edit_view_inherit_view" model="ir.ui.view">
+			<field name="name">b2b.product.variant.easy.edit.view.inherit</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//h1" position="replace">
+					<h4><field name="name" widget="text" style="background:white" placeholder="比如：Halloween Lamp Light"/></h4>
+				</xpath>
+				<xpath expr="//group[@name='codes']" position="attributes">
+					<attribute name="attrs">{'invisible':[('b2b_type','!=','shop')]}</attribute>
+				</xpath>
+				<xpath expr="//field[@name='lst_price']" position="replace">
+					<field name="b2b_type" invisible="1"/>
+					<field name="platform_published" invisible="1"/>
+					<field name="cost_price" attrs="{'invisible':['|',('platform_published','=',True),
+                    	('b2b_type','!=','supplier')]}"/>
+					<field name="platform_price" attrs="{'invisible':['|',('b2b_type','!=','supplier'),
+						('platform_published','=',False)]}"/>
+					<field name="seller_price" attrs="{'invisible':[('b2b_type','!=','seller')]}"/>
+					<label for="shop_price" attrs="{'invisible':[('b2b_type','!=','shop')]}"/>
+					<div class="o_row" attrs="{'invisible':[('b2b_type','!=','shop')]}">
+						<field name="shop_price"/>
+						<field name="shop_currency" nolabel="1" readonly="True"/>
+					</div>
+					<field name="shop_price_cny" attrs="{'invisible':[('b2b_type','!=','shop')]}"/>
+				</xpath>
+				<xpath expr="//field[@name='standard_price']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//group[@name='weight']" position="replace">
+					<group name="weight" string="重量" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}">
+						<label for="volume"/>
+						<div class="o_row">
+							<field name="volume"/>
+							<span>m³</span>
+						</div>
+						<label for="weight"/>
+						<div class="o_row">
+							<field name="weight"/>
+							<span>kg</span>
+						</div>
+					</group>
+				</xpath>
+				<xpath expr="//group[4]" position="after">
+					<field name="images" context="{'default_name': name, 'product':active_id}" domain="[('selectable','=',True)]">
+						<tree editable="bottom">
+							<field name="sequence" widget="handle"/>
+							<field name="image" widget="image" height="96"/>
+						</tree>
+				   	</field>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="b2b_product_variant_easy_edit_view_button_inherit_view" model="ir.ui.view">
+			<field name="name">b2b.product_product_view_form_easy_inherit_stock.inherit</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="stock.product_product_view_form_easy_inherit_stock"/>
+			<field name="arch" type="xml">
+				<xpath expr="//header" position="inside">
+					<!--<button name="btn_upload_to_amazon" string="上传亚马逊" type="object" attrs="{'invisible': [('shop_mod_list', '!=', True)]}"/>-->
+					<button name="cron_check_stock_balance" string="检查库存" type="object"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="view_tree_b2b_images" model="ir.ui.view">
+            <field name="name">b2b_images_tree</field>
+            <field name="model">product.image</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="产品图片">
+                    <field name="name"/>
+                    <!--<field name="description"/>-->
+                    <!--<field name="image_alt"/>-->
+                    <field name="image"  widget="image" height="64"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

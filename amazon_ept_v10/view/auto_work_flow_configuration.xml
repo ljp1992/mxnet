@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="act_sale_workflow_process_form" model="ir.actions.act_window">
+            <field name="name">Auto Sales Workflow</field>
+            <field name="res_model">sale.workflow.process.ept</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="act_sale_workflow_process_form" id="menu_act_sale_workflow_process_form" parent="menu_configuration_ept" sequence="3"/>
+
+	</data>
+</odoo>

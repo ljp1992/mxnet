@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_qdoo_settlement" model="ir.ui.view">
+            <field name="name">qdoo_settlement_form</field>
+            <field name="model">b2b.purchase.settlement</field>
+            <field name="arch" type="xml">
+                <form string="结算单" attrs="{'readonly':[('state','!=','draft')]}">
+                    <header>
+                        <button name="btn_notice" string="结算通知" states='draft' type="object" class="oe_highlight"
+                                groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_accept" string="供应商确认" type="object" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','confirm'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_manager"/>
+                        <button name="btn_reject" string="退回" type="object"
+                                attrs="{'invisible':['|',('state','!=','confirm'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_manager"/>
+                        <button name="btn_transfer" string="账单结转" states='transfer' type="object" class="oe_highlight"
+                                groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,transfer,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="supplier" options="{'no_create': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="supp_orders" invisible="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+                        </group>
+                        <label string="账单明细" />
+                        <field name="order_line" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree editable="top">
+                                <field name="bill"/>
+                                <!--<field name="bill" options="{'no_create': True}"/>-->
+                                <field name="bill_date" string="账单日期"/>
+                                <field name="reference" string="供应商单号"/>
+                                <field name="origin" string="源单据"/>
+                                <field name="amount_total_signed" sum="合计" string="合计"/>
+                                <field name="residual_signed" sum="合计" string="待支付"/>
+                                <field name="state" string="状态"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_qdoo_settlement" model="ir.ui.view">
+            <field name="name">qdoo_settlement_tree</field>
+            <field name="model">b2b.purchase.settlement</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="结算单">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="supplier"/>
+                    <field name="amount" sum="合计"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_qdoo_settlement" model="ir.ui.view">
+            <field name="name">qdoo_settlement_search</field>
+            <field name="model">b2b.purchase.settlement</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date" string="日期从（含）" filter_domain="[('date', '&gt;=', self)]"/>
+                    <field name="date" string="日期至（含）" filter_domain="[('date', '&lt;=', self)]"/>
+                    <field name="supplier"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_qdoo_settlement" model="ir.actions.act_window">
+            <field name="name">结算单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.purchase.settlement</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_settlement"/>
+            <field name="domain">[('state','!=','draft')]</field>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+        <record id="action_qdoo_settlement_platform" model="ir.actions.act_window">
+            <field name="name">结算单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.purchase.settlement</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_settlement"/>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+
+
+    </data>
+</odoo>

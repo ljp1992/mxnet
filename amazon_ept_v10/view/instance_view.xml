@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_amazon_instance_kanban" model="ir.ui.view">
+           <field name="name">amazon.instance.ept.kanban</field>
+           <field name="model">amazon.instance.ept</field>
+           <field name="arch" type="xml">
+               <kanban class="oe_background_grey o_kanban_dashboard o_amazon_kanban" create="false">
+                   <field name="name"/>                    
+                   <field name="color"/>
+                   <field name="country_id"/>
+                   <field name="product_count"/>
+                   <field name="sale_order_count"/>                   
+                   <field name="picking_count"/>
+                   <field name="invoice_count"/>
+                   <field name="exported_product_count"/>                                          
+                   <field name="ready_to_expor_product_count"/>
+                   <field name="quotation_count"/>
+                   <field name="order_count"/>
+                   <field name="confirmed_picking_count"/>
+                   <field name="assigned_picking_count"/>
+                   <field name="partially_available_picking_count"/>
+                   <field name="done_picking_count"/>
+                   <field name="open_invoice_count"/>
+                   <field name="paid_invoice_count"/>
+                   <field name="refund_invoice_count"/>
+                   <templates>
+	                    <t t-name="kanban-box">
+	                        <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+	                            <div class="o_kanban_card_header">		                            
+	                                <div class="o_kanban_card_header_title">	                                	
+	                                    <div class="o_primary"><img t-att-src="kanban_image('res.country', 'image', record.country_id.raw_value)" t-att-title="record.country_id.value" width="35" height="24" class="oe_kanban_avatar"/> <t t-esc="record.name.value"/></div>
+	                                    <div class="o_secondary" style="margin-left:40px;"><field class="o_secondary"  name="seller_id"/></div>
+	                                </div>	                                
+	                                <div class="o_kanban_manage_button_section">
+	                                    <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a>
+	                                </div>
+	                            </div>
+	                            <div class="container o_kanban_card_content o_visible">
+	                                <div class="row">
+	                                    <div id="amazon_left" class="col-xs-4 o_kanban_primary_left">
+	                                    	<div class="row">
+	                                        	<div id="perform_operation">
+			                                    	<button class="btn btn-primary" name="%(amazon_ept_v10.action_wizard_amazon_instance_import_export_operations)d" type="action">
+			                                            <span>Perform Operation</span>
+			                                        </button>
+			                                     </div><br></br>
+			                                     <div id="settlement_report">
+			                                        <button class="btn btn-primary" name="%(amazon_ept_v10.action_wizard_amazon_instance_reports_ept)d" type="action">
+			                                            <span>Settlement Report</span>
+			                                            	  
+			                                        </button>
+			                                     </div>
+	                                        </div>
+	                                    </div>
+	                                    <div id="amazon_middle" class="col-xs-4 o_kanban_primary_right">	                                        
+	                                        <div class="row">
+	                                        	<div>
+		                                        	<a id="setting" name="%(amazon_ept_v10.action_amazon_instance_config)d" type="action">Settings</a>
+		                                        	<a id="process_job_log" name="%(amazon_ept_v10.action_amazon_instance_process_job_ept)d" type="action">Process Job Log</a>
+		                                        	<a id="feed_submission_history" name="%(amazon_ept_v10.action_amazon_instance_feed_submission_history_ept)d" type="action">Feed Submission History</a>
+	                                        	</div>
+	                                        </div>
+	                                    </div>
+	                                    <div id="amazon_right" class="col-xs-4 o_kanban_primary_right">	                                        
+	                                        <div class="row">
+	                                        	<div id="sales">
+			                                       	<div id="sales_fbm" style="margin-bottom:6px;">
+														<b><span>FBM</span></b>
+													</div>
+		                                           	<div id="quotation_fbm">
+			                                            <a name="%(amazon_ept_v10.action_amazon_instance_sale_quotation_only)d" type="action" title = "(FBM) Quotations"><t t-esc="record.quotation_count.raw_value"/> Quotations</a>
+			                                        </div>
+			                                        <div id="sale_order_fbm">
+			                                            <a name="%(amazon_ept_v10.action_amazon_instance_sales_order_only)d" type="action" title = "(FBM) Sale Orders"><t t-esc="record.order_count.raw_value"/> Sale Orders</a>
+			                                        </div>			                                        
+	                                        	</div>
+	                                        </div>
+	                                    </div>	                                    		                                                                        
+                                	</div>                                	                              	
+	                            </div><div class="container o_kanban_card_manage_pane o_invisible">
+	                                <div class="row">
+	                                	<div id="filter_product" class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_new">
+	                                		<div class="o_kanban_card_manage_title">
+												<span>Products</span>
+                                           	</div>
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.action_amazon_instance_product_exported_ept)d" type="action"><t t-esc="record.exported_product_count.value"/> Exported</a>
+	                                        </div>
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.action_amazon_instance_product_not_exported_ept)d" type="action" title = "Ready To Export" ><t t-esc="record.ready_to_expor_product_count.value"/> Ready to Export</a>
+	                                        </div>	                                                                                                                                                                                                                                           
+	                                    </div>                                    	                                    
+	                                    <div id="filter_delivery" class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_new">
+	                                    	<div class="o_kanban_card_manage_title">
+												<span>Delivery</span>
+                                           	</div>
+                                           	<div>
+	                                            <a name="%(amazon_ept_v10.amazon_action_picking_view_confirm_ept)d" type="action" title = "Waiting Availability"><t t-esc="record.confirmed_picking_count.value"/> Waiting Availability</a>
+	                                        </div>
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.amazon_action_picking_view_partially_available_ept)d" type="action" title = "Partially Available"><t t-esc="record.partially_available_picking_count.value"/> Partially Available</a>
+	                                        </div> 
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.amazon_action_picking_view_assigned_ept)d" type="action" title = "Ready to Transfer"><t t-esc="record.assigned_picking_count.value"/> Ready to Transfer</a>
+	                                        </div> 
+	                                        <div id="picking_done">
+	                                            <a name="%(amazon_ept_v10.amazon_action_picking_view_done_ept)d" type="action"><t t-esc="record.done_picking_count.value"/> Transfered</a>
+	                                        </div>
+	                                    </div>
+	                                    <div id="filter_invoice" class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_view">
+	                                    	<div class="o_kanban_card_manage_title">
+												<span>Invoices</span>
+                                           	</div>
+                                           	<div>
+	                                            <a name="%(amazon_ept_v10.action_amazon_instance_invoices_open)d" type="action"><t t-esc="record.open_invoice_count.raw_value"/> Open</a>
+	                                        </div>
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.action_amazon_instance_invoices_paid)d" type="action"><t t-esc="record.paid_invoice_count.raw_value"/> Paid</a>
+	                                        </div>
+	                                        <div>
+	                                            <a name="%(amazon_ept_v10.action_amazon_instance_order_refund_ept)d" type="action"><t t-esc="record.refund_invoice_count.raw_value"/> Refunds</a>
+	                                        </div>  	                                          		                                        	                                        
+	                                    </div>	                                                                                                            
+	                                </div>
+	                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+	                                     <div class="col-xs-8">
+	                                         <ul class="oe_kanban_colorpicker" data-field="color"/>
+	                                     </div>                                            
+                                    </div>	                                
+	                            </div>
+	                        </div>
+	                    </t>				
+					</templates>
+               </kanban>
+           </field>
+       </record>
+		<record id="amazon_instance_credential_form" model="ir.ui.view">
+			<field name="name">Amazon Instance Credential</field>
+			<field name="model">amazon.instance.ept</field>
+			<field name="priority" eval="20" />
+			<field name="arch" type="xml">
+				<form string="Amazon MWS Credential" >
+					<separator string='Amazon MWS Information' />
+					<group>
+						<group>
+							<field name="access_key" required="1" />
+							<field name="market_place_id" required="1" />
+						</group>
+						<group>
+							<field name="secret_key" required="1" />
+							<field name="merchant_id" required="1" />
+						</group>
+					</group>
+					<separator string='Product Advertising Account Details' />
+					<group>
+						<group>
+							<field name="pro_advt_access_key" />
+							<field name="pro_advt_associate_tag" />
+						</group>
+						<group>
+							<field name="pro_advt_scrt_access_key" />
+						</group>
+					</group>
+					<footer>
+						<button name="update_changes" string="Update" class="oe_highlight"
+							type="object" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<record id="amazon_instance_tree_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Instance</field>
+			<field name="model">amazon.instance.ept</field>
+			<field name="arch" type="xml">
+				<tree string="Amazon Instance" create="false">
+					<field name="name" />
+					<field name="warehouse_id"></field>
+				</tree>
+			</field>
+		</record>
+		<record id="amazon_instance_form_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Instance</field>
+			<field name="model">amazon.instance.ept</field>
+			<field name="arch" type="xml">
+				<form string="Amazon Instance" version='7.0' create="false">
+					<header>
+						<button name="test_amazon_connection" string="Check Connection"
+							class="oe_highlight" type="object" groups="amazon_ept_v10.group_amazon_manager_ept" />
+						<button name="show_amazon_credential" string="Amazon Credential"
+							class="oe_highlight" type="object" groups="amazon_ept_v10.group_amazon_manager_ept" />
+					</header>
+					<sheet>
+<!-- 						<div class="oe_right oe_button_box" style="width: 300px;" -->
+<!-- 							name="buttons"> -->
+<!-- 							<button class="fa fa-fw fa-filter o_button_icon" name="%(amazon_ept_v10.action_instance_amazon_product_ept)d" type="action" icon="fa fa-navicon fa-lg"> -->
+<!-- 								<field string="Products" name="product_count" widget="statinfo" /> -->
+<!-- 							</button> -->
+<!-- 							<button class="fa fa-fw fa-filter o_button_icon" name="%(amazon_ept_v10.action_instance_amazon_browse_node_ept)d" type="action" icon="fa fa-navicon fa-lg"> -->
+<!-- 								<field string="Browse Node" name="node_count" widget="statinfo" /> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
+						<div class="oe_left" style="width: 500px;">
+							<div class="oe_title" style="width: 390px;">
+								<label class="oe_edit_only" for="name" string="Name" />
+								<h1>
+									<field name="name" class="oe_inline" />
+								</h1>
+							</div>
+						</div>
+						<group>
+							<group>
+								<field name="seller_id" readonly="1"/>
+								<field name="warehouse_id" readonly="1" />
+								<field name="auto_workflow_id" readonly="1"/>
+								<field name="settlement_report_journal_id" readonly="1" domain="[('company_id','=',company_id),('type','in',['cash','bank'])]"/>
+							</group>
+							<group>
+								<field name="marketplace_id" options="{'no_create':True,'no_create_edit':True}" readonly="1" />
+								<field name="country_id" domain="[('amazon_marketplace_code','!=',False)]"
+									readonly="1" />
+								<field name="amazon_encodings"/>
+								<field name="company_id" widget="selection" on_change="onchange_company_id(company_id)" readonly="1"
+									groups="base.group_multi_company" />
+								<field name="lang_id" required="1" readonly="1" />
+							</group>
+						</group>
+						<separator string='Product Advertising Account Details' />
+						<group>
+							<group>
+								<field name="pro_advt_access_key" />
+								<field name="pro_advt_associate_tag" />
+							</group>
+							<group>
+								<field name="pro_advt_scrt_access_key" />
+							</group>
+						</group>
+						<notebook name="amazon_instance">
+							<page string="Other Information">
+								<group string="Sync Time">
+									<group>
+										<field name="catalog_last_sync_on" />
+										<field name="inventory_last_sync_on" />
+										<field name="image_last_sync_on" />
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+		<record id="amazon_instance_search_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Instance Search View</field>
+			<field name="model">amazon.instance.ept</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Amazon Instance">
+					<field name="name" />
+					<group expand="0" string="Group By...">
+						<filter string="Warehouse" icon="terp-personal"
+							context="{'group_by':'warehouse_id'}" />
+						<filter string="Country" icon="terp-personal" context="{'group_by':'country_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+		<record id="action_amazon_instance_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Instance</field>
+			<field name="res_model">amazon.instance.ept</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_instance_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_instance">
+					<br />
+					<br />
+					<br />
+					<p>
+						<b>There is no any Amazon Instance configured yet.</b>
+					</p>
+					<p>
+						To add your first Amazon Instance, go to menu
+						<i>Settings >> Configuration >> Amazon</i>
+						and create new Instance from there.
+						At there you can define one or more Amazon Instances and configure
+						extended options per Instance.
+					</p>
+					<p>
+						You can't create new Amazon Instance from here. This menu is just to
+						check &amp;
+						verify Amazon account credentials and sync history from Odoo to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+
+		<menuitem id="amazon_instance_menu_item" name="Amazon"
+			groups="amazon_ept_v10.group_amazon_user_ept" sequence="20"/>
+
+
+		<menuitem id="amazon_instance_menu_item_instance" name="Instances"
+			parent="amazon_ept_v10.menu_configuration_ept" sequence="2"
+			action="action_amazon_instance_ept" />
+			
+		<record id="amazon_kanban_action_ept" model="ir.actions.act_window">
+			<field name="name">Navigate Amazon</field>
+			<field name="res_model">amazon.instance.ept</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban</field>
+			<field name="view_id" ref="view_amazon_instance_kanban" />
+		</record>			
+			
+
+		<menuitem id="main_menu_amazon_dashboard" name="Dashboard"
+			parent="amazon_ept_v10.amazon_instance_menu_item" sequence="1" groups="amazon_ept_v10.group_amazon_manager_ept" />
+
+		<menuitem id="menu_item_navigate_amazon_dashboard" name="Navigate Amazon"
+			parent="amazon_ept_v10.main_menu_amazon_dashboard" sequence="1"
+			action="amazon_kanban_action_ept" groups="amazon_ept_v10.group_amazon_manager_ept"/>			
+
+	</data>
+</odoo>

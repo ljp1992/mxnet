@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.rule" id="fetchmail_server_inbox_user_rule">
+             <field name="name">Inbox Server: User</field>
+             <field name="model_id" ref="model_fetchmail_server_inbox"></field>
+             <field name="groups" eval="[(4,ref('base.group_user'))]"></field>
+             <field name="domain_force">[('create_uid', '=', user.id)]</field>
+             <field eval="1" name="perm_write"></field>
+             <field eval="1" name="perm_read"></field>
+             <field eval="1" name="perm_unlink"></field>
+             <field eval="1" name="perm_create"></field>
+        </record>
+
+        <record model="ir.rule" id="mail_inbox_user_rule">
+             <field name="name">Inbox Mail: User</field>
+             <field name="model_id" ref="model_mail_inbox"></field>
+             <field name="groups" eval="[(4,ref('base.group_user'))]"></field>
+             <field name="domain_force">[('create_uid', '=', user.id)]</field>
+             <field eval="1" name="perm_write"></field>
+             <field eval="1" name="perm_read"></field>
+             <field eval="1" name="perm_unlink"></field>
+             <field eval="1" name="perm_create"></field>
+        </record>
+
+        <record model="ir.rule" id="mail_b2b_inbox_user_rule">
+             <field name="name">Inbox Mail: B2B商户</field>
+             <field name="model_id" ref="model_mail_inbox"></field>
+             <field name="groups" eval="[(4,ref('b2b_platform.group_qdoo_distributor_user')),
+                                         (4,ref('b2b_platform.group_qdoo_distributor_manager')),
+                                         (4,ref('b2b_platform.group_qdoo_supplier_manager')),
+                                         (4,ref('b2b_platform.group_qdoo_supplier_user')),
+                                         (4,ref('b2b_platform.group_qdoo_supplier_warehouse')),
+                                         ]"></field>
+             <field name="domain_force">['|',('trader_id', '=', user.partner_id.id),
+                                         ('trader_id', '=', user.partner_id.parent_id.id)]</field>
+        </record>
+
+    </data>
+</odoo>

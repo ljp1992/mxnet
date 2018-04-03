@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+
+    <record model="ir.rule" id="qdoo_supplier_product_rule">
+        <field name="name">B2B: 供应商管理自己的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">['|','|','|',('product_owner','=',user.partner_id.id),
+                                                ('product_owner','=',user.partner_id.parent_id.id),
+                                                ('master_product.product_owner','=',user.partner_id.id),
+                                                ('master_product.product_owner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),
+                                    (4, ref('b2b_platform.group_qdoo_supplier_manager')),
+                                    (4, ref('b2b_platform.group_qdoo_supplier_warehouse'))]"/>
+    </record>
+
+    <record model="ir.rule" id="qdoo_supplier_users_rule">
+        <field name="name">B2B: 供应商管理员管理子账户</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="domain_force">['|','|',('partner_id.parent_id','=',user.partner_id.id),('partner_id.parent_id','=',user.partner_id.parent_id.id),('partner_id.parent_id','=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="qdoo_supplier_po_rule">
+        <field name="name">B2B: 供应商管理自己的采购订单</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="domain_force">['|',('partner_id','=',user.partner_id.id),('partner_id','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_po_rule">
+        <field name="name">B2B: 经销商查看自己的采购订单</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="domain_force">['|',('distributor','=',user.partner_id.id),('distributor','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_bank_admin_rule">
+        <field name="name">B2B: 供应商管理员管理自己的银行账号</field>
+        <field name="model_id" ref="model_b2b_supplier_bank"/>
+        <field name="domain_force">[('supplier','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_admin_stock_picking">
+        <field name="name">B2B: 供应商管理员查看自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force">[('owner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record model="ir.rule" id="b2b_dist_admin_stock_picking">
+        <field name="name">B2B: 经销商管理员查看自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="b2b_supplier_operator_stock_picking">
+        <field name="name">B2B: 商户业务员查看自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force">['|',('owner_id','=',user.partner_id.parent_id.id),('partner_id','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="b2b_supplier_wh_stock_picking">
+        <field name="name">B2B: 供应商库管员管理自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force">[('owner_id','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_warehouse'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_categ_admin_rule">
+        <field name="name">B2B: 供应商管理员管理内部分类</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_trader_markup"/>
+        <field name="domain_force">[('partner','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_supplier_categ_user_rule">
+        <field name="name">B2B: 供应商业务员查看内部分类</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_trader_markup"/>
+        <field name="domain_force">[('partner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_3pl_wh_stock_picking">
+        <field name="name">B2B: 第三方仓库库管管理自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force" eval="['|',('location_id.location_id.location_id','=', ref('b2b_platform.stock_location_wh_3pl')),
+                                        ('location_dest_id.location_id.location_id','=', ref('b2b_platform.stock_location_wh_3pl'))]"/>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record model="ir.rule" id="b2b_3pl_wh_stock_picking_product_rule">
+        <field name="name">B2B: 第三方仓库库管管理平台产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('master_product','=',False),('type','!=','service')]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_3pl_wh_sale_order_rule">
+        <field name="name">B2B: 第三方仓库库管查看销售订单</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="b2b_3pl_wh_sale_order_line_rule">
+        <field name="name">B2B: 第三方仓库库管查看销售订单明细</field>
+        <field name="model_id" ref="model_sale_order_line"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_3pl_test_wh_stock_picking">
+        <field name="name">B2B: 第三方测试仓库库管管理自己的拣货单</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="domain_force" eval="[('location_id.location_id','=', ref('b2b_platform.stock_location_wh_3pl_test'))]"/>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator_test'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <!--<record model="ir.rule" id="b2b_test_3pl_wh_stock_picking_product_rule">-->
+        <!--<field name="name">B2B: 第三方测试仓库库管管理平台产品</field>-->
+        <!--<field name="model_id" ref="model_product_template"/>-->
+        <!--<field name="domain_force">[('master_product','=',False),('type','!=','service')]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator_test'))]"/>-->
+    <!--</record>-->
+
+    <!--<record model="ir.rule" id="qdoo_shop_product_rule">-->
+        <!--<field name="name">B2B: 店铺管理自己的产品</field>-->
+        <!--<field name="model_id" ref="model_product_template"/>-->
+        <!--<field name="domain_force">[('product_owner','=',user.partner_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_shop'))]"/>-->
+    <!--</record>-->
+    <!--<record model="ir.rule" id="qdoo_shop_distributor_product_rule">-->
+        <!--<field name="name">B2B: 店铺查看本经销商的产品</field>-->
+        <!--<field name="model_id" ref="model_product_template"/>-->
+        <!--<field name="domain_force">[('product_owner','=',user.partner_id.parent_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_shop'))]"/>-->
+        <!--<field name="perm_read" eval="True"/>-->
+        <!--<field name="perm_create" eval="False"/>-->
+        <!--<field name="perm_unlink" eval="False"/>-->
+        <!--<field name="perm_write" eval="False"/>-->
+    <!--</record>-->
+
+    <record model="ir.rule" id="qdoo_distributor_operator_product_rule">
+        <field name="name">B2B: 经销商业务员管理本公司的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('product_owner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_operator_shop_product_rule">
+        <field name="name">B2B: 经销商业务员管理所负责店铺的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('shop_operator','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_operator_platform_rule">
+        <field name="name">B2B: 经销商业务员查看平台的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('master_product','=',False),('product_owner','!=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="qdoo_distributor_operator_open_product_rule">
+        <field name="name">B2B: 经销商经销商业务员查看平台公有产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('product_owner','=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user')),(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="qdoo_distributor_platform_product_rule">
+        <field name="name">B2B: 经销商管理员查看平台的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('master_product','=',False),('product_owner','!=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_product_rule">
+        <field name="name">B2B: 经销商管理员管理本公司的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('product_owner','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_shop_product_rule">
+        <field name="name">B2B: 经销商管理员管理所有店铺的产品</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('distributor','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="qdoo_distributor_users_rule">
+        <field name="name">B2B: 经销商管理员管理子账户</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="domain_force">['|',('partner_id.parent_id','=',user.partner_id.id),('partner_id.parent_id','=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_markup_admin_rule">
+        <field name="name">B2B: 经销商管理员管理内部分类</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_trader_markup"/>
+        <field name="domain_force">[('partner','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_distributor_markup_user_rule">
+        <field name="name">B2B: 经销商业务员查看内部分类</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_trader_markup"/>
+        <field name="domain_force">[('partner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_amazon_template_admin_rule">
+        <field name="name">B2B: 经销商管理员管理亚马逊模板</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_distributor_amazon_template"/>
+        <field name="domain_force">[('partner','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_distributor_amazon_template_user_rule">
+        <field name="name">B2B: 经销商业务员查看亚马逊模板</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_distributor_amazon_template"/>
+        <field name="domain_force">[('partner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_trader_freight_template_admin_rule">
+        <field name="name">B2B: 商户管理员管理运费模板</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_product_freight_template_group"/>
+        <field name="domain_force">[('owner','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager')),(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_trader_freight_template_user_rule">
+        <field name="name">B2B: 商户业务员查看运费模板</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_product_freight_template_group"/>
+        <field name="domain_force">[('owner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_trader_courrier_admin_rule">
+        <field name="name">B2B: 商户管理员管理物流公司</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_courrier"/>
+        <field name="domain_force">[('partner','=',user.partner_id.id),('partner','!=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_manager')),
+                                    (4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_trader_courrier_user_rule">
+        <field name="name">B2B: 商户业务员和库管查看物流公司</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_courrier"/>
+        <field name="domain_force">[('partner','=',user.partner_id.parent_id.id),('partner','!=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),
+                                    (4, ref('b2b_platform.group_qdoo_supplier_warehouse')),
+                                    (4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="b2b_platform_courrier_operator_rule">
+        <field name="name">B2B: 平台运营管理物流公司</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_courrier"/>
+        <field name="domain_force">[('partner','=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_platform_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+    <record model="ir.rule" id="b2b_platform_courrier_wh_rule">
+        <field name="name">B2B: 平台库管查看物流公司</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_courrier"/>
+        <field name="domain_force">[('partner','=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    <record model="ir.rule" id="b2b_platform_courrier_operator_read_rule">
+        <field name="name">B2B: 平台运营查看物流公司</field>
+        <field name="model_id" ref="b2b_platform.model_b2b_courrier"/>
+        <field name="domain_force">[('partner','!=',False)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_platform_operator'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_sale_order_rule">
+        <field name="name">B2B: 经销商管理自己的销售单</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="domain_force">['|',('partner_id','=',user.partner_id.id),('partner_id','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_fba_order_rule">
+        <field name="name">B2B: 经销商管理自己的FBA补货单</field>
+        <field name="model_id" ref="model_b2b_fba_rfq"/>
+        <field name="domain_force">['|',('distributor','=',user.partner_id.id),('distributor','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_deposit_rule">
+        <field name="name">B2B: 经销商管理自己的充值单据</field>
+        <field name="model_id" ref="model_b2b_payment_deposit"/>
+        <field name="domain_force">['|',('applicant','=',user.partner_id.id),('applicant','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_customer_complaint_rule">
+        <field name="name">B2B: 经销商管理自己的申诉单据</field>
+        <field name="model_id" ref="model_b2b_customer_complaint"/>
+        <field name="domain_force">['|',('applicant','=',user.partner_id.id),('applicant','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_customer_complaint_supplier_rule">
+        <field name="name">B2B: 供应商管理自己的申诉单据</field>
+        <field name="model_id" ref="model_b2b_customer_complaint"/>
+        <field name="domain_force">['|',('supplier','=',user.partner_id.id),('supplier','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_trader_account_invoice_rule">
+        <field name="name">B2B: 供应商经销商管理自己的发票账单</field>
+        <field name="model_id" ref="model_account_invoice"/>
+        <field name="domain_force">['|',('partner_id','=',user.partner_id.id),('partner_id','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user')),(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_fba_order_rule">
+        <field name="name">B2B: 供应商管理自己的FBA补货单</field>
+        <field name="model_id" ref="model_b2b_fba_rfq"/>
+        <field name="domain_force">['|',('supplier','=',user.partner_id.id),('supplier','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_bill_settlement_rule">
+        <field name="name">B2B: 供应商管理自己的结算单</field>
+        <field name="model_id" ref="model_b2b_purchase_settlement"/>
+        <field name="domain_force">['|',('supplier','=',user.partner_id.id),('supplier','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_bank_account_rule">
+        <field name="name">B2B: 供应商管理自己的提现银行账号</field>
+        <field name="model_id" ref="model_b2b_supplier_bank"/>
+        <field name="domain_force">['|',('supplier','=',user.partner_id.id),('supplier','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_supplier_withdrawl_rule">
+        <field name="name">B2B: 供应商管理自己的提现单据</field>
+        <field name="model_id" ref="model_b2b_supplier_withdraw"/>
+        <field name="domain_force">['|',('supplier','=',user.partner_id.id),('supplier','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_distributor_upc_rule">
+        <field name="name">B2B: 经销商管理自己的UPC码</field>
+        <field name="model_id" ref="model_b2b_upc_list"/>
+        <field name="domain_force">['|',('owner','=',user.partner_id.id),('owner','=',user.partner_id.parent_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_trader_delivery_carrier_rule">
+        <field name="name">B2B: 商户查看承运商</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force">[('type','=','service')]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),
+                                    (4, ref('b2b_platform.group_qdoo_supplier_manager')),
+                                    (4, ref('b2b_platform.group_qdoo_distributor_manager')),
+                                    (4, ref('b2b_platform.group_qdoo_distributor_user')),
+                                    (4, ref('b2b_platform.group_b2b_3pl_operator')),
+                                    (4, ref('b2b_platform.group_qdoo_supplier_warehouse'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+
+    <!--<record model="ir.rule" id="b2b_3pl_operator_rule">-->
+        <!--<field name="name">B2B: 第三方仓库库管管理3PL库存</field>-->
+        <!--<field name="model_id" ref="stock.model_stock_location"/>-->
+        <!--<field name="domain_force">[('location_id','=',ref(b2b_platform.stock_location_wh_3pl))]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>-->
+        <!--<field name="perm_read" eval="True"/>-->
+        <!--<field name="perm_create" eval="False"/>-->
+        <!--<field name="perm_unlink" eval="False"/>-->
+        <!--<field name="perm_write" eval="False"/>-->
+    <!--</record>-->
+
+    <!--<record model="ir.rule" id="b2b_amazon_seller_admin_rule">-->
+        <!--<field name="name">B2B: 经销商管理员管理自己的亚马逊站点</field>-->
+        <!--<field name="model_id" ref="amazon_ept_v10.model_amazon_seller_ept"/>-->
+        <!--<field name="domain_force">['|',('create_uid.partner_id','=',user.partner_id.parent_id.id),('create_uid.partner_id','=',user.partner_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>-->
+    <!--</record>-->
+    <!--<record model="ir.rule" id="b2b_amazon_seller_user_rule">-->
+        <!--<field name="name">B2B: 经销商业务员查看自己的亚马逊站点</field>-->
+        <!--<field name="model_id" ref="amazon_ept_v10.model_amazon_seller_ept"/>-->
+        <!--<field name="domain_force">[('create_uid.partner_id','=',user.partner_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>-->
+        <!--<field name="perm_read" eval="True"/>-->
+        <!--<field name="perm_create" eval="False"/>-->
+        <!--<field name="perm_unlink" eval="False"/>-->
+        <!--<field name="perm_write" eval="False"/>-->
+    <!--</record>-->
+
+    <record model="ir.rule" id="b2b_amazon_instance_admin_rule">
+        <field name="name">B2B: 经销商管理员管理自己的亚马逊站点</field>
+        <field name="model_id" ref="amazon_ept_v10.model_amazon_instance_ept"/>
+        <field name="domain_force">['|',('create_uid.partner_id','=',user.partner_id.parent_id.id),
+                                    ('create_uid.partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="b2b_amazon_instance_user_rule">
+        <field name="name">B2B: 经销商业务员查看自己的亚马逊站点</field>
+        <field name="model_id" ref="amazon_ept_v10.model_amazon_instance_ept"/>
+        <field name="domain_force">[('create_uid.partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="perm_write" eval="False"/>
+    </record>
+    
+    <record model="ir.rule" id="b2b_amazon_process_log_rule">
+        <field name="name">B2B: 经销商管理自己的亚马逊操作日志</field>
+        <field name="model_id" ref="amazon_ept_v10.model_amazon_process_log_book"/>
+        <field name="domain_force">['|',('instance_id.create_uid.partner_id','=',user.partner_id.parent_id.id),
+                                        ('instance_id.create_uid.partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="b2b_amazon_transaction_log_rule">
+        <field name="name">B2B: 经销商管理自己的亚马逊交易日志</field>
+        <field name="model_id" ref="amazon_ept_v10.model_amazon_transaction_log"/>
+        <field name="domain_force">['|','|','|',('create_uid.partner_id','=',user.partner_id.parent_id.id),
+                                        ('create_uid.partner_id','=',user.partner_id.id),
+                                        ('create_uid.partner_id.parent_id','=',user.partner_id.parent_id.id),
+                                        ('create_uid.partner_id.parent_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+    </record>
+
+    <!--<record model="ir.rule" id="b2b_amazon_feed_submission_history_rule">-->
+        <!--<field name="name">B2B: 经销商管理自己的Feed提交记录</field>-->
+        <!--<field name="model_id" ref="amazon_ept_v10.model_feed_submission_history"/>-->
+        <!--<field name="domain_force">['|',('instance_id.create_uid.partner_id','=',user.partner_id.parent_id.id),-->
+                                        <!--('instance_id.create_uid.partner_id','=',user.partner_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>-->
+    <!--</record>-->
+
+    <!--<record model="ir.rule" id="b2b_amazon_product_listing_rule">-->
+        <!--<field name="name">B2B: 经销商管理自己的产品同步</field>-->
+        <!--<field name="model_id" ref="amazon_ept_v10.model_active_product_listing_report_ept"/>-->
+        <!--<field name="domain_force">['|',('instance_id.create_uid.partner_id','=',user.partner_id.parent_id.id),-->
+                                        <!--('instance_id.create_uid.partner_id','=',user.partner_id.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>-->
+    <!--</record>-->
+
+</data>
+</openerp>

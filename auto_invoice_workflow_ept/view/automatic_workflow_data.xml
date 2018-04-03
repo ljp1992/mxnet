@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- VIEW FOR THE OBJECT : payment_method -->
+        <record id="automatic_validation" model="sale.workflow.process.ept">
+            <field name="name">Automatic Validation</field>
+            <field name="validate_order" eval="0"></field>
+            <field name="create_invoice" eval="0" />
+            <field name="validate_invoice" eval="0" />
+            <field name="invoice_date_is_order_date" eval="0" />
+        </record>
+
+    </data>
+</openerp>

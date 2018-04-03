@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="b2b_distributor_amazon_template_form" model="ir.ui.view">-->
+            <!--<field name="name">b2b_distributor_amazon_template_form</field>-->
+            <!--<field name="model">b2b.distributor.amazon.template</field>-->
+            <!--<field name="inherit_id" ref="b2b_platform.view_form_b2b_distributor_amazon_template"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//field[@name='supplier_name']" position="replace">-->
+                    <!--<field name="manufacture_id" readonly="1"/>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//field[@name='brand']" position="replace">-->
+                    <!--<field name="product_brand_id"/>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</odoo>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="b2b_view_picking_form_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_picking_form_inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//button[@name='do_new_transfer']" position="attributes">-->
+                    <!--<attribute name="states">partially_available,assigned</attribute>-->
+                <!--</xpath>-->
+                <xpath expr="//button[@name='action_confirm']" position="replace">
+                    <button name="action_confirm" string="标记为待办" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|',('state','!=','draft'),('supp_own_pick','=',False)]}"
+                            groups="b2b_platform.group_qdoo_supplier_warehouse,b2b_platform.group_b2b_3pl_operator"/>
+                </xpath>
+                <xpath expr="//button[@name='action_assign']" position="replace">
+                    <button name="action_assign" string="保留" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|',('state','not in',('confirmed','waiting')),('supp_own_pick','=',False)]}"
+                            groups="b2b_platform.group_qdoo_supplier_warehouse,b2b_platform.group_b2b_3pl_operator"/>
+                </xpath>
+                <!--<xpath expr="//button[@name='action_assign']" position="replace">-->
+                    <!--<button name="action_assign" states="partially_available" string="检查可用" type="object"-->
+                            <!--groups="b2b_platform.group_qdoo_supplier_warehouse,b2b_platform.group_b2b_3pl_operator"/>-->
+                <!--</xpath>-->
+                <xpath expr="//button[@name='do_new_transfer']" position="replace">
+                    <button name="do_new_transfer" string="出库确认"
+                            attrs="{'invisible':['|','|',('state','not in',('partially_available','assigned')),('supp_own_pick','=',False),('picking_type_id','=',1)]}"
+                            groups="b2b_platform.group_qdoo_supplier_warehouse,b2b_platform.group_b2b_3pl_operator"
+                            type="object" class="oe_highlight"/>
+                    <button name="do_new_transfer" string="入库确认"
+                            attrs="{'invisible':['|','|',('state','not in',('partially_available','assigned')),('supp_own_pick','=',False),('picking_type_id','!=',1)]}"
+                            groups="b2b_platform.group_b2b_3pl_operator"
+                            type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//button[@name='do_print_picking']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="replace">
+                    <button name="%(stock.act_stock_return_picking)d" string="退货" type="action"
+                            attrs="{'invisible':['|',('state','!=','done'),('supp_own_pick','=',False)]}"
+                            groups="b2b_platform.group_qdoo_supplier_warehouse,b2b_platform.group_b2b_3pl_operator"/>
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='force_assign']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_scrap']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="before">
+                    <field name="location_id" options="{'no_create': True}"
+                                domain="['|', ('id','=', supp_loc), ('id','=', tpl_loc)]"
+                                attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                    <field name="supp_loc" invisible="1"/>
+                    <field name="tpl_loc" invisible="1"/>
+                    <field name="tpl_wh" invisible="1"/>
+                    <field name="supp_own_pick" invisible="1"/>
+                    <field name="transfer_applier" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': False}</attribute>
+                    <!--<attribute name="attrs">{'invisible': [('picking_type_code', '=', 'incoming')]}</attribute>-->
+                    <attribute name="readonly">context.get('b2b_action') != 'transfer'</attribute>
+                    <attribute name="domain">[('partner_id','=', transfer_applier),('location_id.name','not ilike', '供应商')]</attribute>
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='owner_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='move_type']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('picking_type_code', '=', 'outgoing')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='move_lines']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'in', ('cancel', 'partially_available', 'assigned', 'done'))]}</attribute>
+                    <attribute name="readonly">context.get('b2b_action') != 'transfer'</attribute>
+                </xpath>
+                <!--<xpath expr="//field[@name='product_id'][2]" position="attributes">-->
+                    <!--<attribute name="domain">[('master_product','=',False)]</attribute>-->
+                    <!--<attribute name="options">{'no_create': True}</attribute>-->
+                <!--</xpath>-->
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="ship_address" readonly="True"/>
+                </xpath>
+                <xpath expr="//notebook/page[1]" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_picking_withcarrier_out_form_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_picking_withcarrier_out_form_inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='carrier_id']" position="replace">
+                    <field name="carrier_id" attrs="{'readonly': [('state', '=', 'done')]}" options='{"no_create": True}'/>
+                    <field name="courrier_id" attrs="{'readonly': [('state', '=', 'done')]}" options='{"no_create": True}'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_move_picking_tree_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_move_picking_tree_inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom_qty']" position="after">
+                    <field name="supplier_stock"/>
+                    <field name="thirdpl_stock"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record  id="b2b_supplier_location_open_quants" model="ir.actions.act_window">
+            <field name="context">{'search_default_productgroup': 0}</field>
+            <field name="domain">[('my_locations', '=', True)]</field>
+            <field name="name">当前库存</field>
+            <field name="res_model">stock.quant</field>
+        </record>
+
+    </data>
+</odoo>

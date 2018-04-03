@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_b2b_freight_template" model="ir.ui.view">
+            <field name="name">b2b_freight_template_form</field>
+            <field name="model">b2b.product.freight.template.group</field>
+            <field name="arch" type="xml">
+                <form string="运费模板">
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="template"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <field name="freight_line">
+                            <tree string="运费明细" editable="bottom">
+                                <field name="country_id"/>
+                                <field name="cny_amount"/>
+                                <!--<field name="foreigh_currency"/>-->
+                                <!--<field name="foreign_amount"/>-->
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_b2b_freight_template" model="ir.ui.view">
+            <field name="name">b2b_freight_templat_tree</field>
+            <field name="model">b2b.product.freight.template.group</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="运费模板">
+                    <field name="template"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_freight_template" model="ir.ui.view">
+            <field name="name">b2b_freight_template_search</field>
+            <field name="model">b2b.product.freight.template.group</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="template"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_freight_template" model="ir.actions.act_window">
+            <field name="name">运费模板</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.product.freight.template.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_freight_template"/>
+        </record>
+
+        <record id="view_tree_b2b_distributor_upc" model="ir.ui.view">
+            <field name="name">b2b_freight_templat_tree</field>
+            <field name="model">b2b.upc.list</field>
+            <field name="arch" type="xml">
+                <tree string="UPC码">
+                    <field name="state"/>
+                    <field name="type"/>
+                    <field name="name"/>
+                    <!--<field name="owner"/>-->
+                    <field name="shop_id"/>
+                    <field name="product"/>
+                    <field name="SKU_ID"/>
+                    <field name="create_date" string="导入时间"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_distributor_upc" model="ir.ui.view">
+            <field name="name">b2b_freight_template_search</field>
+            <field name="model">b2b.upc.list</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="shop_id"/>
+                    <filter name="vacant_upc" string="可用UPC码" domain="[('state','=', 'vacant')]" help="未使用的UPC码"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_distributor_upc" model="ir.actions.act_window">
+            <field name="name">UPC码</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.upc.list</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="search_b2b_distributor_upc"/>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="b2b_view_change_product_quantity_inherit" model="ir.ui.view">
+            <field name="name">b2b.view_change_product_quantity_inherit</field>
+            <field name="model">stock.change.product.qty</field>
+            <field name="inherit_id" ref="stock.view_change_product_quantity"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_form_b2b_courrier" model="ir.ui.view">
+            <field name="name">b2b_courrier_form</field>
+            <field name="model">b2b.courrier</field>
+            <field name="arch" type="xml">
+                <form string="物流公司">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="courrier"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                                <field name="partner" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_b2b_courrier" model="ir.ui.view">
+            <field name="name">b2b_courrier_tree</field>
+            <field name="model">b2b.courrier</field>
+            <field name="arch" type="xml">
+                <tree string="物流公司">
+                    <field name="partner"/>
+                    <field name="courrier"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_courrier" model="ir.ui.view">
+            <field name="name">b2b_courrier_search</field>
+            <field name="model">b2b.courrier</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="courrier"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_courrier" model="ir.actions.act_window">
+            <field name="name">物流公司</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.courrier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_courrier"/>
+            <field name="domain">[('partner','!=',False)]</field>
+        </record>
+        <record id="action_b2b_courrier_platform" model="ir.actions.act_window">
+            <field name="name">物流公司</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.courrier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_courrier"/>
+            <field name="domain">[('partner','=',False)]</field>
+        </record>
+
+    </data>
+</odoo>

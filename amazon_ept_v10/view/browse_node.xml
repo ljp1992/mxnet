@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>	
+	<record id="amazon_browse_node_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Browse Node</field>
+	    <field name="model">amazon.browse.node.ept</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Browse Node">            
+            	<field name="name" required="1"/>
+	            <field name="ama_category_code" required="1"></field>
+				<field name="country_id" required="1"/>
+				<field name="parent_id"/>
+				<field name="odoo_category_id"/>
+			</tree>
+		</field>
+	</record>
+	<record id="amazon_browse_node_from_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Browse Node</field>
+		<field name="model">amazon.browse.node.ept</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Browse Node" version='7.0'>
+				<sheet>
+					<group string="Browse Node Info">
+						<group>
+							<field name="name"/>
+							<field name="ama_category_code"/>
+						</group>
+						<group>
+							<field name="country_id"/>
+							<field name="parent_id"/>
+						</group>
+						<group>
+							<field name="odoo_category_id"/>						
+							<field name="is_root_category" readonly="1"/>
+						</group>		
+						<group>
+							<field name="full_name_ept"/>								
+						</group>					
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	<record model="ir.ui.view" id="amazon_browse_node_search_view_ept">
+		<field name="name">amazon.browse.node.ept</field>
+		<field name="model">amazon.browse.node.ept</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+			<search string="Browse Node">
+				<field name = "name"/>
+				<field name = "ama_category_code"/>
+				<group expand="0" string="Group By">
+                        <filter string="Country" domain="[]" context="{'group_by':'country_id'}"/>
+                        <filter string="Odoo Category" domain="[]" context="{'group_by':'odoo_category_id'}"/>                        
+                </group>
+			</search>
+		</field>
+	</record>
+	<record id="action_amazon_browse_node_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Browse Node</field>
+		<field name="res_model">amazon.browse.node.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_browse_node_tree_view_ept"/>
+   	</record>
+   	
+	<record id="action_instance_amazon_browse_node_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Browse Node</field>
+		<field name="res_model">amazon.browse.node.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_browse_node_tree_view_ept"/>
+        <field name="domain">[('country_id','=',active_id)]</field>
+    	</record>   	
+
+	<menuitem id="menu_item_parent_amazon_categ_ept" name="Categories &amp; Attributes"
+		parent="amazon_ept_v10.amazon_instance_menu_item" sequence="2" />
+
+     <menuitem id="menu_item_amazon_browse_node_ept" name="Browse Node"
+      parent="amazon_ept_v10.menu_item_parent_amazon_categ_ept" sequence="1"
+	  action="action_amazon_browse_node_ept" groups="amazon_ept_v10.group_amazon_manager_ept"/>
+
+
+   </data>
+</odoo>

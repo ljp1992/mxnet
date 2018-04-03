@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_variant_easy_edit_view_inherit" model="ir.ui.view">
+            <field name="name">product_variant_easy_edit_view_inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="attributes">
+                    <attribute name="string">seller sku</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product_normal_form_view_inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="attributes">
+                    <attribute name="string">seller sku</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--图片修改-->
+        <record id="product_add_main_image" model="ir.ui.view">
+            <field name="name">product_add_main_image</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="b2b_platform.b2b_product_variant_easy_edit_view_inherit_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='images']" position="replace">
+                    <!--主图-->
+                    <field name="product_tmpl_id" invisible="1"/>
+                    <field name="main_images"
+                           context="{'selected_main_images':main_images, 'selected_other_images':images}"
+                           domain="[('product_tmpl_id','=',product_tmpl_id)]">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="oss2_url" widget="image" height="96" string="主图"/>
+                        </tree>
+				   	</field>
+                    <!--其余图片-->
+                    <field name="images"
+                           context="{'selected_main_images':main_images, 'selected_other_images':images}"
+                           domain="[('product_tmpl_id','=',product_tmpl_id)]">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="oss2_url" widget="image" height="96"/>
+                        </tree>
+				   	</field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

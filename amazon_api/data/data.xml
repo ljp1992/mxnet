@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="create_odoo_attribute" model="ir.cron">
+            <field name="name">根据亚马逊属性表生成odoo属性表</field>
+            <field name="user_id">1</field>
+            <field name="active" eval="False"/>
+            <field name="model">amazon.attribute.ept</field>
+            <field name="function">create_product_attribute</field>
+            <field name="args" eval="False"/>
+        </record>
+
+        <record id="get_feed_result" model="ir.cron">
+            <field name="name">获取变体、图片、价格、库存的上传结果</field>
+            <field name="user_id">1</field>
+            <field name="active" eval="True"/>
+            <field name="model">feed.submission.history</field>
+            <field name="function">get_feed_result_ljp</field>
+            <field name="interval_number">2</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="args" eval="False"/>
+        </record>
+
+        <record id="handle_history_data" model="ir.cron">
+            <field name="name">处理历史数据（供应商、经销商、店铺产品）</field>
+            <field name="user_id">1</field>
+            <field name="active" eval="False"/>
+            <field name="model">product.template</field>
+            <field name="function">handle_history_data</field>
+            <field name="args" eval="False"/>
+        </record>
+    </data>
+</odoo>

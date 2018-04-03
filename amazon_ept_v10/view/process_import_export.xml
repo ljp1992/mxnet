@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_amazon_process_import_export_ept" model="ir.ui.view">
+            <field name="name">Process Import/Export</field>
+            <field name="model">amazon.process.import.export</field>
+            <field name="arch" type="xml">
+                <form string="Import/Export">
+                	<group>
+	                	<field name='instance_ids' required="1" widget="many2many_tags" options="{'no_create':True,'no_create_edit': True}" invisible="context.get('process','') == 'import_browse_node'"/>                	
+                	</group>
+					<group>
+						<group string='Import Operations (FBM)'>
+							<field name="import_sale_order"/>							
+							 <!-- <field name="shipped_sales_order"/> -->
+							<label string="" attrs="{'invisible':[('import_sale_order', '=', False)]}" />
+							<div>					
+                        	<field name="start_date" attrs="{'invisible':[('import_sale_order', '=', False)]}" class="oe_inline"/>
+                       		</div>
+                       		<label string="" attrs="{'invisible':[('import_sale_order', '=', False)]}"  />
+                       		<div>
+                       		 <field name="end_date" attrs="{'invisible':[('import_sale_order', '=', False)]}" class="oe_inline"/>					
+					         </div>
+							<field name="import_browse_node" groups="amazon_ept_v10.group_amazon_manager_ept" />
+						</group>
+						<group string='Export Operations (FBM)' groups="amazon_ept_v10.group_amazon_manager_ept">
+							<field name="export_product" />
+							<field name="export_product_price" />
+							<field name="export_product_images" />
+							<field name="export_inventory" />
+							<field name="export_order_status" />
+						</group>
+					</group>
+					<group  attrs="{'invisible':[('import_browse_node','=',False)]}">
+						<field name='browse_node_ids' options="{'no_create':True,'no_create_edit': True}" domain="[('parent_id','=',False)]">
+	                		<tree>
+	                			<field name='name'/>
+	                			<field name='ama_category_code'/>
+	                		</tree>
+	                	</field>					
+					</group>
+                	<footer>
+                        <button name="import_export_processes" string="Execute" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_amazon_import_export_operations" model="ir.actions.act_window">
+         	<field name="name">Amazon Operations </field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.process.import.export</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="target">new</field>
+         </record>		
+         
+		<record id="action_wizard_amazon_instance_import_export_operations" model="ir.actions.act_window">
+         	<field name="name">Amazon Operations </field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.process.import.export</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="context">{'default_instance_id':active_id}</field>
+         	<field name="target">new</field>
+         </record>          
+
+         <menuitem id="menu_amazon_import_export_process_ept" name="Amazon &lt;=&gt; Odoo" 
+         parent="amazon_ept_v10.amazon_instance_menu_item" sequence="14"/>
+         
+         <menuitem id="menu_main_amazon_import_process_ept" name="Amazon Operations" 
+         action="action_wizard_amazon_import_export_operations"
+         parent="menu_amazon_import_export_process_ept" sequence="1"/>
+         
+    </data>
+</odoo>

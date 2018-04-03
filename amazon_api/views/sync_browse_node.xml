@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sync_browse_node_tree" model="ir.ui.view">
+            <field name="name">sync_browse_node_tree</field>
+            <field name="model">sync.browse.node</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Active Products">
+                    <!--<field name="write_uid"/>-->
+                    <field name="create_date"/>
+                    <field name="instance_id"/>
+                    <field name="marketplace_id"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="sync_browse_node_form" model="ir.ui.view">
+			<field name="name">sync_browse_node_form</field>
+			<field name="model">sync.browse.node</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="">
+					<header>
+						<button name="submit_request" string="提交请求" states="draft" class="oe_highlight" type="object"/>
+                        <button name="get_request_status" string="获取请求的处理状态" states="draft" class="oe_highlight" type="object"/>
+                        <button name="download_data" string="下载数据" states="draft" class="oe_highlight" type="object"/>
+                        <button name="update_browse_node" string="更新本地数据" states="draft" class="oe_highlight" type="object"/>
+                        <field name="state" invisible="1"/>
+						<!--<field name="state" widget="statusbar" statusbar_visible="_SUBMITTED_,_IN_PROGRESS_,_DONE_" />	-->
+					</header>
+					<sheet>
+						<group>
+							<group>
+                                <field name="instance_id"/>
+								<field name="marketplace_id" readonly="1"/>
+                                <field name="report_request_id"/>
+                                <field name="generated_report_id"/>
+							</group>
+						</group>
+                        <group string="发出请求后亚马逊返回的数据">
+                            <field name="submit_request_return_data" nolabel="1" readonly="1"/>
+                        </group>
+                        <group string="请求的处理状态">
+                            <field name="request_handle_status" nolabel="1" readonly="1"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="sync_browse_node_act" model="ir.actions.act_window">
+            <field name="name">sync_browse_node_act</field>
+            <field name="res_model">sync.browse.node</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="sync_browse_node_menu" name="Sync Browse Node" sequence="2"
+                  parent="amazon_ept_v10.menu_amazon_main_report_ept" action="sync_browse_node_act" />
+    </data>
+</odoo>
+

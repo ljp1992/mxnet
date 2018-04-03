@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="amazon_feed_submission_history_form_view_ept_inherit" model="ir.ui.view">-->
+            <!--<field name="name">amazon_feed_submission_history_form_view_ept_inherit</field>-->
+            <!--<field name="model">feed.submission.history</field>-->
+            <!--<field name="inherit_id" ref="amazon_ept_v10.amazon_feed_submission_history_form_view_ept"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--&lt;!&ndash;<xpath expr="//header/button[@name='get_feed_submission_result']" position="after">/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button name="get_feed_result_ljp" string="cs" class="oe_highlight" type="object"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;</xpath>&ndash;&gt;-->
+                <!--&lt;!&ndash;<xpath expr="//field[@name='feed_result_id']" position="attributes">/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<attribute name="readonly">0</attribute>&ndash;&gt;-->
+                <!--&lt;!&ndash;</xpath>&ndash;&gt;-->
+                <!--&lt;!&ndash;<xpath expr="//field[@name='instance_id']" position="attributes">/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<attribute name="readonly">0</attribute>&ndash;&gt;-->
+                <!--&lt;!&ndash;</xpath>&ndash;&gt;-->
+                <!--&lt;!&ndash;<xpath expr="//button[@name='get_feed_submission_result']" position="attributes">/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<attribute name="invisible">0</attribute>&ndash;&gt;-->
+                <!--&lt;!&ndash;</xpath>&ndash;&gt;-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</odoo>
+

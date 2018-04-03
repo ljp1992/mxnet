@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="less_helpers" name="tea_community_theme less helpers" inherit_id="web.less_helpers" priority='15'>
+        <xpath expr="//link[@href='/web/static/src/less/variables.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/variables.less"/>
+        </xpath>
+    </template>
+
+    <template id="assets_common" name="tea_community_theme assets common" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/fonts.less"/>
+            <t t-set="switcher_theme"
+               t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.switcher_theme')"/>
+            <t t-if="switcher_theme == '1'">
+                <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/navbar.less"/>
+            </t>
+            <t t-if="switcher_theme == '0'">
+                <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/navbar_hide_switcher.less"/>
+            </t>
+
+        </xpath>
+    </template>
+
+
+    <template id="assets_backend" name="tea_community_theme assets backend" inherit_id="web.assets_backend">
+
+        <xpath expr="//script[@src='/web/static/src/js/web_client.js']" position="replace">
+            <t t-set="switcher_theme"
+               t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.switcher_theme')"/>
+            <t t-if="switcher_theme == '0'">
+                <script type="text/javascript" src="/tea_community_theme/static/src/js/appswitcher_hide/web_client.js"/>
+            </t>
+            <t t-if="switcher_theme == '1'">
+                <script type="text/javascript" src="/tea_community_theme/static/src/js/appswitcher_show/web_client.js"/>
+            </t>
+        </xpath>
+        <xpath expr="//script[@src='/web/static/src/js/menu.js']" position="replace">
+            <t t-set="switcher_theme"
+               t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.switcher_theme')"/>
+            <t t-if="switcher_theme == '0'">
+                <script type="text/javascript" src="/tea_community_theme/static/src/js/appswitcher_hide/menu.js"/>
+            </t>
+            <t t-if="switcher_theme == '1'">
+                <script type="text/javascript" src="/tea_community_theme/static/src/js/appswitcher_show/menu.js"/>
+            </t>
+        </xpath>
+
+        <xpath expr="//script[@src='/web/static/src/js/views/form_upgrade_widgets.js']" position="replace">
+        </xpath>
+
+        <xpath expr="//link[@href='/web/static/src/less/bootstrap_overridden.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/bootstrap_overridden.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/webclient_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/webclient.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/webclient_layout.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/webclient_layout.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/views_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/views.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/form_view_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/form_view.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/form_view_layout_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/form_view_layout.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/search_view_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/search_view.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web/static/src/less/dropdown_extra.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/dropdown.less"/>
+        </xpath>
+
+        <xpath expr="." position="inside">
+            <t t-set="switcher_theme"
+               t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.switcher_theme')"/>
+            <t t-if="switcher_theme == '1'">
+                <script type="text/javascript" src="/tea_community_theme/static/src/js/app_switcher.js"/>
+                <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/app_switcher/app_switcher.less"/>
+                <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/app_switcher/app_switcher_layout.less"/>
+            </t>
+
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/sidebar.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/control_panel.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/view_manager.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/views/form_view.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/views/form_widgets.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/widgets/debug_manager.js"/>
+            <script type="text/javascript" src="/tea_community_theme/static/src/js/widgets/user_menu.js"/>
+
+
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/menu_search.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/control_panel_layout.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/datepicker.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/kanban_view.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/list_view.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/touch_device.less"/>
+            <link rel="stylesheet" type="text/less" href="/tea_community_theme/static/src/less/keyboard.less"/>
+            <t t-set="sidebar_theme"
+               t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.sidebar_theme')"/>
+            <t t-if="sidebar_theme">
+                <link rel="stylesheet" type="text/less"
+                      t-att-href="'/tea_community_theme/static/src/less/sidebar/'+sidebar_theme+'.less'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap">
+        <xpath expr="//t[@t-set='head']" position="after">
+            <t t-set="head_tea_community_theme">
+                <!-- Chrome, Firefox OS and Opera -->
+                <meta name="theme-color" content="#875A7B"/>
+                <t t-set="android_touch_icon" t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.android_touch_icon_url')"/>
+                <t t-if="android_touch_icon">
+                    <link rel="icon" sizes="192x192" t-att-href="android_touch_icon"  />
+                </t>
+                <!-- iOS Safari -->
+                <meta name="apple-mobile-web-app-capable" content="yes"/>
+                <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+                <t t-set="apple_touch_icon" t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.apple_touch_icon_url')"/>
+                <t t-if="apple_touch_icon">
+                    <link rel="apple-touch-icon" t-att-href="apple_touch_icon" />
+                </t>
+
+                <!-- Windows Phone -->
+                <meta name="msapplication-navbutton-color" content="#875A7B"/>
+                <meta name="msapplication-TileColor" content="#875A7B"/>
+                <t t-set="windows_touch_icon" t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.windows_touch_icon_url')"/>
+                <t t-if="windows_touch_icon">
+                    <meta name="msapplication-TileImage" t-att-content="windows_touch_icon"/>
+                </t>
+            </t>
+            <t t-set="head" t-value="head_tea_community_theme + (head or '')"/>
+        </xpath>
+    </template>
+</odoo>

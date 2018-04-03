@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+		<record id="navigate_amazon_tree_ept" model="ir.ui.view">
+			<field name="name">Navigate Amazon Tree View</field>
+			<field name="model">amazon.operations.ept</field>
+			<field name="arch" type="xml">
+				<tree string="Amazon Operations">
+					<field name="name" />
+					<field name="url" />
+					<field name="action_id" />
+					<field name="color" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="navigate_amazon_form_view" model="ir.ui.view">
+			<field name="name">Navigate Amazon Form View</field>
+			<field name="model">amazon.operations.ept</field>
+			<field name="arch" type="xml">
+				<form string="Amazon Operations" version='7.0'>
+					<sheet>
+						<group>
+							<field name="name" />
+							<field name="url" />
+							<field name="action_id" />
+							<field name="color" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+	
+		<record id="navigate_amazon_kanban_view" model="ir.ui.view">
+			<field name="name">amazon.operations.kanban.ept</field>
+			<field name="model">amazon.operations.ept</field>
+			<field name="arch" type="xml">
+				<kanban class="oe_background_grey" create="0">
+					<field name="name" />
+					<field name="url" />
+					<field name="action_id" />
+					<field name="color" />
+					<field name="sequence" />
+					<field name="display_inline_image" />
+					<field name="display_outline_image" />
+					<field name="use_quotations"/>
+					<field name="use_invoices"/>
+					<field name="use_refunds"/>
+					<field name="use_delivery_orders"/>
+					<field name="use_log"/>										
+					<field name="use_products"/>
+					<field name="use_amazon_workflow"/>
+					<field name="display_record_count" />
+					<templates>
+						<t t-name="kanban-box">
+							<div 
+								t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_amazon_operations_type">
+								<div class="oe_kanban_content" style="z-index: 9999;min-height: 227px;">
+									<h2 class="text-center" style="font-size:20px;">
+										<field name="name" />
+									</h2>
+									<ul class="text-center" style="font-size:20px; color:red; font-weight: bold;"
+										t-if="record.display_record_count">
+										<field name="count_record"></field>
+									</ul>									
+			                        <div id="amazon_dashboard_sales_order" t-if="record.use_quotations.raw_value" style="margin-left:25px;margin-bottom:10px;width:40%;float:left;">
+			                            <a name="%(action_amazon_sale_quotation_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_quotations"/> Quotations</a>
+									</div>
+			                        <div t-if="record.use_quotations.raw_value" style="margin-left:25px;width:40%;float:right;">
+			                            <a name="%(action_amazon_sales_order_ept)d" type="action"><field name="count_orders"/> Sales Orders</a>
+									</div>
+									<div style="clear:both"></div>
+									
+			                        <div id="amazon_dashboard_products" t-if="record.use_products.raw_value" style="margin-left:25px;margin-bottom:10px;width:40%;float:left;">
+			                            <a name="%(action_amazon_product_exported_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_exported_products"/> Exported</a>
+									</div>
+			                        <div  t-if="record.use_products.raw_value" style="margin-left:25px;width:40%;float: right;">
+			                            <a name="%(action_amazon_product_not_exported_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_ready_products"/> Ready For Export</a>
+									</div>									
+									<div style="clear:both"></div>
+									
+			                        <div id="amazon_dashboard_invoices" t-if="record.use_invoices.raw_value" style="margin-left:25px;margin-bottom:10px;width:40%;float:left;">
+			                            <a name="%(action_open_invoice_tree_amazon_invoices)d" type="action" class="oe_sparkline_bar_link"><field name="count_open_invoices"/> Open</a>
+									</div>
+			                        <div t-if="record.use_invoices.raw_value" style="margin-left:25px;width:40%;float:right;">
+			                            <a name="%(action_paid_invoice_tree_amazon_invoices)d" type="action"><field name="count_paid_invoices"/> Paid</a>
+									</div>
+									<div style="clear:both"></div>
+
+									<div id="amazon_dashboard_refunds" t-if="record.use_refunds.raw_value" style="margin-left:25px;margin-bottom:10px;width:40%;float:left;">
+			                            <a name="%(action_draft_tree_amazon_refunds)d" type="action" class="oe_sparkline_bar_link"><field name="count_draft_refunds"/> Draft</a>
+									</div>
+			                        <div t-if="record.use_refunds.raw_value" style="margin-left:25px;width:40%;float:right;">
+			                            <a name="%(action_paid_tree_amazon_refunds)d" type="action"><field name="count_paid_refunds"/> Paid</a>
+									</div>
+									<div style="clear:both"></div>									
+
+			                        <div id="amazon_dashboard_delivery_orders" t-if="record.use_delivery_orders.raw_value" style="margin-left:25px;margin-bottom:10px;width:40%;float:left;">
+			                            <a name="%(amazon_action_picking_view_confirm_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_picking_confirmed"/> Waiting Availability</a>
+									</div>
+			                        <div  t-if="record.use_delivery_orders.raw_value" style="margin-left:25px;width:40%;float:right;">
+			                            <a name="%(amazon_action_picking_view_partially_available_ept)d" 
+			                            type="action" class="oe_sparkline_bar_link"><field name="count_picking_partial"/> Partially Available</a>
+									</div>
+									<div style="clear:both"></div>
+									
+			                        <div  t-if="record.use_delivery_orders.raw_value" style="margin-left:25px;width:40%;float:left;">
+			                            <a name="%(amazon_action_picking_view_assigned_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_picking_assigned"/> Ready to Transfer</a>
+									</div>
+			                        <div  t-if="record.use_delivery_orders.raw_value" style="margin-left:25px;width:40%;float:right;">
+			                            <a name="%(amazon_action_picking_view_done_ept)d" type="action" class="oe_sparkline_bar_link"><field name="count_picking_done"/> Transfered</a>
+									</div>
+									
+                                    <div id="amazon_dashboard_auto_workflow" t-if="record.use_amazon_workflow.raw_value" style="margin-left:25px;margin-bottom:10px;">
+			                            <a name="%(act_sale_workflow_process_form)d" type="action" class="oe_sparkline_bar_link">Auto Workflow</a>
+									</div>
+									<div class="oe_ept_center" t-if="record.display_outline_image.raw_value">
+										<a name="view_data" type="object">
+											<img t-att-src="record.url.raw_value" class="oe_kanban_image_emipro" />
+										</a>
+									</div>
+									<div class="oe_ept_center" t-if="record.display_inline_image.raw_value">
+										<a name="view_data" type="object">
+											<img t-att-src="record.url.raw_value" class="oe_kanban_image_emipro"  />
+										</a>
+									</div>
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		
+		<record id="navigate_amazon_action_ept" model="ir.actions.act_window">
+			<field name="name">Navigate Amazon</field>
+			<field name="res_model">amazon.operations.ept</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban,tree,form</field>
+			<field name="view_id" ref="navigate_amazon_kanban_view" />
+		</record>
+ 
+		<menuitem id="main_menu_amazon_dashboard" name="Dashboard"
+			parent="amazon_ept_v10.amazon_instance_menu_item" sequence="1" groups="amazon_ept_v10.group_amazon_manager_ept" />
+
+		<menuitem id="menu_item_navigate_amazon_dashboard" name="Navigate Amazon"
+			parent="amazon_ept_v10.main_menu_amazon_dashboard" sequence="1"
+			action="navigate_amazon_action_ept" groups="amazon_ept_v10.group_amazon_manager_ept"/>
+			
+	</data>
+</odoo>

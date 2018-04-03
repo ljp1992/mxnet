@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="web_layout" inherit_id="web.layout">
+            <xpath expr="//title" position="replace"><title/></xpath>
+            <xpath expr="//link[@rel='shortcut icon']" position="replace">
+                <t t-set="favicon" t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.favicon_url')"/>
+                <t t-if="favicon">
+                    <link rel="shortcut icon" t-att-href="favicon" type="image/x-icon"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="layout" inherit_id="web.webclient_bootstrap" name="Tea Layout">
+            <xpath expr="//nav[@id='oe_main_menu_navbar']" position="replace"/>
+            <xpath expr="//div[hasclass('o_main')]" position="replace">
+                <t t-set="sidebar_theme"
+                   t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.sidebar_theme')"/>
+                <div class="o_main">
+                    <t t-if="sidebar_theme != '0'">
+                        <div class="o_sidebar_menu" groups="base.group_user,base.group_portal">
+                            <a class="o_sidebar_menu_logo">
+                                <img src='/web/binary/company_logo'/>
+                            </a>
+                            <div class="o_sidebar_menu_content">
+                                <ul class="oe_application_menu_placeholder" id="sidebar">
+                                    <li t-foreach="menu_data['children']"
+                                        t-as="menu"
+                                        t-att-data-menu="menu['id']"
+                                        t-att-title="menu['name']"
+                                    >
+                                        <t t-call="tea_community_theme.sidebar_menu_link"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="o_main_content" />
+                </div>
+
+                <t t-set="enable_footer"
+                   t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.enable_footer')"/>
+                <t t-if="enable_footer != '0'">
+                    <div class="o_footer">
+                        <div class="o_footer_inner">
+                            管理系统
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+        </template>
+
+
+
+        <template id="tea_community_theme.sidebar_menu_link" name="Tea Sidebar Link">
+            <!--<t t-set="debug_param" t-value="'?&amp;debug=' if debug else ''"/>-->
+            <t t-set="debug_param" t-value="''"/>
+            <!--<a t-att-href="'/web%s#menu_id=%s&amp;action=%s' % (debug_param, menu['id'], menu['action'] and menu['action'].split(',')[1] or '')"-->
+            <a t-att-href="'/web%s#menu_id=%s&amp;action=%s' % (debug_param, menu['id'], menu['action'] and menu['action'].split(',')[1] or '')"
+               t-att-class="'oe_menu_toggler' if menu.get('children') else 'oe_menu_leaf'"
+               t-att-data-menu="menu['id']"
+               t-att-data-menu-xmlid="menu.get('xmlid')"
+               t-att-data-action-model="menu['action'] and menu['action'].split(',')[0] or None"
+               t-att-data-action-id="menu['action'] and menu['action'].split(',')[1] or None">
+                <img t-attf-src="/web/image/ir.ui.menu/{{ menu['id'] }}/web_icon_data"/>
+                <span class="oe_menu_text">
+                    <t t-esc="menu['name']"/>
+                </span>
+            </a>
+        </template>
+    </data>
+</odoo>

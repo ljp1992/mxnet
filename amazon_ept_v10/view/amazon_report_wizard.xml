@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_amazon_report_wizard_ept" model="ir.ui.view">
+            <field name="name">Amazon Report</field>
+            <field name="model">amazon.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Report List">
+					<group>
+						<group>
+							<field name='seller_id' required="1" 
+							on_change="on_change_seller_id(seller_id,start_date,end_date)"
+							options="{'no_create':True,'no_create_edit': True}" />
+						</group>
+						<group colspan="2">
+							<label for="start_date" string="Date"/>
+	                           <div>
+	                           	<field name="start_date" required="1" class="oe_inline"/>
+	                           	to <field name="end_date" required="1" class="oe_inline"/>
+	                          	</div>
+							<field name="report_type" readonly="1" invisible="1"/>							
+						</group>
+
+					</group>
+					<footer>
+                        <button name="get_report_list" string="Get Report List" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_amazon_reports_ept" model="ir.actions.act_window">
+         	<field name="name">Amazon Settlement Report </field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.report.wizard</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="target">new</field>
+         </record>
+         
+		<record id="action_wizard_amazon_instance_reports_ept" model="ir.actions.act_window">
+         	<field name="name">Amazon Settlement Report </field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.report.wizard</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="context">{'default_instance_id':active_id}</field>
+         	<field name="target">new</field>
+         </record>          
+
+         <menuitem id="menu_amazon_list_settlement_report_wizard_ept" name="List Settlement Report" 
+         action="action_wizard_amazon_reports_ept"
+         groups="account.group_account_user"
+         parent="amazon_ept_v10.menu_amazon_import_export_process_ept" sequence="5"/>
+         
+    </data>
+</odoo>

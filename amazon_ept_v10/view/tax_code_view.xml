@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<odoo>
+  <data>	
+	<record id="amazon_tax_code_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Tax Code</field>
+	    <field name="model">amazon.tax.code.ept</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Tax Code">
+            	<field name="name" required="1"/>
+            	<field name="tax_id" required="1"/>
+			</tree>
+		</field>
+	</record>
+	<record id="amazon_tax_code_form_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Tax Code</field>
+		<field name="model">amazon.tax.code.ept</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Tax Code" version='7.0'>
+			<sheet>
+				<group>
+					<group>
+						<field name="name" required="1"/>
+					</group>
+					<group>
+						<field name="tax_id"/>
+					</group>
+				</group>
+			</sheet>			
+			</form>
+		</field>
+	</record>
+    <record id="amazon_tax_code_search_view_ept" model="ir.ui.view">
+            <field name="name">Amazon Tax Code Search View</field>
+            <field name="model">amazon.tax.code.ept</field>
+			<field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Amazon Tax Code">
+					<field name="name"/>
+				</search>
+			</field>
+	</record>
+	
+	<record id="action_amazon_tax_code_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Tax Code</field>
+		<field name="res_model">amazon.tax.code.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_tax_code_tree_view_ept"/>
+   	</record>
+
+      <menuitem id="amazon_tax_code_menu_item" name="Tax Codes"
+      parent="amazon_ept_v10.menu_item_parent_amazon_products_ept" sequence="13"
+	  action="action_amazon_tax_code_ept"/> 
+  </data>
+</odoo>

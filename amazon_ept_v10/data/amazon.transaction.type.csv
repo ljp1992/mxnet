@@ -1,0 +1,11 @@
+id,name,amazon_code
+Amazon_Commission,Amazon Commission,Commission
+Shipping_Chargeback,Shipping Chargeback,ShippingChargeback
+Disposal_Complete,Disposal Complete,DisposalComplete
+Subscriptio_ Fee,Subscription Fee,Subscription Fee
+Current_Reserv_ Amount,Current Reserve Amount,Current Reserve Amount
+Previous_Reserve_Amount_Balance,Previous Reserve Amount Balance,Previous Reserve Amount Balance
+Amazon_Refund_Commission,Amazon Refund Commission,RefundCommission
+Giftwrap_Chargeback,Giftwrap Chargeback,GiftwrapChargeback
+Amazon_Commission_on_Shipping,Amazon Commission on Shipping,ShippingHB
+Balance_Adjustment,Balance Adjustment,BalanceAdjustment

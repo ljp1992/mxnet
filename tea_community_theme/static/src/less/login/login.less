@@ -1,0 +1,117 @@
+// ------------------------------------------------------------------
+// Login layout rules, use 'login.less' for styling
+// ------------------------------------------------------------------
+html {
+  height: 100%;
+  .login {
+    background-color: #364150 !important;
+
+    .logo {
+      margin: 0 auto;
+      margin-top: 60px;
+      padding: 15px;
+      text-align: center;
+      @media (max-width: 440px){
+        margin-top: 10px;
+      }
+    }
+
+    .content {
+
+      @media (max-width: 440px){
+        width: 280px;
+        margin-top: 10px;
+      }
+
+      background-color: white;
+      -webkit-border-radius: 7px;
+      -moz-border-radius: 7px;
+      -ms-border-radius: 7px;
+      -o-border-radius: 7px;
+      border-radius: 7px;
+      width: 400px;
+      margin: 40px auto 10px auto;
+      padding: 30px;
+      padding-top: 10px;
+      overflow: hidden;
+      position: relative;
+
+      select.form-control {
+        padding-left: 9px;
+        padding-right: 9px; }
+
+      h3 {
+        color: #4db3a5;
+        text-align: center;
+        font-size: 28px;
+        font-weight: 400 !important;
+        @media (max-width: 440px){
+          font-size: 22px;
+        }
+      }
+
+      h4 {
+        color: #555; }
+
+      .hint {
+        color: #999;
+        padding: 0;
+        margin: 15px 0 7px 0; }
+
+      .login-form  {
+        padding: 0px;
+        margin: 0px;
+
+        .form-control {
+          border: none;
+          background-color: #dde3ec;
+          height: 43px;
+          color: #8290a3;
+          border: 1px solid #dde3ec;
+
+
+          :focus,:active{
+            border: 1px solid #c3ccda; }
+          ::-moz-placeholder {
+            color: #8290a3;
+            opacity: 1; }
+          :-ms-input-placeholder {
+            color: #8290a3; }
+          ::-webkit-input-placeholder {
+            color: #8290a3; }
+        }
+
+        .form-title {
+          font-weight: 300;
+          margin-bottom: 25px; }
+
+        .form-actions {
+          border: 0;
+          margin-bottom: 0;
+          padding-bottom: 20px;
+
+          .btn-default {
+            font-weight: 600;
+            padding: 10px 25px !important;
+            color: #6c7a8d;
+            background-color: #ffffff;
+            border: none; }
+
+          .btn-default:hover {
+            background-color: #fafaff;
+            color: #45b6af; }
+
+
+        }
+      }
+    }
+
+    /* footer copyright */
+    .copyright {
+      text-align: center;
+      margin: 0 auto 30px 0;
+      padding: 10px;
+      color: #7a8ca5;
+      font-size: 13px; }
+  }
+}

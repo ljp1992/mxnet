@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="amazon_ept_v10.action_amazon_sales_order_ept" model="ir.actions.act_window">
+            <field name="name">Amazon Sales Order</field>
+            <field name="res_model">amazon.sale.order.ept</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('fulfillment_by','=','MFN')]</field>
+            <field name="view_id" ref="amazon_ept_v10.amazon_sale_order_tree_view_ept"/>
+            <field name="context">{'show_sale': True}</field>
+            <field name="help" type="html">
+                <div class="oe_empty_amazon_sale_order">
+                  <br/><br/><br/>
+                  <p>
+                    <b>There is no any Sale Order synchronised from any of your Amazon Instance yet.</b>
+                  </p>
+                  <p>
+                    You can't create Sale Order manually and push it to Amazon. Through only import Sale Order from
+                    any of your Amazon Instance, you can see your Orders here.Import Sale Order can be performed by 2 ways.
+                  </p>
+                  <p>
+                  <b>1.</b> Via automatic jobs to import Sale Orders at frequent amount of time. <br/>
+                  Go to menu Settings >> Technical >> Automation >> Schedule Actions and activate automatic Job for Import Order from Amazon.
+                  However from Amazon settings you can set your preferred timings for auto import Sale Order from Amazon.
+                  </p>
+                  <p>
+                  <b>2.</b> Manually Import Orders at any time <br/>
+                  Go to menu Amazon >> Processes >> Amazon Operations and select your instances and option "Import Sale Order".
+                  Clicking on "OK" button will import all <b>Unshipped/Partial Shipped</b> orders from Amazon to Odoo.
+                  </p>
+                </div>
+            </field>
+   	  </record>
+   </data>
+</odoo>

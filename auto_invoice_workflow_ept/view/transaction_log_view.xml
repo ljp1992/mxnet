@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<openerp>
+  <data>	   	
+
+	<record id="transaction_log_tree_view_ept" model="ir.ui.view">
+	    <field name="name">transaction.log.ept.tree</field>
+	    <field name="model">transaction.log.ept</field>
+		<field name="arch" type="xml">
+            <tree create="false">
+				<field name="type"/>
+				<field name="create_date"/>
+				<field name="message"/>
+				<field name="mismatch_details" invisible="1"/>			
+			</tree>
+		</field>
+	</record>
+
+	<record id="transaction_log_form_view_ept" model="ir.ui.view">
+		<field name="name">transaction.log.ept.form</field>
+		<field name="model">transaction.log.ept</field>
+		<field name="arch" type="xml">
+			<form create="false" edit="false">
+				<group>
+					<group>
+						<field name="create_date"/>
+						<field name="mismatch_details"/>
+					</group>
+				</group>
+				<group string="Message">
+					<field name="message" nolabel="1"/>
+				</group>
+			</form>
+		</field>
+	</record>	
+	<record id="transaction_log_search_view_ept" model="ir.ui.view">
+            <field name="name">transaction.log.ept.search</field>
+            <field name="model">transaction.log.ept</field>
+			<field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                	<field name="message"/>
+                	<field name="create_date"/>
+					<group expand="0" string="Group By...">
+						 <filter string="Type" icon="terp-personal" context="{'group_by':'type'}"/>
+						 <filter string="Message" icon="terp-personal" context="{'group_by':'message'}"/>
+						 <filter string="Date" icon="terp-personal" context="{'group_by':'create_date'}"/>
+					</group>  					
+				</search>
+			</field>
+	</record>
+
+	<record id="action_transaction_log_ept" model="ir.actions.act_window">
+		<field name="name">Auto Invoice Workflow Mismatch Details</field>
+		<field name="res_model">transaction.log.ept</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[('mismatch_details','=',True)]</field>
+        <field name="view_id" ref="transaction_log_tree_view_ept"/>
+        <field name="help" type="html">
+             <div>
+                 <br/><br/><br/>
+                 <p>
+                   <b>No Auto Invoice Workflow Mismatch Details available right now.</b>
+                 </p>                 
+             </div>
+		</field>        
+	</record>
+
+     <menuitem id="menu_item_transaction_log_ept" parent="account.menu_finance_configuration"
+     name="Auto Invoice Workflow Log" action="action_transaction_log_ept" sequence="101"/>
+     
+  </data>
+</openerp>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="WebExReceive">
+        <iframe style="width:100%;height:800px" src=""></iframe>
+    </t>
+</templates>

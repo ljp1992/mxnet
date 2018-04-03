@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_b2b_trader_markup" model="ir.ui.view">
+            <field name="name">b2b_trader_markup_form</field>
+            <field name="model">b2b.trader.markup</field>
+            <field name="arch" type="xml">
+                <form string="产品内部分类">
+                    <sheet>
+                        <group>
+                            <field name="partner" readonly="True"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="parent_id"/>
+                                <field name="product_disclosure" invisible="True"/>
+                            </group>
+                            <group>
+                                <field name="display_name" readonly="True"/>
+                                <field name="rate"/>
+                            </group>
+                        </group>
+                        <group string="对以下经销商开放"  attrs="{'invisible':[('product_disclosure','!=','semi')]}">
+                            <field name="allow_dist" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="distributor" options="{'no_create': True}"/>
+                                </tree>
+                            </field>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_b2b_trader_markup" model="ir.ui.view">
+            <field name="name">b2b_trader_markup_tree</field>
+            <field name="model">b2b.trader.markup</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="产品内部分类">
+                    <field name="display_name"/>
+                    <field name="partner"/>
+                    <field name="rate"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_trader_markup" model="ir.ui.view">
+            <field name="name">b2b_trader_markup_search</field>
+            <field name="model">b2b.trader.markup</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="partner"/>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_trader_markup" model="ir.actions.act_window">
+            <field name="name">产品内部分类</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.trader.markup</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_trader_markup"/>
+        </record>
+
+        <!-- <record id="view_form_b2b_amazon_category" model="ir.ui.view">
+            <field name="name">b2b_amazon_category_form</field>
+            <field name="model">b2b.amazon.category</field>
+            <field name="arch" type="xml">
+                <form string="亚马逊产品分类">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="parent_id"/>
+                            </group>
+                            <group>
+                                <field name="display_name" readonly="True"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record> -->
+        <record id="view_tree_b2b_amazon_category" model="ir.ui.view">
+            <field name="name">b2b_amazon_category_tree</field>
+            <field name="model">b2b.amazon.category</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="亚马逊产品分类">
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_amazon_category" model="ir.ui.view">
+            <field name="name">b2b_amazon_category_search</field>
+            <field name="model">b2b.amazon.category</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_amazon_category" model="ir.actions.act_window">
+            <field name="name">亚马逊产品分类</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.amazon.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_amazon_category"/>
+        </record>
+
+    </data>
+</odoo>

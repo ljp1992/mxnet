@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+		<record id="amazon_delivery_carrier_form_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Delivery Carrier</field>
+			<field name="model">delivery.carrier</field>
+			<field name="type">form</field>
+            <field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+			<field name="arch" type="xml">
+				<field name="delivery_type" position="after">
+					<field name="amazon_code" required="1"/>
+				</field>
+			</field>
+		</record>
+	</data>
+</odoo>			

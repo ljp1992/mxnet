@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="active_product_listing_tree_view_ept_inherit" model="ir.ui.view">
+            <field name="name">active_product_listing_tree_view_ept_inherit</field>
+            <field name="model">active.product.listing.report.ept</field>
+            <field name="inherit_id" ref="amazon_ept_v10.active_product_listing_tree_view_ept"/>
+            <field name="arch" type="xml">
+                <!--添加字段message-->
+                <!--<xpath expr="//field[@name='name']" position="after">-->
+                    <!--<field name="progress_message"/>-->
+                <!--</xpath>-->
+                <xpath expr="//button[@name='download_report']" position="replace">
+                    <field name="state_ljp"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="active_product_list_form_view_ept_inherit" model="ir.ui.view">
+            <field name="name">active_product_list_form_view_ept_inherit</field>
+            <field name="model">active.product.listing.report.ept</field>
+            <field name="inherit_id" ref="amazon_ept_v10.active_product_list_form_view_ept"/>
+            <field name="arch" type="xml">
+                <!--隐藏原按钮-->
+                <xpath expr="//header/button[@name='request_report']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header/button[@name='get_report_request_list']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header/button[@name='get_report']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header/button[@name='download_report']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//header/button[@name='sync_products']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!--添加按钮-->
+                <xpath expr="//header/button[@name='sync_products']" position="before">
+                    <button string="获取产品数据" name="get_product_data" type="object" class="oe_highlight"/>
+                    <button string="创建/更新产品" name="create_update_product" type="object" class="oe_highlight"/>
+                    <button string="根据asin获取产品信息" name="print_product_info_by_asin" type="object" class="oe_highlight"/>
+                    <button string="根据sku获取产品信息" name="print_product_info_by_sku" type="object" class="oe_highlight"/>
+                    <button string="根据upc获取产品信息" name="print_info_by_upc" type="object" class="oe_highlight"/>
+                    <button string="获取未使用的upc" name="get_active_upc" type="object" class="oe_highlight"/>
+                    <!--<button string="cs" name="cs" type="object" class="oe_highlight"/>-->
+                </xpath>
+                <!--设置state-->
+                <xpath expr="//header/field[@name='state']" position="replace">
+                    <field name="state" invisible="1"/>
+                    <field name="state_ljp" widget="statusbar" statusbar_visible="draft,getting_product_data,
+                        getting_product_data_done,create_update_product,done" />
+                </xpath>
+                <!--添加字段message-->
+                <xpath expr="//field[@name='instance_id']" position="before">
+                    <field name="progress_message" readonly="1"/>
+                    <field name="get_data_start_time"  attrs="{'invisible':[('state_ljp', 'not in', ['getting_product_data','getting_product_data_done'])]}"/>
+                    <field name="create_update_start_time"  attrs="{'invisible':[('state_ljp', 'not in', ['create_update_product','done'])]}"/>
+                </xpath>
+                <!--添加日志信息-->
+                <xpath expr="//sheet/group" position="after">
+                    <notebook>
+                        <page string="日志">
+                            <field name="order_line" widget="one2many_list">
+                                <tree string="" editable="bottom">
+                                    <field name="type"/>
+                                    <field name="message"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+
+                <!--<xpath expr="//sheet/div" position="before">/>-->
+                    <!--<div class="oe_button_box">-->
+                        <!--<button string="查看日志" name="view_log" type="object" class="oe_stat_button" icon="fa-archive">-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</xpath>-->
+            </field>
+        </record>
+        <!--<record model="ir.actions.server" id="print_instance">-->
+            <!--<field name="name">Res Partner Server Action</field>-->
+            <!--<field name="model_id" ref="model_active_product_listing_report_ept"/>-->
+            <!--<field name="code">-->
+                <!--action = model.cs()-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</odoo>

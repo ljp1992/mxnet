@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--产品大类-->
+        <!--<record id="product_public_category_logistics" model="product.public.category">-->
+             <!--<field name="name">物流运输</field>-->
+             <!--<field name="sequence">1</field>-->
+        <!--</record>-->
+        <!--<record id="product_public_category_customs" model="product.public.category">-->
+             <!--<field name="name">报关</field>-->
+             <!--<field name="sequence">2</field>-->
+        <!--</record>-->
+        <!--<record id="product_public_category_inspection" model="product.public.category">-->
+             <!--<field name="name">报检</field>-->
+             <!--<field name="sequence">3</field>-->
+        <!--</record>-->
+        <!--<record id="product_public_category_financing" model="product.public.category">-->
+             <!--<field name="name">贸易融资</field>-->
+             <!--<field name="sequence">4</field>-->
+        <!--</record>-->
+
+    </data>
+</odoo>

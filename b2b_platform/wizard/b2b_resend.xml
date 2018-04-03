@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <!-- 导入excel form -->
+        <record id="form_b2b_resend_wizard_form" model="ir.ui.view">
+            <field name="name">b2b_resend_wizard_form</field>
+            <field name="model">b2b.sale.resend.wizard</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <div>
+                        <b>针对销售订单，选择需要补发货的产品和数量</b>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="origin" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="order_line" type="xml">
+                        <tree string="订单明细" create="false">
+                            <field name="sale_line" invisible="True"/>
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                            <field name="price_unit"/>
+                            <field name="amount_subtotal"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button string="补发" name="btn_confirm" type="object" class="btn-primary"/>
+                        or
+                        <button string="取消" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--导入excel action-->
+        <record id="action_b2b_resend_wizard_form" model="ir.actions.act_window">
+            <field name="name">b2b_resend_wizard_action</field>
+            <field name="res_model">b2b.sale.resend.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <!--<field name="view_id" ref="import_inventory_wizard_form"/>-->
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

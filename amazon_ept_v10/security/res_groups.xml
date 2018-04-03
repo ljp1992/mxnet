@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record model="ir.module.category" id="module_category_amazon">
+            <field name="name">Amazon</field>            
+            <field name="sequence">1000</field>
+        </record>
+        <record model="res.groups" id="group_amazon_user_ept">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_amazon"/>
+	        <field name="implied_ids" eval="[(4,ref('sales_team.group_sale_salesman_all_leads')),(4,ref('stock.group_tracking_lot')),(4,ref('account.group_account_invoice'))]"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>	                                
+        </record>
+        <record model="res.groups" id="group_amazon_manager_ept">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_amazon"/>
+	        <field name="implied_ids" eval="[(4,ref('amazon_ept_v10.group_amazon_user_ept')),(4,ref('stock.group_stock_manager')),(4,ref('sales_team.group_sale_manager')),(4,ref('account.group_account_user'))]"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>                        
+        </record>
+       
+        <!-- Multi - Company Rules -->
+    	<record model="ir.rule" id="amazon_seller_comp_rule">
+	        <field name="name">Amazon Seller multi-company</field>
+	        <field name="model_id" ref="model_amazon_seller_ept"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+	    </record>
+        
+    	<record model="ir.rule" id="amazon_instance_comp_rule">
+	        <field name="name">Amazon Instance multi-company</field>
+	        <field name="model_id" ref="model_amazon_instance_ept"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+	    </record>
+	    
+    	<record model="ir.rule" id="amazon_report_comp_rule">
+	        <field name="name">Amazon Reports multi-company</field>
+	        <field name="model_id" ref="model_report_request_history"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+	    </record>
+	        
+	    <record id="group_hide_order_report_menu" model="res.groups">
+	        <field name="name">Sale Order Report Hide</field>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	        <field name="category_id" ref="base.module_category_hidden"/>
+	    </record>
+
+	</data>
+</openerp>

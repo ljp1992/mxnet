@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="amazon_seller_marketplaces_form_ept" model="ir.ui.view">
+			<field name="name">Amazon Marketplace Credential</field>
+			<field name="model">amazon.marketplace.ept</field>
+			<field name="arch" type="xml">
+				<form string='Marketplace'>
+					<group>
+						<group>
+							<field name='name' />
+							<field name='seller_id' readonly="1" />
+							<field name='country_id' readonly="1" />
+							<field name='currency_id' readonly="1" />
+						</group>
+						<group>
+							<field name='market_place_id' readonly="1" />
+							<field name='amazon_domain' readonly="1" />
+							<field name='lang_id' readonly="1" />
+							<field name='is_participated' readonly="1" />
+						</group>
+					</group>
+				</form>
+			</field>
+		</record>
+		
+		
+		
+		<record id="amazon_seller_tree_view_ept" model="ir.ui.view">
+			<field name="name">Amazon seller Tree</field>
+			<field name="model">amazon.seller.ept</field>
+			<field name="arch" type="xml">
+				<tree string="Amazon Instance" create="false">
+					<field name="name" />
+					<field name="merchant_id" />
+				</tree>
+			</field>
+		</record>
+		<record id="amazon_seller_credential_form_ept" model="ir.ui.view">
+			<field name="name">Amazon Seller Credential</field>
+			<field name="model">amazon.seller.ept</field>
+			<field name="arch" type="xml">
+				<form string="Amazon Seller MWS Credential" create="false">
+					<header>
+						<button name="load_marketplace" string="Load Marketplace"
+							class="oe_highlight" type="object" groups="amazon_ept_v10.group_amazon_manager_ept" />
+					</header>
+					<sheet>
+						<div class="oe_left" style="width: 500px;">
+							<div class="oe_title" style="width: 390px;">
+								<label class="oe_edit_only" for="name" string="Name" />
+								<h1>
+									<field name="name" class="oe_inline" />
+								</h1>
+							</div>
+						</div>
+						<separator string='Amazon MWS Information' />
+						<group>
+							<group>
+								<field name="access_key" required="1" password="1" />
+								<field name="secret_key" required="1" password="1"  />
+							</group>
+							<group>
+								<field name="merchant_id" required="1" password="1" />
+								<field name="country_id" required="1" />
+								<field name="company_id" invisible="1"/>
+							</group>
+						</group>
+						<!-- <separator string='Product Advertising Account Details' />
+						<group>
+							<group>
+								<field name="pro_advt_access_key" />
+								<field name="pro_advt_associate_tag" />
+							</group>
+							<group>
+								<field name="pro_advt_scrt_access_key" />
+							</group>
+						</group> -->
+						
+						<separator string="Warehouse" />
+						<group>
+							<field name="warehouse_ids" widget="many2many_tags"
+								nolabel="1" domain="[('seller_id','=',False)]" />
+						</group>
+						
+						<separator string="General Configuration" />
+						<group>
+							<field name="create_new_product" />
+						</group>
+						
+						<notebook>
+							<page name='marketplaces' string='Marketplace' >
+								<field name="marketplace_ids" colspan="4" nolabel="1"
+									domain="[('seller_id','=',False)]">
+									<tree string='Marketplace' create="false" >
+										<field name='name' readonly="1"/>
+										<field name='market_place_id' readonly="1" />
+										<field name='is_participated' readonly="1" />
+										<field name='country_id' readonly="1" />
+										<field name='currency_id' readonly="1" />
+									</tree>
+									<form string='Marketplace'>
+										<group>
+											<group>
+												<field name='name' readonly="1" />
+												<field name='seller_id' readonly="1" />
+												<field name='country_id' readonly="1" />
+												<field name='currency_id' readonly="1" />
+											</group>
+											<group>
+												<field name='market_place_id' readonly="1" />
+												<field name='amazon_domain' readonly="1" />
+												<field name='lang_id' readonly="1" />
+												<field name='is_participated' readonly="1" />
+											</group>
+										</group>
+									</form>
+								</field>	
+							</page>
+							<page name='settlement_report_settings' string='Settlement Report Settings'>
+								<group name="transaction">
+									<field name='transaction_line_ids' colspan="4" nolabel="1">
+										<tree string='Transaction' editable='bottom'>
+											<field name='transaction_type_id' required="1"/>
+											<field name='account_id' required="1" domain="[('company_id','=',parent.company_id)]"/>
+											<field name="tax_id" domain="[('company_id','=',parent.company_id)]"/>
+										</tree>
+									</field>								
+								</group>
+							</page>
+							<page name='other_info' string='Other Info'>
+								<group name='sync_info'>
+									<group>
+										<field name="settlement_report_last_sync_on" />
+										<field name="order_last_sync_on"/>
+									</group>
+									<group>
+									</group>
+								</group>
+							</page>
+							<page name="proxy_server_info" string="Proxy Server Info" invisible="1">
+								<group name="proxy_server_info">
+									<field name="proxy_server_type"/>
+									<field name="proxy_server_url" attrs="{'required':[('proxy_server_type','!=',False)]}"/>
+									<field name="proxy_server_port" attrs="{'required':[('proxy_server_type','!=',False)]}"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_amazon_seller_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Sellers</field>
+			<field name="res_model">amazon.seller.ept</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_seller_tree_view_ept" />
+		</record>
+		
+		 
+		
+		<menuitem id="menu_amazon_seller_ept" name="Sellers"
+			parent="amazon_ept_v10.menu_configuration_ept" sequence="1"
+			action="action_amazon_seller_ept" groups="amazon_ept_v10.group_amazon_manager_ept" />
+
+	</data>
+</odoo>		

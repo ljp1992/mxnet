@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- 一级菜单 -->
+        <menuitem name="产品" id="menu_product_center" sequence="2"
+                    groups="group_qdoo_supplier_user,group_qdoo_distributor_user"/>
+
+        <menuitem name="跨境电商" id="menu_ecommerce_admin"  sequence="3"
+                    groups="group_qdoo_distributor_manager,group_qdoo_distributor_user"/>
+
+        <menuitem name="平台商户" id="menu_po" sequence="7"
+                  groups="group_qdoo_supplier_manager,group_qdoo_supplier_user,group_qdoo_supplier_warehouse,group_b2b_3pl_operator"/>
+
+        <menuitem name="仓储" id="menu_logistics_manage"  sequence="8" />
+
+        <menuitem name="账务" id="menu_account"  sequence="9"
+                  groups="group_qdoo_distributor_manager,group_qdoo_supplier_manager,group_qdoo_supplier_user"/>
+
+        <menuitem name="系统" id="menu_organization_manage"  sequence="11"
+                  groups="group_qdoo_supplier_manager,group_qdoo_distributor_manager"/>
+        <menuitem name="平台运营" id="menu_platform" sequence="13" web_icon="b2b_platform,static/src/img/icon.png"
+                  groups="group_qdoo_account_manager,group_qdoo_platform_operator"/>
+
+        <!--二级菜单 - 产品中心-->
+        <menuitem name="产品内部分类" id="menu_b2b_trader_markup" parent="menu_product_center"
+                  action="action_b2b_trader_markup" sequence="10" groups="group_qdoo_supplier_manager,group_qdoo_distributor_manager"/>
+
+        <menuitem name="产品登记" id="menu_qdoo_product_own"
+                  parent="menu_product_center" sequence="20" groups="group_qdoo_supplier_user"/>
+
+            <menuitem name="未发布产品" id="menu_qdoo_product_own_not_published" parent="menu_qdoo_product_own"
+                  action="action_qdoo_product_own_not_published" sequence="10" groups="group_qdoo_supplier_user"/>
+
+            <menuitem name="已发布产品" id="menu_qdoo_product_own_published" parent="menu_qdoo_product_own"
+                  action="action_qdoo_product_own_published" sequence="20" groups="group_qdoo_supplier_user"/>
+
+            <menuitem name="平台产品库" id="menu_qdoo_product_platform"
+                  parent="menu_product_center" action="action_qdoo_product_platform" sequence="30"/>
+
+        <menuitem name="我的产品" id="menu_qdoo_product_mine"
+          parent="menu_product_center" sequence="20" groups="group_qdoo_supplier_user"/>
+
+            <menuitem name="我的产品库" id="menu_qdoo_product_collected"
+                  parent="menu_qdoo_product_mine" action="action_qdoo_product_collected" sequence="10"
+                  groups="group_qdoo_distributor_user"/>
+
+            <menuitem name="店铺中产品列表" id="menu_qdoo_product_shop"
+                  parent="menu_qdoo_product_mine" action="action_qdoo_product_shop" sequence="40"/>
+
+            <menuitem name="产品变更" id="menu_b2b_product_modify"
+                  parent="menu_qdoo_product_mine" action="action_b2b_product_modify_distributor" sequence="50"/>
+
+        <!--三级菜单 - 跨境电商-->
+        <menuitem name="账户受权" id="menu_organization_store_manage" parent="menu_ecommerce_admin" sequence="5"/>
+
+            <!--<menuitem name="配置" id="menu_b2b_amazon_config" parent="menu_organization_store_manage"-->
+                  <!--action="action_b2b_amazon_config" sequence="1" groups="group_qdoo_distributor_manager"/>-->
+
+            <!--<menuitem name="亚马逊站点" id="menu_b2b_amazon_seller_manager" parent="menu_organization_store_manage"-->
+                  <!--action="action_b2b_amazon_seller_manager" sequence="5" groups="group_qdoo_distributor_manager"/>-->
+
+            <menuitem name="亚马逊店铺" id="menu_qdoo_organization_shop" parent="menu_organization_store_manage"
+                  action="action_b2b_organization_shop" sequence="10" groups="group_qdoo_distributor_manager"/>
+
+            <menuitem name="店铺刊登模板" id="menu_b2b_distributor_amazon_template" parent="menu_organization_store_manage"
+                  action="action_b2b_distributor_amazon_template" sequence="20"/>
+
+            <menuitem name="UPC编码" id="menu_b2b_distributor_upc" parent="menu_organization_store_manage"
+                  action="action_b2b_distributor_upc" sequence="60" groups="group_qdoo_supplier_manager,group_qdoo_distributor_manager"/>
+
+
+        <!--三级菜单 - 客户订单-->
+        <menuitem name="客户订单" id="menu_b2b_order" parent="menu_ecommerce_admin" sequence="10"/>
+
+            <menuitem name="待处理" id="menu_qdoo_so_new" parent="menu_b2b_order" action="action_qdoo_so_new" sequence="10"/>
+
+            <menuitem name="待发货" id="menu_b2b_order_his" parent="menu_b2b_order" action="action_b2b_so_his" sequence="20"/>
+
+            <menuitem name="已交付" id="menu_b2b_order_delivery" parent="menu_b2b_order" action="action_b2b_so_his_delivery" sequence="20"/>
+
+        <menuitem name="代发采购" id="menu_b2b_findgoods" parent="menu_ecommerce_admin" sequence="15"/>
+
+            <menuitem name="待发货" id="menu_qdoo_so_po" parent="menu_b2b_findgoods"
+                      action="action_qdoo_so_po" sequence="30"/>
+
+            <menuitem name="已发货" id="menu_qdoo_delivered" parent="menu_b2b_findgoods"
+                      action="action_qdoo_delivered" sequence="35"/>
+
+        <menuitem name="FBA采购" id="menu_b2b_fba_manage"
+                 parent="menu_ecommerce_admin" sequence="20"/>
+            <menuitem name="待处理" id="menu_b2b_fba_rfq_new" parent="menu_b2b_fba_manage" action="action_b2b_fba_distributor" sequence="15"/>
+            <menuitem name="待发货" id="menu_b2b_fba_rfq_wait_delivery" parent="menu_b2b_fba_manage" action="action_b2b_fba_distributor" sequence="15"/>
+            <menuitem name="已交付" id="menu_b2b_fba_rfq_delivery" parent="menu_b2b_fba_manage" action="action_b2b_fba_distributor" sequence="15"/>
+
+        <menuitem name="申诉管理" id="menu_b2b_complaint_manage" parent="menu_ecommerce_admin" sequence="25"/>
+
+            <menuitem name="申诉状态" id="menu_qdoo_so_complaint" parent="menu_b2b_complaint_manage" action="action_qdoo_so_complaint" sequence="40"/>
+
+            <menuitem name="申诉成功" id="menu_qdoo_so_complaint_accepted" parent="menu_b2b_complaint_manage" action="action_qdoo_so_complaint_accepted" sequence="50"/>
+
+            <menuitem name="申诉失败" id="menu_qdoo_so_complaint_rejected" parent="menu_b2b_complaint_manage" action="action_qdoo_so_complaint_rejected" sequence="60"/>
+
+            <menuitem name="申诉" id="menu_b2b_complaint" parent="menu_b2b_complaint_manage" action="action_b2b_complaint" sequence="70"/>
+
+        <menuitem name="日志" id="menu_b2b_amazon_log" parent="menu_ecommerce_admin" sequence="30"/>
+
+            <menuitem name="亚马逊操作任务" id="menu_b2b_amazon_process_job_log" parent="menu_b2b_amazon_log"
+                  action="action_b2b_amazon_process_job_log" sequence="10" groups="group_qdoo_distributor_user"/>
+            <menuitem name="差异详情" id="menu_b2b_amazon_mismatch_log" parent="menu_b2b_amazon_log"
+                  action="action_b2b_amazon_mismatch_log" sequence="20" groups="group_qdoo_distributor_user"/>
+            <menuitem name="Feed提交记录" id="menu_b2b_amazon_feed_submission_history" parent="menu_b2b_amazon_log"
+                  action="action_b2b_amazon_feed_submission_history" sequence="30" groups="group_qdoo_distributor_user"/>
+
+        <menuitem name="产品同步" id="menu_b2b_amazon_syc_active_product" parent="menu_ecommerce_admin"
+                  action="action_b2b_amazon_active_product_listing" sequence="40"
+                  groups="group_qdoo_distributor_user"/>
+        <!--<menuitem name="订单同步" id="menu_b2b_wizard_amazon_import_export_operations" parent="menu_ecommerce_admin"-->
+                  <!--action="action_b2b_wizard_amazon_import_export_operations"-->
+                  <!--sequence="50" groups="group_qdoo_distributor_user"/>-->
+        <!--三级菜单 - 平台商户-->
+        <menuitem name="代发订单" id="menu_b2b_po_manage" parent="menu_po" sequence="5"/>
+
+            <menuitem name="待发货" id="menu_qdoo_po_new" parent="menu_b2b_po_manage" action="action_qdoo_po" sequence="10"
+                        groups="group_qdoo_supplier_manager,group_qdoo_supplier_user"/>
+
+            <menuitem name="已发货" id="menu_qdoo_po_delivery" parent="menu_b2b_po_manage" action="action_qdoo_po" sequence="10"
+                        groups="group_qdoo_supplier_manager,group_qdoo_supplier_user"/>
+
+        <menuitem name="FBA采购" id="menu_b2b_fba_po"  parent="menu_po" sequence="16"/>
+
+            <menuitem name="待处理" id="menu_b2b_fba_rfq_supplier_new" parent="menu_b2b_fba_po"
+                      action="action_b2b_fba_supplier" sequence="15"/>
+            <menuitem name="待发货" id="menu_b2b_fba_rfq_supplier_wait" parent="menu_b2b_fba_po"
+                      action="action_b2b_fba_distributor" sequence="15"/>
+            <menuitem name="已交付" id="menu_b2b_fba_rfq_supplier_delivery" parent="menu_b2b_fba_po"
+                      action="action_b2b_fba_distributor" sequence="15"/>
+
+
+        <menuitem name="申诉受理" id="menu_b2b_complaint_supplier" parent="menu_po" action="action_b2b_complaint_supplier" sequence="80"/>
+
+
+        <!--二级菜单 - 平台运营-->
+
+        <menuitem name="商户入驻" id="menu_partner" parent="menu_platform" sequence="10"/>
+            <menuitem name="新注册商户" id="menu_partner_supplier_new" parent="menu_partner"
+                      action="act_res_partner_supplier_new" sequence="10" groups="group_qdoo_account_manager,group_qdoo_platform_operator"/>
+            <menuitem name="已审核商户" id="menu_partner_supplier" parent="menu_partner"
+                      action="act_res_partner_supplier" sequence="30" groups="group_qdoo_account_manager,group_qdoo_platform_operator"/>
+
+        <menuitem name="账务管理" id="menu_platform_account" parent="menu_platform" sequence="20"/>
+            <menuitem name="充值审核" id="menu_qdoo_payment_deposit_confirm" parent="menu_platform_account" action="action_qdoo_deposit_platform"
+                  sequence="10" groups="group_qdoo_platform_operator"/>
+
+            <menuitem name="结算单" id="menu_qdoo_purchase_settlement" parent="menu_platform_account" action="action_qdoo_settlement_platform"
+                      sequence="20" groups="group_qdoo_platform_operator"/>
+
+            <menuitem name="提现" id="menu_qdoo_supplier_withdraw_confirm" parent="menu_platform_account" action="action_qdoo_withdraw_platform"
+                      sequence="30" groups="group_qdoo_platform_operator"/>
+
+            <menuitem name="申诉返款" id="menu_b2b_complaint_platform" parent="menu_platform_account" action="action_b2b_complaint_platform"
+                      sequence="40" groups="group_qdoo_platform_operator"/>
+
+            <menuitem name="FBA补货" id="menu_b2b_fba_rfq_freight" parent="menu_platform_account" action="action_b2b_fba_platform"
+                      sequence="50" groups="group_qdoo_platform_operator"/>
+
+        <menuitem name="基础数据" id="menu_data" parent="menu_platform" sequence="50"/>
+            <menuitem name="产品分类树" id="menu_qdoo_product_category_tree" parent="menu_data" action="action_qdoo_product_category"
+                       groups="group_qdoo_account_manager,group_qdoo_platform_operator" sequence="10"/>
+
+            <menuitem name="平台费率管理" id="menu_qdoo_product_category" parent="menu_data" action="action_qdoo_product_category_form"
+                       groups="group_qdoo_account_manager,group_qdoo_platform_operator" sequence="20"/>
+
+            <menuitem name="亚马逊产品分类" id="menu_b2b_amazon_category" parent="menu_data" action="action_b2b_amazon_category"
+                       groups="group_qdoo_account_manager,group_qdoo_platform_operator" sequence="30"/>
+
+            <menuitem name="汇率管理" id="menu_b2b_exchange_rate" parent="menu_data" action="base.action_currency_form"
+                       groups="group_qdoo_account_manager,group_qdoo_platform_operator" sequence="40"/>
+
+            <menuitem name="物流公司" id="menu_b2b_courrier_platform" parent="menu_data" action="action_b2b_courrier_platform" sequence="50"/>
+
+        <!--三级菜单 - 库存管理-->
+        <menuitem name="库存管理" id="menu_stock" parent="menu_logistics_manage" sequence="30"/>
+            <menuitem name="库位管理" id="menu_qdoo_location" parent="menu_stock"
+                  action="stock.action_location_form" groups="group_qdoo_supplier_warehouse" sequence="10"/>
+
+        <menuitem name="库存管理" id="menu_b2b_stock_keeping" parent="menu_logistics_manage" sequence="20"/>
+
+            <menuitem name="实时库存" id="menu_b2b_wh_spot_qty" parent="menu_b2b_stock_keeping" action="b2b_supplier_location_open_quants" sequence="10"
+                        groups="group_qdoo_supplier_warehouse,group_qdoo_supplier_manager,group_b2b_3pl_operator"/>
+
+            <menuitem name="库存调整" id="menu_b2b_distributor_product_list" parent="menu_b2b_stock_keeping" action="action_b2b_distributor_product_list" sequence="20"
+                        groups="group_qdoo_supplier_warehouse,group_qdoo_supplier_manager,group_b2b_3pl_operator"/>
+
+            <menuitem name="调拨入库" id="menu_b2b_stock_transfer" parent="menu_b2b_stock_keeping" action="action_b2b_stock_transfer" sequence="30"
+                        groups="group_qdoo_supplier_manager,group_qdoo_supplier_warehouse"/>
+
+            <menuitem name="调拨入库" id="menu_b2b_stock_transfer_3pl" parent="menu_b2b_stock_keeping" action="action_b2b_stock_transfer_3pl" sequence="40"
+                        groups="group_b2b_3pl_operator"/>
+
+        <menuitem name="发货管理" id="menu_b2b_purchase_delviery_manage" parent="menu_logistics_manage" sequence="15"/>
+            <menuitem name="等待发货" id="menu_qdoo_wh_pending" parent="menu_b2b_purchase_delviery_manage"
+                      action="action_qdoo_wh_pending" sequence="50"
+                        groups="group_qdoo_supplier_manager,group_qdoo_supplier_warehouse"/>
+            <menuitem name="发货完成" id="menu_qdoo_wh_done" parent="menu_b2b_purchase_delviery_manage" action="action_qdoo_wh_done" sequence="60"
+                        groups="group_qdoo_supplier_manager,group_qdoo_supplier_warehouse,group_b2b_3pl_operator"/>
+            <menuitem name="等待发货" id="menu_qdoo_wh_pending_3pl" parent="menu_b2b_purchase_delviery_manage"
+                      action="action_qdoo_wh_pending_3pl" sequence="55"
+                        groups="group_b2b_3pl_operator"/>
+
+        <!--三级菜单 - 物流管理-->
+        <menuitem name="物流管理" id="menu_b2b_logstics_manage" parent="menu_logistics_manage" sequence="5"/>
+            <menuitem name="运费模板" id="menu_b2b_freight_template" parent="menu_b2b_logstics_manage"
+                  action="action_b2b_freight_template" sequence="60" groups="group_qdoo_supplier_manager,group_qdoo_distributor_manager"/>
+            <menuitem name="承运商" id="menu_b2b_carrier" parent="menu_b2b_logstics_manage" action="delivery.action_delivery_carrier_form" sequence="50"/>
+            <menuitem name="物流公司" id="menu_b2b_courrier" parent="menu_b2b_logstics_manage" action="action_b2b_courrier" sequence="70"/>
+
+        <!--三级菜单 - 账务管理-->
+        <menuitem name="账务管理" id="menu_b2b_account_doc_manage" parent="menu_account" sequence="5"/>
+
+            <menuitem name="余额" id="menu_b2b_account_overview1"  action="action_b2b_account_overview"
+                  sequence="9" parent="menu_b2b_account_doc_manage"
+                  groups="group_qdoo_distributor_manager,group_qdoo_distributor_user,group_qdoo_supplier_manager,group_qdoo_supplier_user,group_qdoo_supplier_warehouse"/>
+
+            <menuitem name="充值" id="menu_qdoo_payment_deposit" parent="menu_b2b_account_doc_manage" action="action_qdoo_deposit"
+                  sequence="10" groups="group_qdoo_distributor_manager"/>
+
+            <menuitem name="提现" id="menu_qdoo_supplier_withdraw" parent="menu_b2b_account_doc_manage" action="action_qdoo_withdraw"
+                  sequence="30" groups="group_qdoo_supplier_manager"/>
+
+            <menuitem name="结算管理" id="menu_b2b_account_settlement_manage" parent="menu_account" sequence="15"/>
+
+            <menuitem name="结算单" id="menu_qdoo_purchase_settlement_confirm" parent="menu_b2b_account_settlement_manage" action="action_qdoo_settlement"
+                  sequence="20" groups="group_qdoo_supplier_manager"/>
+
+            <menuitem name="经销商发票" id="menu_qdoo_dist_invoice" parent="menu_b2b_account_settlement_manage" action="action_qdoo_dist_invoice"
+                  sequence="50" groups="group_qdoo_distributor_manager"/>
+
+            <menuitem name="供应商发票" id="menu_qdoo_supp_invoice" parent="menu_b2b_account_settlement_manage" action="action_qdoo_supp_invoice"
+                  sequence="60" groups="group_qdoo_supplier_manager"/>
+
+        <!--三级菜单 - 系统维护-->
+
+        <menuitem name="用户管理" id="menu_organization_right_manage" parent="menu_organization_manage" sequence="5"/>
+
+        <!--<menuitem name="经销商子账号" id="menu_qdoo_organization_operator" parent="menu_organization_right_manage"-->
+                  <!--action="action_qdoo_organization_operator" sequence="20" groups="group_qdoo_distributor_manager"/>-->
+
+            <menuitem name="商户子账号" id="menu_qdoo_organization_supplier_operator" parent="menu_organization_right_manage"
+                  action="action_qdoo_organization_supplier_operator" sequence="30" groups="group_qdoo_supplier_manager"/>
+
+        <!--<menuitem name="供应商库管员" id="menu_qdoo_organization_supplier_wh" parent="menu_organization_right_manage"-->
+                  <!--action="action_qdoo_organization_supplier_wh" sequence="40" groups="group_qdoo_supplier_manager"/>-->
+
+        <menuitem name="设置" id="menu_organization_set_manage" parent="menu_organization_manage" sequence="15"/>
+
+            <menuitem name="商户资料" id="menu_b2b_supplier_portfolio" parent="menu_organization_set_manage"
+                  action="action_b2b_organization_supplier_portfolio" sequence="10" groups="group_qdoo_supplier_manager"/>
+
+            <menuitem name="汇率查询" id="menu_b2b_exchange_rate1" parent="menu_organization_set_manage" action="action_b2b_currency_form" sequence="40"/>
+
+
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_b2b_fba" model="ir.ui.view">
+            <field name="name">b2b_fba_form</field>
+            <field name="model">b2b.fba.rfq</field>
+            <field name="arch" type="xml">
+                <form string="FBA补货">
+                    <header>
+                        <button name="btn_notice" string="补货申请" states='draft' type="object" class="oe_highlight"
+                                groups="b2b_platform.group_qdoo_distributor_user,b2b_platform.group_qdoo_distributor_manager"/>
+                        <button name="btn_confirm" string="供应商确认"  type="object"
+                                attrs="{'invisible':['|',('state','!=','supplier'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user,b2b_platform.group_qdoo_supplier_manager"/>
+                        <button name="btn_reject" string="退回" type="object"
+                                attrs="{'invisible':['|',('state','!=','supplier'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user,b2b_platform.group_qdoo_supplier_manager"/>
+                        <button name="btn_freight" string="确认运费" states='freight' type="object"
+                                groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_freight_reject" string="退回" states='freight' type="object"
+                                groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_accept" string="补货确认" type="object" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','accept'),('dist_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_distributor_user,b2b_platform.group_qdoo_distributor_manager"/>
+                        <button name="btn_accept_reject" string="退回" type="object"
+                                attrs="{'invisible':['|',('state','!=','accept'),('dist_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_distributor_user,b2b_platform.group_qdoo_distributor_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,supplier,accept,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="distributor" readonly="True"/>
+                                <field name="shop_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"
+                                        domain="[('parent_id','=',distributor),('type','=','shop')]"/>
+                                <field name="supplier" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"
+                                        domain="[('supplier','=',True),('parent_id','=',False),('id','!=',distributor),('is_company','=',True)]"/>
+                                <field name="carrier_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="method" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="dest_country" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create': True}"/>
+                                <field name="freight" attrs="{'invisible':[('state','=','draft')], 'readonly':[('state','in',('accept','done','cancel'))]}"/>
+                                <field name="so_id" attrs="{'invisible':[('state','!=','done')], 'readonly':[('state','in',('done','cancel'))]}"/>
+                                <field name="dist_orders" invisible="True"/>
+                                <field name="supp_orders" invisible="True"/>
+                            </group>
+                        </group>
+                        <field name="order_line" attrs="{'readonly':[('state','not in',('draft','supplier'))]}">
+                            <tree string="订单明细" editable="bottom">
+                                <field name="shop_product" options="{'no_create': True}"
+                                       attrs="{'readonly':[('state','!=','draft')]}"
+                                       invisible = "context.get('identity') == 'supplier'"
+                                       domain="[('product_owner','=',parent.shop_id),('master_product.product_owner','=',parent.supplier)]"/>
+                                <field name="master_product"/>
+                                <field name="demand_qty" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="qty" attrs="{'readonly':[('state', '!=', 'supplier')]}"/>
+                                <field name="uom"/>
+                                <field name="dist_price_unit" invisible = "context.get('identity') == 'supplier'"/>
+                                <field name="dist_amt" total="合计" invisible = "context.get('identity') == 'supplier'"/>
+                                <field name="supp_price_unit" invisible = "context.get('identity') == 'distributor'"/>
+                                <field name="supp_amt" total="合计" invisible = "context.get('identity') == 'distributor'"/>
+                                <field name="state" invisible="True"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="note" attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_b2b_fba" model="ir.ui.view">
+            <field name="name">b2b_fba_tree</field>
+            <field name="model">b2b.fba.rfq</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="FBA补货">
+                    <field name="name"/>
+                    <field name="distributor"/>
+                    <field name="supplier"/>
+                    <field name="carrier_id"/>
+                    <field name="shop_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_fba" model="ir.ui.view">
+            <field name="name">b2b_fba_search</field>
+            <field name="model">b2b.fba.rfq</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="distributor"/>
+                    <field name="supplier"/>
+                    <field name="carrier_id"/>
+                    <field name="shop_id"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_fba_distributor" model="ir.actions.act_window">
+            <field name="name">FBA补货</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.fba.rfq</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_fba"/>
+            <field name="domain">[('dist_orders','=',True)]</field>
+            <field name="context">{'identity':'distributor'}</field>
+        </record>
+        <record id="action_b2b_fba_supplier" model="ir.actions.act_window">
+            <field name="name">FBA补货</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.fba.rfq</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_fba"/>
+            <field name="domain">[('state','!=','draft'),('supp_orders','=',True)]</field>
+            <field name="context">{'identity':'supplier'}</field>
+        </record>
+        <record id="action_b2b_fba_platform" model="ir.actions.act_window">
+            <field name="name">FBA补货</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.fba.rfq</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_fba"/>
+            <field name="domain">[('state','not in',('draft','supplier'))]</field>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+    </data>
+</odoo>

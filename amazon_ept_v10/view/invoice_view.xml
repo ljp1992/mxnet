@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record id="amazon_invoice_tree_ept" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Invoice" create="false">
+                    <field name="partner_id" groups="base.group_user" string="Customer"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="user_id"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="amount_total_signed"/>
+                    <field name="residual_signed"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record>
+
+        
+        <record id="view_account_invoice_filter_ept" model="ir.ui.view">
+            <field name="name">account.invoice.select</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+               	<filter name="group_by_partner_id" position="after">
+                	<filter name="amazon_instance_id" string="Instance" context="{'group_by':'amazon_instance_id'}"/>
+               	</filter>            	
+			</field>
+		</record>
+		<record id="action_open_invoice_tree_amazon_invoices" model="ir.actions.act_window">
+            <field name="name">Amazon Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice'),('amazon_instance_id','!=',False),('state','=','open')]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept" />
+            <field name="help" type="html">
+              <div class="oe_empty_amazon_invoice">
+                  <br/><br/><br/>
+                  <p>
+                    <b>There is no any Invoice created for any of your Amazon Sale Orders. </b>
+                  <p>
+                  </p>
+                    If your Amazon Instance's Invoice Policy is set to "Before Delivery", then invoice will be created immediately after 
+                    validation of Order.If your Amazon Instance's Invoice Policy is set to "After Delivery", then once your shipping order completed, you can make Invoice from Delivery Order. You can't create Amazon Invoice manually from here. However, you can make manually invoice from Amazon Sale Order.
+                  </p>
+                 
+              </div>
+          </field>
+        </record>
+        
+        <record id="amazon_invoice_tree_ept1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id"  ref="amazon_invoice_tree_ept"/>
+            <field name="act_window_id" ref="action_open_invoice_tree_amazon_invoices"/>
+        </record>
+
+        <record id="amazon_invoice_form_ept1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_open_invoice_tree_amazon_invoices"/>
+        </record>
+
+		<record id="action_paid_invoice_tree_amazon_invoices" model="ir.actions.act_window">
+            <field name="name">Amazon Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice'),('amazon_instance_id','!=',False),('state','=','paid')]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept" />
+            <field name="help" type="html">
+              <div class="oe_empty_amazon_invoice">
+                  <br/><br/><br/>
+                  <p>
+                    <b>There is no any Invoice created for any of your Amazon Sale Orders. </b>
+                  <p>
+                  </p>
+                    If your Amazon Instance's Invoice Policy is set to "Before Delivery", then invoice will be created immediately after 
+                    validation of Order.If your Amazon Instance's Invoice Policy is set to "After Delivery", then once your shipping order completed, you can make Invoice from Delivery Order. You can't create Amazon Invoice manually from here. However, you can make manually invoice from Amazon Sale Order.
+                  </p>
+                 
+              </div>
+          </field>
+        </record>
+
+        <record id="amazon_invoice_tree_ept2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id"  ref="amazon_invoice_tree_ept"/>
+            <field name="act_window_id" ref="action_paid_invoice_tree_amazon_invoices"/>
+        </record>
+
+        <record id="amazon_invoice_form_ept2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_paid_invoice_tree_amazon_invoices"/>
+        </record>
+
+
+		<record id="action_invoice_tree_amazon_invoices" model="ir.actions.act_window">
+            <field name="name">Amazon Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice'),('amazon_instance_id','!=',False)]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept" />
+            <field name="help" type="html">
+              <div class="oe_empty_amazon_invoice">
+                  <br/><br/><br/>
+                  <p>
+                    <b>There is no any Invoice created for any of your Amazon Sale Orders. </b>
+                  <p>
+                  </p>
+                    If your Amazon Instance's Invoice Policy is set to "Before Delivery", then invoice will be created immediately after 
+                    validation of Order.If your Amazon Instance's Invoice Policy is set to "After Delivery", then once your shipping order completed, you can make Invoice from Delivery Order. You can't create Amazon Invoice manually from here. However, you can make manually invoice from Amazon Sale Order.
+                  </p>
+              </div>
+          </field>
+        </record>        
+
+        <record id="amazon_invoice_tree_ept3" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id"  ref="amazon_invoice_tree_ept"/>
+            <field name="act_window_id" ref="action_invoice_tree_amazon_invoices"/>
+        </record>
+
+        <record id="amazon_invoice_form_ept3" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_invoice_tree_amazon_invoices"/>
+        </record>
+        
+		<record id="action_invoice_tree_amazon_refunds" model="ir.actions.act_window">
+            <field name="name">Amazon Refunds</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_refund'),('amazon_instance_id','!=',False)]</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept" />
+            <field name="help" type="html">
+              <div class="oe_empty_amazon_invoice">
+                  <br/><br/><br/>
+                  <p>
+                    <b>There is no any Invoice created for any of your Amazon Sale Orders. </b>
+                  <p>
+                  </p>
+                    If your Amazon Instance's Invoice Policy is set to "Before Delivery", then invoice will be created immediately after 
+                    validation of Order.If your Amazon Instance's Invoice Policy is set to "After Delivery", then once your shipping order completed, you can make Invoice from Delivery Order. You can't create Amazon Invoice manually from here. However, you can make manually invoice from Amazon Sale Order.
+                  </p>
+                 
+              </div>
+          </field>
+        </record>
+
+        <record id="amazon_invoice_tree_ept4" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id"  ref="amazon_invoice_tree_ept"/>
+            <field name="act_window_id" ref="action_invoice_tree_amazon_refunds"/>
+        </record>
+
+        <record id="amazon_invoice_form_ept4" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_invoice_tree_amazon_refunds"/>
+        </record>
+        
+        <record id="action_amazon_instance_invoice_ept" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept"/>
+            <field name="domain">[('amazon_instance_id','=',active_id)]</field>            
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        </record>        
+
+        <record id="action_amazon_instance_invoices_open" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept"/>
+            <field name="domain">[('type','=','out_invoice'),('amazon_instance_id','=',active_id),('state','=','open')]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        </record>
+        
+
+        <record id="action_amazon_instance_invoices_paid" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept"/>
+            <field name="domain">[('type','=','out_invoice'),('amazon_instance_id','=',active_id),('state','=','paid')]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        </record>
+        
+		<record id="action_amazon_instance_invoices_refund" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="domain">[('type','=','out_refund'),('amazon_instance_id','=',active_id)]</field>
+            <field name="view_id" ref="amazon_ept_v10.amazon_invoice_tree_ept"/>            
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        </record>        
+
+      <menuitem id="menu_item_parent_amazon_invoices_ept" name="Invoice Details"
+      parent="amazon_ept_v10.amazon_instance_menu_item" sequence="9"/>
+
+     <menuitem id="menu_item_amazon_invoice_ept" name="Invoices"
+      parent="menu_item_parent_amazon_invoices_ept" action="action_invoice_tree_amazon_invoices" sequence="5"/>
+
+	<menuitem id="menu_item_shopify_refund_ept" name="Credit Notes" parent="menu_item_parent_amazon_invoices_ept" action="action_invoice_tree_amazon_refunds" sequence="5"/>
+    </data>
+</odoo>

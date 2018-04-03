@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="amazon_transaction_type_tree_ept" model="ir.ui.view">
+			<field name="name">Amazon Transaction Type Tree</field>
+			<field name="model">amazon.transaction.type</field>
+			<field name="arch" type="xml">
+				<tree string='Transaction'>
+					<field name='name' />
+					<field name='amazon_code' />
+				</tree>
+			</field>
+		</record>
+		<record id="amazon_transaction_type_form_ept" model="ir.ui.view">
+			<field name="name">Amazon Transaction Type Form</field>
+			<field name="model">amazon.transaction.type</field>
+			<field name="arch" type="xml">
+				<form string='Transaction' version='7.0'>
+					<group>
+						<group>
+							<field name='name' required="1"/>
+						</group>
+						<group>
+							<field name='amazon_code' required="1" />
+						</group>
+					</group>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>		

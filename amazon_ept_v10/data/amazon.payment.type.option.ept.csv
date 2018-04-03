@@ -1,0 +1,7 @@
+id,name
+cash_on_delivery,cash_on_delivery
+cvs,cvs
+exclude_none,exclude_none
+exclude cod,exclude cod
+exclude cvs,exclude cvs
+exclude cod and cvs,exclude cod and cvs

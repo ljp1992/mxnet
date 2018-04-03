@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="amazon_process_job_form_view_ept_inherit" model="ir.ui.view">
+            <field name="name">amazon_process_job_form_view_ept_inherit</field>
+            <field name="model">amazon.process.log.book</field>
+            <field name="inherit_id" ref="amazon_ept_v10.amazon_process_job_form_view_ept"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='create_date']" position="after">
+                    <field name="over_time" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

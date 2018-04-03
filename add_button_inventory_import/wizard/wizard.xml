@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <!-- 导入excel form -->
+      <record id="import_inventory_wizard_form" model="ir.ui.view">
+        <field name="name">import_inventory_wizard_form</field>
+        <field name="model">import.inventory.wizard</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <div>
+                    <b>将库存调整表导出后，选择需要入库的产品，修改数量后，将需导入的产品通过EXCEL文件导入。</b>
+                </div>
+                <group>
+                    <group>
+                        <field name="data" nolabel="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="导入" name="import_excel" type="object" class="btn-primary"/>
+                    or
+                    <button string="取消" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--导入excel action-->
+      <record id="import_inventory_act" model="ir.actions.act_window">
+          <field name="name">导入库存</field>
+          <field name="res_model">import.inventory.wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <!--<field name="view_id" ref="import_inventory_wizard_form"/>-->
+          <field name="target">new</field>
+      </record>
+  </data>
+</odoo>

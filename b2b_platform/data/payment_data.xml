@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- 产品图片的存储位置系统参数: oss 或 local -->
+
+
+        <!-- 收汇系统集成 -->
+        <record id="exchange_system_url" model="ir.config_parameter">
+            <field name="key">exchange_system_url</field>
+            <field name="value">https://mh.hub360.cn</field>
+        </record>
+
+        <record id="seq_qdoo_payment_deposit" model="ir.sequence">
+            <field name="name">充值凭证</field>
+            <field name="code">qdoo.payment.deposit</field>
+            <field name="prefix">CZ</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_qdoo_purchase_settle" model="ir.sequence">
+            <field name="name">结算单</field>
+            <field name="code">qdoo.purchase.settle</field>
+            <field name="prefix">JS</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_qdoo_supplier_withdraw" model="ir.sequence">
+            <field name="name">提现单</field>
+            <field name="code">qdoo.supplier.withdraw</field>
+            <field name="prefix">TX</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_customer_complaint" model="ir.sequence">
+            <field name="name">申诉单</field>
+            <field name="code">b2b.customer.complaint</field>
+            <field name="prefix">SS</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_b2b_fba-rfq" model="ir.sequence">
+            <field name="name">FBA补货单</field>
+            <field name="code">b2b.fba.rfq</field>
+            <field name="prefix">FBA</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_b2b_system_id" model="ir.sequence">
+            <field name="name">产品系统编号</field>
+            <field name="code">b2b.system.id.seq</field>
+            <field name="prefix"></field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_b2b_courrier_code" model="ir.sequence">
+            <field name="name">物流公司编码</field>
+            <field name="code">b2b.courrier.code</field>
+            <field name="prefix">WL</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="account_journal_data_supplier" model="account.journal">
+            <field name="name">商户提现</field>
+            <field name="type">bank</field>
+            <field name="company_id" ref="base.main_company"/>
+            <!--<field name="journal_user">1</field>-->
+            <field name="code">GYS</field>
+        </record>
+
+        <record id="account_journal_data_deposit" model="account.journal">
+            <field name="name">商户充值</field>
+            <field name="type">bank</field>
+            <field name="company_id" ref="base.main_company"/>
+            <!--<field name="journal_user">1</field>-->
+            <field name="code">CZ</field>
+        </record>
+
+        <record id="default_b2b_delivery_carrier" model="product.product">
+          <field name="type">service</field>
+          <field name="list_price">0</field>
+          <field name="name">运费</field>
+          <field name="partner_id">1</field>
+        </record>
+
+        <!--<record id="b2b_supplier_as_delivery_carrier" model="delivery.carrier">-->
+            <!--<field name="name">供应商代发</field>-->
+            <!--<field name="partner_id">1</field>-->
+        <!--</record>-->
+
+    </data>
+</odoo>

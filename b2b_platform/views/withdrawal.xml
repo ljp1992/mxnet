@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_qdoo_withdraw" model="ir.ui.view">
+            <field name="name">qdoo_withdraw_form</field>
+            <field name="model">b2b.supplier.withdraw</field>
+            <field name="arch" type="xml">
+                <form string="提现" attrs="{'readonly':[('state','!=','draft')]}">
+                    <header>
+                        <button name="btn_notice" string="提现申请" states='draft' type="object" class="oe_highlight" groups="b2b_platform.group_qdoo_supplier_user"/>
+                        <button name="btn_confirm" string="确认" states='confirm' type="object" groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_reject" string="退回" states='confirm' type="object" groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_accept" string="到账确认" type="object" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','accept'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,accept,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="supplier" readonly="True"/>
+                                <field name="bank" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="account" readonly="True"/>
+                                <field name="benificiary" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="withdrawable"/>
+                                <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="supp_orders" invisible="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date" attrs="{'invisible':[('state','=','draft')],
+                                                            'readonly':[('state','!=','confirm')]}"/>
+                            </group>
+                            <group>
+                                <field name="file_name" invisible="True"/>
+                                <field name="proof" filename="file_name" attrs="{'invisible':[('state','=','draft')],
+                                                                            'readonly':[('state','!=','confirm')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note"  attrs="{'readonly':[('state','in',('done','cancel'))]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_qdoo_withdraw" model="ir.ui.view">
+            <field name="name">qdoo_withdraw_tree</field>
+            <field name="model">b2b.supplier.withdraw</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="提现">
+                    <field name="name"/>
+                    <field name="supplier"/>
+                    <field name="amount" sum="合计"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_qdoo_withdraw" model="ir.ui.view">
+            <field name="name">qdoo_withdraw_search</field>
+            <field name="model">b2b.supplier.withdraw</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date" string="日期从（含）" filter_domain="[('date', '&gt;=', self)]"/>
+                    <field name="date" string="日期至（含）" filter_domain="[('date', '&lt;=', self)]"/>
+                    <field name="supplier"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_qdoo_withdraw" model="ir.actions.act_window">
+            <field name="name">提现</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.supplier.withdraw</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_withdraw"/>
+            <!--<field name="context">{}</field>-->
+        </record>
+        <record id="action_qdoo_withdraw_platform" model="ir.actions.act_window">
+            <field name="name">提现</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.supplier.withdraw</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_withdraw"/>
+            <field name="domain">[('state','!=','draft')]</field>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+
+
+    </data>
+</odoo>

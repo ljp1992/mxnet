@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <data>	
+	<record id="amazon_base_browse_node_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Browse Node</field>
+	    <field name="model">amazon.base.browse.node.ept</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Base Browse Node" editable="top">            
+            	<field name="name" required="1"/>
+	            <field name="eco_category_code" required="1"></field>
+	            <field name="country_id" domain="[('amazon_marketplace_code','!=',False)]" required="1"></field>
+			</tree>
+		</field>
+	</record>
+	<record id="action_amazon_base_browse_node_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Base Browse Node</field>
+		<field name="res_model">amazon.base.browse.node.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_base_browse_node_tree_view_ept"/>
+   	</record>
+   	
+	 <record model="ir.ui.view" id="amazon_base_browse_node_search_view_ept">
+		<field name="name">amazon.base.browse.node.ept</field>
+		<field name="model">amazon.base.browse.node.ept</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+			<search string="Base Browse Node">
+				<field name = "name"/>
+				<field name = "eco_category_code"/>
+				<group expand="0" string="Group By...">
+					 <filter string="Instance" icon="terp-personal" context="{'group_by':'country_id'}"/>
+			    </group>
+
+			</search>
+		</field>
+	</record>
+   	
+     <!-- <menuitem id="menu_item_amazon_product_category_ept" name="Product Categories"
+      parent="amazon_ept.amazon_instance_menu_item" sequence="2"/>
+
+     <menuitem id="menu_item_amazon_base_browse_node_ept" name="Base Browse Node"
+      parent="amazon_ept.menu_item_amazon_product_category_ept" sequence="3"
+	  action="action_amazon_base_browse_node_ept"/> -->
+
+   </data>
+</odoo>

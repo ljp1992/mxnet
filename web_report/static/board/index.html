@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="public.css">
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<script src="echarts.common.min.js"></script>
+	<script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+	<div class="main">
+		<div class="main-left">
+			<div class="left-purchase">
+				<div class="title clear">
+					<span>采购待办</span>
+				</div>
+				<div class="left-flex">
+					<div class="flex-single">
+						<span>待发货：</span>
+						<strong>34</strong>
+					</div>
+					<div class="flex-single">
+						<span>待处理申诉：</span>
+						<strong>23</strong>
+					</div>
+				</div>
+			</div>
+			<div class="left-notice">
+				<div class="title clear">
+					<span>公告</span>
+					<b>更多</b>
+				</div>
+				<div class="notice-list">
+					<ul>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-20</b>
+						</li>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-19</b>
+						</li>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-18</b>
+						</li>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-17</b>
+						</li>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-16</b>
+						</li>
+						<li class="clear">
+							<span>新增payoneer收款及批量匹配零售...</span>
+							<b>2017-12-15</b>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="left-img left-ad1">
+				<img src="img/ad1.png" alt="">
+			</div>
+			<div class="left-img">
+				<img src="img/ad2.png" alt="">
+			</div>
+		</div>
+		<div class="main-center">
+			<div class="center-orders">
+				<div class="title clear">
+					<span>订单</span>
+				</div>
+				<div id="number" style="width:700px;height:200px;"></div>
+				<div id="money" style="width:700px;height:200px"></div>
+			</div>
+			<div class="center-bottom clear">
+				<div class="bottom-product l">
+					<div class="title clear">
+						<span>产品</span>
+					</div>
+					<div class="center-flex">
+						<div class="flex-single">
+							<span>未发布：</span>
+							<strong>54</strong>
+						</div>
+						<div class="flex-single">
+							<span>库存：</span>
+							<strong>5</strong>
+						</div>
+					</div>
+					<div id="product" style="width:290px;height:180px;"></div>
+				</div>
+				<div class="bottom-store r">
+					<div class="title clear">
+						<span>店铺</span>
+					</div>
+					<div class="listContainer">
+						<table class="table table-list table-hover">
+							<thead>
+								<tr>
+									<th>排名</th>
+									<th>店铺名</th>
+									<th>销售金额/元</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>No.1</td>
+									<td>爱家小店</td>
+									<td class="money">12386.00</td>
+								</tr>
+								<tr>
+									<td>No.2</td>
+									<td>petstore</td>
+									<td class="money">11254.00</td>
+								</tr>
+								<tr>
+									<td>No.3</td>
+									<td>game shop</td>
+									<td class="money">10984.00</td>
+								</tr>
+								<tr>
+									<td>No.4</td>
+									<td>mobile anywhere</td>
+									<td class="money">10386.00</td>
+								</tr>
+								<tr>
+									<td>No.5</td>
+									<td>fashon group</td>
+									<td class="money">9984.00</td>
+								</tr>
+								<tr>
+									<td>No.6</td>
+									<td>seven eleven</td>
+									<td class="money">9650.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-right">
+			<div class="right-operate">
+				<div class="title clear">
+					<span>常规操作</span>
+					<b>更多</b>
+				</div>
+				<div class="operate-list">
+					<ul>
+						<li>1、新增payoneer收款及批量匹配零售...</li>
+						<li>2、新增payoneer收款及批量匹配零售...</li>
+						<li>3、新增payoneer收款及批量匹配零售...</li>
+						<li>4、新增payoneer收款及批量匹配零售...</li>
+						<li>5、新增payoneer收款及批量匹配零售...</li>
+					</ul>
+				</div>
+			</div>
+			<div class="right-handbook">
+				<div class="title clear">
+					<span>帮助手册</span>
+					<b>更多</b>
+				</div>
+				<div class="handbook-list">
+					<ul>
+						<li>1、授权多账户会被账号关联吗？</li>
+						<li>2、如何授权并使用物流？</li>
+						<li>3、如何进行订单发货？</li>
+						<li>4、如何管理商品库存？</li>
+						<li>5、如何进行消息回复？</li>
+					</ul>
+				</div>
+			</div>
+			<div class="right-customservice">
+				<div class="title clear">
+					<span>客服</span>
+				</div>
+				<div class="qq">
+					<img src="img/QQ.png" alt="">
+				</div>
+				<div id="app" class="textarea">
+					  <p>{{ message }}</p>
+					<textarea v-model="message"></textarea>
+				</div>
+				<div class="words">留言</div>
+			</div> 
+		</div>
+	</div>
+</body>
+</html>
+<script>
+	new Vue({
+	  el: '#app',
+	  data: {
+		message: 'Hello Vue.js!'
+	  }
+	})
+	//产品
+	var myProductChart = echarts.init(document.getElementById('product'));
+	option = {
+	    title : {
+	        x:'center'
+	    },
+	    tooltip : {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    },
+	    color:['#5697ff','#ff8c6b'],
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data: ['自有','代理']
+	    },
+	    series : [
+	        {
+	            name: '访问来源',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data:[
+	                {value:820, name:'自有'},
+	                {value:546, name:'代理'}
+	            ],
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+	myProductChart.setOption(option);
+
+	//订单量
+	var myProductChart = echarts.init(document.getElementById('number'));
+option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['销量']
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            dataView: {readOnly: false},
+            magicType: {type: ['line', 'bar']},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    xAxis:  {
+        type: 'category',
+        boundaryGap: false,
+        data: ['6月','7月','8月','9月','10月','11月','12月']
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value}'
+        }
+    },
+    series: [
+        {
+            name:'销量',
+            type:'line',
+            data:[11, 11, 15, 13, 12, 13, 10],
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            },
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+        }
+    ]
+};
+
+
+	myProductChart.setOption(option);
+
+	//订单金额
+	var myProductChart = echarts.init(document.getElementById('money'));
+option = {
+    color: ['#3398DB'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : ['6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'直接访问',
+            type:'bar',
+            barWidth: '60%',
+            data:[10, 52, 200, 334, 390, 330, 220]
+        }
+    ]
+};
+
+
+	myProductChart.setOption(option);
+</script>

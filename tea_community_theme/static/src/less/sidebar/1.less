@@ -1,0 +1,114 @@
+@odoo-sidebar-width: 80px;
+@odoo-sidebar-bg: #5E6672;
+
+.o_sidebar_menu{
+  .o-flex(0, 0, @odoo-sidebar-width);
+  .o-flex-display();
+  .o-flex-flow(column, nowrap);
+  background-color: @odoo-sidebar-bg;
+
+  //background: #c49a9b; /* 一些不支持背景渐变的浏览器 */
+  //background:-moz-linear-gradient(top, #c49a9b, rgba(123, 113, 132, 0.5));
+  //background:-webkit-gradient(linear, 0 0, 0 bottom, from(#C49A9B), to(rgba(123, 113, 132, 0.5)));
+  //background:-o-linear-gradient(top, #c49a9b, rgba(123, 113, 132, 0.5));
+
+  //border-right: 1px solid #afafb6;
+  @media (max-width: @screen-sm-min) {
+    display: none;
+  }
+
+  .o_sidebar_menu_logo {
+    .o-flex(0, 0, auto);
+    text-align: center;
+    position: relative;
+    display: none;
+
+    > img {
+      margin: 14px 0;
+      display: none;
+    }
+
+    .oe_logo_edit {
+      position: absolute;
+      top: 1px;
+      width: 100%;
+      padding: 4px;
+      margin: 14px 0;
+      display: none;
+      color: #eee;
+      background: rgba(37,37,37,0.9);
+      display: none;
+    }
+    &:hover .oe_logo_edit_admin {
+      display: block;
+    }
+  }
+
+  .o_sidebar_menu_content{
+    .o-flex(1, 1, auto);
+    height:100%;
+    overflow-y: auto;
+
+    .oe_application_menu_placeholder{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      > li{
+        display: block;
+        margin: 0;
+        padding: 0;
+        border: 0px;
+        text-align: center;
+        >a {
+          display: block;
+          position: relative;
+          margin: 0;
+          border: 0px;
+          padding: 10px 15px;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 300;
+          border-top: 1px solid #697380;
+          color: #ffffff;
+          border-radius: 0 !important;
+          background-color: transparent;
+          i {
+            font-size: 32px;
+            text-shadow: none;
+            font-weight: 300;
+            text-align: center;
+          }
+          >img{
+            width: 32px;
+            height: 32px;
+          }
+          >span{
+            display:block;
+            width: auto;
+            font-size: 12px!important;
+            padding: 0px;
+            margin: 0px;
+          }
+        }
+        > .active{
+          border-top: 6px solid #31c7b2;
+          background: #31c7b2;
+          border-top-color: transparent;
+          color: #ffffff;
+        }
+        > a:hover{
+          color: #555487;
+        }
+      }
+      > li:hover > a{
+        background: #535f6d;
+        color: #ffffff;
+      }
+
+      .oe_sidebar_menu_section{
+
+      }
+    }
+  }
+}

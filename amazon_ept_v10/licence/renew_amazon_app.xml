@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+ 		<record id="renew_amazon_fba_app" model="ir.ui.view">
+            <field name="name">Renew Amazon Application</field>
+            <field name="model">amazon.config.settings</field>
+            <field name="type">form</field>
+			<field name="inherit_id" ref="amazon_ept_v10.view_amazon_config_settings"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//group[10]" position="after">
+	            	<separator string="App Licence" attrs="{'invisible': [('instance_id', '=', False)]}" class="row mt16 o_settings_container"/>
+	            	<div class="row mt16 o_settings_container" attrs="{'invisible': [('instance_id', '=', False)]}">
+	            		<div class="col-xs-12 col-md-6 o_setting_box">
+		                    <div class="o_setting_right_pane">
+		                        <div class="content-group">
+		                            <div class="mt16">
+		                                <button class="oe_highlight" string="Renew or View Licence" type="object" name='renew_app_licence'></button>
+		                            </div>
+		                        </div>
+		                    </div>
+	                     </div>
+	                </div>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

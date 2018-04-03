@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_amazon_export_products_ept" model="ir.ui.view">
+            <field name="name">Export product</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Export Product In Amazon">
+                    <footer>
+                        <button name="export_product_in_amazon" string="Export" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="view_prepare_selective_products_ept" model="ir.ui.view">
+            <field name="name">Prepare Product For Export</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Prepare Product For Export">
+                	<group>
+                		<field name="instance_id" required="1"/>
+                	</group>
+                    <footer>
+                        <button name="prepare_product" string="Prepare Products" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+    	<record id="view_import_category_ept" model="ir.ui.view">
+            <field name="name">Import Browse Node</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Browse Node">
+                    <footer>
+                        <button name="import_category" string="Import Browse Node" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_prepare_product_ept" model="ir.ui.view">
+            <field name="name">Prepare Product For Export</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Prepare Product For Export">
+                    <footer>
+                        <button name="prepare_product" string="Prepare Product For Export" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_update_image_ept" model="ir.ui.view">
+            <field name="name">Update Image In Amazon</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update Image In Amazon">
+                    <separator colspan="4" string="Update Image In Amazon" />                    
+                    <footer>
+                        <button name="update_image" string="Update Image" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_update_price_ept" model="ir.ui.view">
+            <field name="name">Update Price In Amazon</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update Price In Amazon">
+                    <separator colspan="4" string="Update Price In Amazon" />                    
+                    <footer>
+                        <button name="update_price" string="Update Price" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+         
+        <record id="view_update_stock_ept" model="ir.ui.view">
+            <field name="name">Update Stock In Amazon</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update Price In Amazon">
+                    <separator colspan="4" string="Update Stock In Amazon" />                    
+                    <footer>
+                        <button name="update_stock_ept" string="Update Stock" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="amazon_copy_product_by_instance" model="ir.ui.view">
+            <field name="name">Copy Product From One Instance To Other Instance</field>
+            <field name="model">amazon.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Copy Product">
+                	<group>
+                		<group>
+                			<field name="from_instance_id"  required="1"/>
+                		</group>
+                		<group>
+                			<field name="to_instance_id" domain="[('id','!=',from_instance_id)]" required="1"/>
+							<field name="copy_all_products"/>
+                		</group>
+                	</group>
+					<group string="Products" attrs="{'invisible': [('copy_all_products','=',True)]}">
+						<field name="amazon_product_ids" domain="[('instance_id','=',from_instance_id)]"  nolabel="1"/>
+					</group>
+                    <footer>
+                        <button name="copy_product" string="Copy Product" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+
+	    <!-- <act_window name="Copy Products By Instance" res_model="amazon.product.wizard"
+		src_model="amazon.instance.ept" view_mode="form" view_type="form"
+		target="new" multi="False" 
+		id="action_copy_product_by_instance_ept"
+		view_id="amazon_copy_product_by_instance"			
+		context="{'key':'copy_product_by_instance_amazon'}"/> -->
+
+	    <act_window name="Export Products In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.product.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_export_selective_products_ept"
+		view_id="view_amazon_export_products_ept"			
+		context="{'key':'export_selective_products_in_amazon'}"/>
+
+	    <act_window name="Export Products In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.browse.node.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_export_category_wise_products_ept"
+		view_id="view_amazon_export_products_ept"			
+		context="{'key':'export_category_wise_products_in_amazon'}"/>
+		
+	    <act_window name="Prepare Product For Export" res_model="amazon.product.wizard"
+		src_model="product.template" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_view_prepare_product_ept"
+		view_id="view_prepare_selective_products_ept"			
+		context="{'key':'prepare_selective_product_for_export'}"/>
+		
+		<act_window name="Prepare Product For Export" res_model="amazon.product.wizard"
+		src_model="product.template" view_mode="form" view_type="form"
+		target="new" multi="False" key2="client_action_multi"
+		id="action_view_prepare_product_ept"
+		view_id="view_prepare_selective_products_ept"			
+		context="{'key':'prepare_selective_product_for_export'}"/>
+
+		
+		<act_window name="Import Browse Node" res_model="amazon.product.wizard"
+		src_model="amazon.browse.node.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_import_browse_node_ept"
+		view_id="view_import_category_ept"			
+		context="{'key':'import_category',}"/>
+		
+		<act_window name="Update Image In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.product.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_update_selective_image_ept"
+		view_id="view_update_image_ept"			
+		context="{'key':'update_selective_image',}"/>	
+
+		<act_window name="Update Stock In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.product.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_update_selective_stock_ept"
+		view_id="view_update_stock_ept"			
+		context="{'key':'update_selective_stock',}"/>	
+
+		<act_window name="Update Image In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.browse.node.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_update_categ_wise_image_ept"
+		view_id="view_update_image_ept"			
+		context="{'key':'update_categ_wise_image',}"/>
+		
+		<act_window name="Update Price In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.product.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_update_selective_price_ept"
+		view_id="view_update_price_ept"			
+		context="{'key':'update_selective_price',}"/>
+		
+		<act_window name="Update Price In Amazon" res_model="amazon.product.wizard"
+		src_model="amazon.browse.node.ept" view_mode="form" view_type="form"
+		target="new" multi="True" key2="client_action_multi"
+		id="action_update_categ_wise_price_ept"
+		view_id="view_update_price_ept"			
+		context="{'key':'update_categ_wise_price',}"/>
+		
+    </data>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>	
+  
+
+	<record id="amazon_category_tree_view_ept" model="ir.ui.view">
+	    <field name="name">Amazon Category</field>
+	    <field name="model">amazon.category.ept</field>
+		<field name="arch" type="xml">
+            <tree string="Categories" create="false">
+              <field name="name"/>
+              <field name="url"/>            
+			</tree>
+		</field>
+	</record>
+	    <record model="ir.ui.view" id="amazon_category_form_view_ept">
+	        <field name="name">Amazon Category</field>
+	        <field name="model">amazon.category.ept</field>
+	        <field name="type">form</field>
+	        <field name="arch" type="xml">
+	            <form string="form_string" create="false">
+	            	<sheet>
+					<div class="oe_title" style="width: 390px;">
+						<label class="oe_edit_only" for="name" string="Product Name" />
+						<h1>
+							<field name="name" class="oe_inline" readonly="1"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="parent_id" readonly="1"/>					
+						</group>
+						<group>
+							<field name="sequence" readonly="1"/>
+						</group>				
+					</group>				
+					<group>
+						<field name="url" readonly="1"/>
+					</group>
+					<group string="Category Structure">
+						<field name="category_structure" nolabel="1"/>
+					</group>
+					</sheet>
+	            </form>
+	        </field>
+	    </record>
+	<record id="action_amazon_categ_ept" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+		<field name="res_model">amazon.category.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_category_tree_view_ept"/>
+   	</record>
+	
+     <menuitem id="menu_item_amazon_categes_ept" name="Categories"
+      parent="amazon_ept_v10.menu_item_parent_amazon_categ_ept" sequence="1"
+	  action="action_amazon_categ_ept" groups="amazon_ept_v10.group_amazon_manager_ept"/>
+
+
+</data>
+</odoo>

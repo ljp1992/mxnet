@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="amazon_report_request_history_search_view_ept"
+			model="ir.ui.view">
+			<field name="name">Amazon Report Request History Search</field>
+			<field name="model">report.request.history</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Report Request History">
+					<field name="report_request_id" />
+					<field name="report_id" />
+					<field name="report_type" invisible="1"/>
+					<field name="state" />
+					<field name="instance_id" />
+					<group expand="0" string="Group By...">
+						<filter string="Instance" context="{'group_by':'instance_id'}" />
+						<filter string="Submit Date" context="{'group_by':'state'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="amazon_report_request_history_tree_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Report Request History Tree</field>
+			<field name="model">report.request.history</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Report Request History">
+					<field name="report_request_id" />
+					<field name="report_id" />
+					<field name="requested_date" />
+					<field name="start_date" />
+					<field name="end_date" />
+					<field name="instance_id" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		<record id="amazon_report_request_history_form_view_ept"
+			model="ir.ui.view">
+			<field name="name">Amazon Report Request History Form</field>
+			<field name="model">report.request.history</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Report Request History">
+					<header>
+						<button name="get_report_request_list" string="Get Report Request List"
+						states="_SUBMITTED_,_IN_PROGRESS_"
+						class="oe_highlight"
+						type="object" />
+						<button name="get_report_list" string="Get Report List"
+							states="_DONE_"
+							attrs="{'invisible':[('report_id','!=',False)]}"
+							class="oe_highlight"
+							type="object" />
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="report_type" required="1" invisible="1"/>
+								<field name="report_request_id" readonly="1"/>
+								<field name="start_date" readonly="1"/>
+							</group>
+							<group>
+								<field name="instance_id" required="1"/>
+								<field name="report_id" readonly="1"/>
+								<field name="end_date" readonly="1"/>
+								<field name="user_id" readonly="1"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_amazon_report_request_history_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Reports</field>
+			<field name="res_model">report.request.history</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_report_request_history_tree_view_ept" />
+		</record>
+
+		<menuitem id="menu_amazon_main_report_ept" name="Reports"
+			parent="amazon_ept_v10.amazon_instance_menu_item" groups="amazon_ept_v10.group_amazon_manager_ept"
+			sequence="18" />
+
+		<menuitem id="menu_amazon_report_request_history_ept" name="Amazon Reports"
+			parent="menu_amazon_main_report_ept" action="action_amazon_report_request_history_ept" />
+	</data>
+</odoo>  

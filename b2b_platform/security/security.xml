@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+
+    <record model="ir.module.category" id="module_b2b_platform">
+        <field name="name">B2B平台权限管理</field>
+        <field name="description">u'平台端权限管理'</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="group_qdoo_platform_operator" model="res.groups">
+        <field name="name">平台运营人员</field>
+        <field name="implied_ids" eval="[
+            (4, ref('base.group_user')),
+            (4, ref('base.access_res_groups_group_erp_manager'))]"/>
+        <field name="category_id" ref="module_b2b_platform"/>
+    </record>
+    <record id="group_qdoo_account_manager" model="res.groups">
+        <field name="name">账号管理员</field>
+        <field name="implied_ids" eval="[(4, ref('b2b_platform.group_qdoo_platform_operator'))]"/>
+        <field name="category_id" ref="module_b2b_platform"/>
+    </record>
+
+    <record model="ir.module.category" id="module_b2b_distributor">
+        <field name="name">B2B经销商权限管理(已弃用，但勿删)</field>
+        <field name="description">u'经销商权限管理(已弃用，但勿删)'</field>
+        <field name="sequence">22</field>
+    </record>
+    <record id="group_qdoo_distributor_user" model="res.groups">
+        <field name="name">业务员(已弃用，但勿删)</field>
+        <!--<field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman_all_leads')),-->
+                                        <!--(4, ref('purchase.group_purchase_manager')),-->
+                                        <!--(4, ref('stock.group_stock_manager')),-->
+                                        <!--(4, ref('odoo_multi_channel_sale.group_multi_channel_user')),-->
+                                        <!--]"/>-->
+        <field name="category_id" ref="module_b2b_distributor"/>
+    </record>
+    <record id="group_qdoo_distributor_manager" model="res.groups">
+        <field name="name">经销商管理员(已弃用，但勿删)</field>
+        <!--<field name="implied_ids" eval="[(4, ref('b2b_platform.group_qdoo_distributor_user')),-->
+                                         <!--(4, ref('base.access_res_groups_group_erp_manager')),-->
+                                         <!--(4, ref('odoo_multi_channel_sale.group_multi_channel_admin'))]"/>-->
+        <field name="category_id" ref="module_b2b_distributor"/>
+    </record>
+
+    <record model="ir.module.category" id="module_b2b_supplier">
+        <field name="name">B2B商户权限管理</field>
+        <field name="description">u'商户权限管理'</field>
+        <field name="sequence">21</field>
+    </record>
+    <record id="group_qdoo_supplier_warehouse" model="res.groups">
+        <field name="name">库管</field>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_manager'))]"/>
+        <field name="category_id" ref="module_b2b_supplier"/>
+    </record>
+    <record id="group_qdoo_supplier_user" model="res.groups">
+        <field name="name">业务员</field>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_manager')),
+                                         (4, ref('sales_team.group_sale_salesman_all_leads')),
+                                         (4, ref('stock.group_stock_manager')),
+                                         (4, ref('amazon_ept_v10.group_amazon_user_ept')),
+                                         (4, ref('b2b_platform.group_qdoo_distributor_user'))]"/>
+        <field name="category_id" ref="module_b2b_supplier"/>
+    </record>
+    <record id="group_qdoo_supplier_manager" model="res.groups">
+        <field name="name">商户管理员</field>
+        <field name="implied_ids" eval="[(4, ref('b2b_platform.group_qdoo_supplier_user')),
+                                         (4, ref('b2b_platform.group_qdoo_supplier_warehouse')),
+                                         (4, ref('b2b_platform.group_qdoo_distributor_manager')),
+                                         (4, ref('amazon_ept_v10.group_amazon_manager_ept')),
+                                         (4, ref('base.access_res_groups_group_erp_manager'))]"/>
+        <field name="category_id" ref="module_b2b_supplier"/>
+    </record>
+
+    <record id="group_b2b_3pl_operator" model="res.groups">
+        <field name="name">第三方仓库库管</field>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="category_id" ref="base.module_category_warehouse_management"/>
+    </record>
+    <record id="group_b2b_3pl_operator_test" model="res.groups">
+        <field name="name">测试仓库库管</field>
+        <field name="implied_ids" eval="[(4, ref('b2b_platform.group_b2b_3pl_operator'))]"/>
+        <field name="category_id" ref="base.module_category_warehouse_management"/>
+    </record>
+
+</data>
+</openerp>

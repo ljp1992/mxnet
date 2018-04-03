@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_theme_configuration" model="ir.ui.view" >
+        <field name="name">Theme Settings</field>
+        <field name="model">base.theme.settings</field>
+        <field name="arch" type="xml">
+            <form string="Theme Settings" class="oe_form_configuration">
+                <header>
+                    <button string="Apply" type="object" name="execute" confirm="Are you sure to save it?" class="oe_highlight"/>
+                </header>
+                <separator string="Theme Settings"/>
+
+                <group string="Theme" name="info">
+                    <label for="login_theme"/>
+                    <div>
+                        <field name="login_theme"/>
+                    </div>
+
+                    <label for="sidebar_theme"/>
+                    <div>
+                        <field name="sidebar_theme"/>
+                    </div>
+
+                    <label for="switcher_theme"/>
+                    <div>
+                        <field name="switcher_theme"/>
+                    </div>
+
+                    <label for="enable_footer"/>
+                    <div>
+                        <field name="enable_footer"/>
+                    </div>
+                </group>
+            </form>
+        </field>
+
+    </record>
+
+    <record id="action_theme_settings" model="ir.actions.act_window">
+        <field name="name">Theme Settings</field>
+        <field name="res_model">base.theme.settings</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+    </record>
+
+    <menuitem
+            id="menu_theme_config"
+            name="Theme Settings"
+            parent="base.menu_administration"
+            sequence="0"
+            action="action_theme_settings"
+            groups="base.group_system"/>
+</odoo>

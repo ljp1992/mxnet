@@ -1,0 +1,464 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* tea_community_theme
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-09 18:34+0000\n"
+"PO-Revision-Date: 2017-07-10 02:36+0800\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: zh_CN\n"
+"X-Generator: Poedit 2.0.2\n"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.layout
+msgid "<span>Odoo</span>"
+msgstr "<span>Odoo</span>"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base_mobile.xml:6
+#, python-format
+msgid "Action"
+msgstr "动作"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:139
+#: code:addons/tea_community_theme/static/src/xml/base.xml:142
+#: code:addons/tea_community_theme/static/src/xml/base.xml:149
+#: code:addons/tea_community_theme/static/src/xml/base.xml:152
+#: code:addons/tea_community_theme/static/src/xml/base.xml:159
+#: code:addons/tea_community_theme/static/src/xml/base.xml:162
+#: code:addons/tea_community_theme/static/src/xml/base.xml:168
+#: code:addons/tea_community_theme/static/src/xml/base.xml:171
+#: code:addons/tea_community_theme/static/src/xml/base.xml:178
+#: code:addons/tea_community_theme/static/src/xml/base.xml:181
+#: code:addons/tea_community_theme/static/src/xml/base.xml:188
+#: code:addons/tea_community_theme/static/src/xml/base.xml:191
+#: code:addons/tea_community_theme/static/src/xml/base.xml:198
+#: code:addons/tea_community_theme/static/src/xml/base.xml:201
+#: code:addons/tea_community_theme/static/src/xml/base.xml:208
+#: code:addons/tea_community_theme/static/src/xml/base.xml:211
+#: code:addons/tea_community_theme/static/src/xml/base.xml:219
+#: code:addons/tea_community_theme/static/src/xml/base.xml:222
+#, python-format
+msgid "Alt"
+msgstr "Alt"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.view_theme_configuration
+msgid "Apply"
+msgstr "应用"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.view_theme_configuration
+msgid "Are you sure to save it?"
+msgstr "您确定保存吗?"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/js/views/form_widgets.js:91
+#, python-format
+msgid "Cancel"
+msgstr "取消"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:142
+#: code:addons/tea_community_theme/static/src/xml/base.xml:152
+#: code:addons/tea_community_theme/static/src/xml/base.xml:162
+#: code:addons/tea_community_theme/static/src/xml/base.xml:171
+#: code:addons/tea_community_theme/static/src/xml/base.xml:181
+#: code:addons/tea_community_theme/static/src/xml/base.xml:191
+#: code:addons/tea_community_theme/static/src/xml/base.xml:201
+#: code:addons/tea_community_theme/static/src/xml/base.xml:211
+#: code:addons/tea_community_theme/static/src/xml/base.xml:222
+#, python-format
+msgid "Control"
+msgstr "Control"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_create_uid
+msgid "Created by"
+msgstr "创建人"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_create_date
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form1
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form2
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form3
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form4
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form5
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form6
+msgid "Database"
+msgstr "数据库"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:129
+#: code:addons/tea_community_theme/static/src/xml/base.xml:132
+#, python-format
+msgid "Description"
+msgstr "说明"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:157
+#, python-format
+msgid "Discard a record modification ("
+msgstr "舍弃记录修改 ("
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:147
+#, python-format
+msgid "Edit a record ("
+msgstr "编辑记录（"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form1
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form2
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form3
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form4
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form5
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form6
+msgid "Email"
+msgstr "Email"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_enable_footer
+msgid "Enable Footer"
+msgstr "启用页脚"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,sidebar_theme:0
+msgid "Hide Sidebar"
+msgstr "隐藏侧边栏"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,switcher_theme:0
+msgid "Hide Switcher"
+msgstr "隐藏切换器"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_id
+msgid "ID"
+msgstr "ID"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:224
+#, python-format
+msgid "Is invalid in hidden switcher mode"
+msgstr "在隐藏切换器模式下无效"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/js/widgets/user_menu.js:19
+#, python-format
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings___last_update
+msgid "Last Modified on"
+msgstr "最后修改日"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_write_uid
+msgid "Last Updated by"
+msgstr "最后更新人"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_write_date
+msgid "Last Updated on"
+msgstr "最后更新时间"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form1
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form2
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form3
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form4
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form5
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form6
+msgid "Log in"
+msgstr "登录"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_login_theme
+msgid "Login Theme"
+msgstr "登录主题样式"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 1"
+msgstr "登录主题样式 1"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 2"
+msgstr "登录主题样式 2"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 3"
+msgstr "登录主题样式 3"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 4"
+msgstr "登录主题样式 4"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 5"
+msgstr "登录主题样式 5"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,login_theme:0
+msgid "Login Theme 6"
+msgstr "登录主题样式 6"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form1
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form2
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form3
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form4
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form5
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form6
+msgid "Login to your account"
+msgstr "登录到您的帐户"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:131
+#, python-format
+msgid "Mac"
+msgstr "Mac"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/js/views/form_view.js:83
+#: code:addons/tea_community_theme/static/src/xml/base_desktop.xml:14
+#, python-format
+msgid "More"
+msgstr "更多"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,sidebar_theme:0
+msgid "Narrow"
+msgstr "窄"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:44
+#, python-format
+msgid "No result"
+msgstr "没有结果"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/js/views/form_widgets.js:102
+#, python-format
+msgid "Odoo Enterprise"
+msgstr "Odoo 企业版"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:196
+#: code:addons/tea_community_theme/static/src/xml/base.xml:206
+#, python-format
+msgid "Open the"
+msgstr "打开"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:176
+#: code:addons/tea_community_theme/static/src/xml/base.xml:186
+#, python-format
+msgid "Open to"
+msgstr "打开"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form1
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form2
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form3
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form4
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form5
+#: model:ir.ui.view,arch_db:tea_community_theme.login_form6
+msgid "Password"
+msgstr "密码"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.layout
+msgid "Powered by"
+msgstr "技术支持"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:8
+#, python-format
+msgid "Search..."
+msgstr "搜索..."
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:118
+#, python-format
+msgid "Shortcuts"
+msgstr "快捷键"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,switcher_theme:0
+msgid "Show Switcher"
+msgstr "显示切换器"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_sidebar_theme
+msgid "Sidebar Theme"
+msgstr "侧边栏主题样式"
+
+#. module: tea_community_theme
+#: model:ir.model.fields,field_description:tea_community_theme.field_base_theme_settings_switcher_theme
+msgid "Switcher Theme"
+msgstr "切换器样式"
+
+#. module: tea_community_theme
+#: model:ir.ui.view,arch_db:tea_community_theme.view_theme_configuration
+msgid "Theme"
+msgstr "主题样式"
+
+#. module: tea_community_theme
+#: model:ir.model,name:tea_community_theme.model_theme_settings
+#: model:ir.model,name:tea_community_theme.model_web_theme_settings
+msgid "Theme Setting"
+msgstr "主题样式设置"
+
+#. module: tea_community_theme
+#: model:ir.actions.act_window,name:tea_community_theme.action_theme_settings
+#: model:ir.model,name:tea_community_theme.model_base_theme_settings
+#: model:ir.ui.menu,name:tea_community_theme.menu_theme_config
+#: model:ir.ui.view,arch_db:tea_community_theme.view_theme_configuration
+msgid "Theme Settings"
+msgstr "主题样式设置"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:217
+#, python-format
+msgid "Toggle"
+msgstr "切换"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/js/views/form_widgets.js:85
+#, python-format
+msgid "Upgrade now"
+msgstr "即刻升级"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,sidebar_theme:0
+msgid "Wide"
+msgstr "宽"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:130
+#, python-format
+msgid "Windows/Linux"
+msgstr "Windows/Linux"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:186
+#, python-format
+msgid "anban view"
+msgstr "看板视图"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:137
+#, python-format
+msgid "ave a record"
+msgstr "保存记录"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:147
+#, python-format
+msgid "dapt)"
+msgstr "适应)"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,enable_footer:0
+msgid "disable"
+msgstr "关闭"
+
+#. module: tea_community_theme
+#: selection:base.theme.settings,enable_footer:0
+msgid "enable"
+msgstr "启用"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:206
+#, python-format
+msgid "ext record"
+msgstr "下一个记录"
+
+#. module: tea_community_theme
+#: model:ir.model,name:tea_community_theme.model_ir_config_parameter
+msgid "ir.config_parameter"
+msgstr "ir.config_parameter"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:176
+#, python-format
+msgid "ist view"
+msgstr "列表视图"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:217
+#, python-format
+msgid "ome menu"
+msgstr "主菜单"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:166
+#, python-format
+msgid "reate a new record"
+msgstr "创建一个新的记录"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:196
+#, python-format
+msgid "revious record"
+msgstr "之前的纪录"
+
+#. module: tea_community_theme
+#. openerp-web
+#: code:addons/tea_community_theme/static/src/xml/base.xml:157
+#, python-format
+msgid "unk)"
+msgstr "丢弃)"

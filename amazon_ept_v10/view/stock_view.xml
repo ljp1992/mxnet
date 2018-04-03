@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//filter[@name='picking_type']" position="after">
+            		<filter string="Instance" domain="[]" context="{'group_by':'amazon_instance_id'}"/>
+            	</xpath>
+            </field>
+        </record>
+
+
+
+        <record id="view_stock_return_picking_form_ept" model="ir.ui.view">
+            <field name="name">Return lines</field>
+            <field name="model">stock.return.picking</field>
+            <field name="sequence">100</field>
+            <field name="arch" type="xml">
+                <form string="Return lines">
+                    <group string="Provide the quantities of the returned products.">
+                        <field name="move_dest_exists" invisible="1"/>
+			<div attrs="{'invisible': [('move_dest_exists', '=', False)]}" class="oe_grey" colspan="4">
+                            <p>This picking appears to be chained with another operation. Later, if you receive the goods you are returning now, make sure to <b>reverse</b> the returned picking in order to avoid logistic rules to be applied again (which would create duplicated operations)</p>
+                        </div>
+                        <field name="product_return_moves" colspan="4">
+                            <tree editable="top">
+                                <field name="product_id"/>
+                                <field name="quantity"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="create_returns" string="Return" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_tree_view_amazon_ept_new" model="ir.ui.view">
+            <field name="name">stock.picking.tree.ept</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <tree create="false" colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+            		<field name="updated_in_amazon" invisible="1"/>
+            		<field name="picking_type_code" invisible="1"/>
+            		<button name="mark_not_sent_amazon" type="object" help="Click Here To Set Picking Updated Into Amazon" icon="fa fa-level-up fa-lg" attrs="{'invisible':['|',('updated_in_amazon','=',True),('picking_type_code','!=','outgoing')]}"/>            	
+            		<button name="mark_sent_amazon" type="object" help="Click Here To Set Picking Not Updated Into Amazon" icon="fa fa-lock fa-lg" attrs="{'invisible':['|',('updated_in_amazon','=',False),('picking_type_code','!=','outgoing')]}"/>            	
+                    <field name="name"/>
+                    <field name="location_dest_id"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="min_date" invisible="1"/>
+                    <field name="origin"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id"/>
+                    <field name="state"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="picking_type_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_picking_tree_done_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="stock_tree_view_amazon_ept_new" />
+            <field name="domain">[('is_amazon_delivery_order','=','True')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+              <div class="oe_empty_amazon_picking">
+                  <br/><br/><br/>
+                  <p>
+                    There is no any Delivery Order created for any of Amazon Sale Orders. 
+                    If your Amazon Instance's Invoice Policy is set to "Before Delivery", then after Invoice being totally paid, Delivery order for Amazon will be created automatically and it will be visible over here.
+                    From here, you can't manually create delivery order for Amazon. It must be created via Sale Order.
+                  </p>
+                 
+              </div>
+          </field>	
+        </record>
+
+        <record id="amazon_action_picking_view_confirm_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_amazon_delivery_order','=','True'),('amazon_instance_id','=',active_id),('state','=','confirmed')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="view_id" ref="stock_tree_view_amazon_ept_new"/>
+        </record>
+        <record id="amazon_action_picking_view_partially_available_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_amazon_delivery_order','=','True'),('amazon_instance_id','=',active_id),('state','=','partially_available')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="view_id" ref="stock_tree_view_amazon_ept_new"/>
+        </record>
+        <record id="amazon_action_picking_view_assigned_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_amazon_delivery_order','=','True'),('amazon_instance_id','=',active_id),('state','=','assigned')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="view_id" ref="stock_tree_view_amazon_ept_new"/>
+        </record>
+        <record id="amazon_action_picking_view_done_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_amazon_delivery_order','=','True'),('amazon_instance_id','=',active_id),('state','=','done')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="view_id" ref="stock_tree_view_amazon_ept_new"/>
+        </record>
+
+        <record id="amazon_action_picking_tree_late_ept" model="ir.actions.act_window">
+            <field name="name">Late Transfers</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('is_amazon_delivery_order','=',True)]</field>
+            <field name="context">{
+                    'contact_display': 'partner_address',
+                    'search_default_late': 1,
+                    'search_default_confirmed': 1,
+            }
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+        <record id="amazon_action_picking_tree_backorder_ept" model="ir.actions.act_window">
+            <field name="name">Backorders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('is_amazon_delivery_order','=',True)]</field>
+            <field name="context">{
+                    'contact_display': 'partner_address',
+                    'search_default_backorder': 1,
+                    'search_default_confirmed': 1,
+            }
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+        
+		<record id="action_amazon_instance_picking_tree_ept" model="ir.actions.act_window">
+	        <field name="name">Amazon Delivery Orders</field>
+			<field name="res_model">stock.picking</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="view_id" ref="stock.view_picking_internal_search"/>
+			<field name="domain">[('is_amazon_delivery_order','=',True),('amazon_instance_id','=',active_id)]</field>
+		</record>        		        
+
+      <menuitem id="menu_item_parent_amazon_delivery_order_ept" name="Transfer Details"
+      parent="amazon_ept_v10.amazon_instance_menu_item" sequence="7"/>
+
+     <menuitem id="menu_item_amazon_delivery_order_ept" name="Delivery Order"
+      parent="menu_item_parent_amazon_delivery_order_ept" action="action_picking_tree_done_ept" sequence="5"/>
+
+	</data>
+</odoo>

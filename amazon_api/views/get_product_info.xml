@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="get_product_info_tree" model="ir.ui.view">
+            <field name="name">get_product_info_tree</field>
+            <field name="model">get.product.info</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="type"/>
+                    <field name="code"/>
+               </tree>
+            </field>
+        </record>
+        <record id="get_product_info_form" model="ir.ui.view">
+            <field name="name">get_product_info_form</field>
+            <field name="model">get.product.info</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button type="object" name="query_code" string="获取产品信息" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="instance_id" required="1"/>
+                                <field name="type" required="1"/>
+                                <field name="code" required="1"/>
+                            </group>
+                        </group>
+                        <group string="返回结果">
+                            <field name="result" nolabel="1"/>
+                        </group>
+                    </sheet>
+               </form>
+            </field>
+        </record>
+
+        <record id="get_product_info_act" model="ir.actions.act_window">
+         	<field name="name">获取产品信息</field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">get.product.info</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="获取产品信息" id="get_product_info_menu" parent="amazon_ept_v10.menu_amazon_main_report_ept"
+                  action="get_product_info_act" sequence="1"/>
+    </data>
+</odoo>
+

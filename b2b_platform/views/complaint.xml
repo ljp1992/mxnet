@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_b2b_complaint" model="ir.ui.view">
+            <field name="name">b2b_complaint_form</field>
+            <field name="model">b2b.customer.complaint</field>
+            <field name="arch" type="xml">
+                <form string="申诉" attrs="{'readonly':[('state','!=','draft')]}">
+                    <header>
+                        <button name="btn_notice" string="提交申诉单" states='draft' type="object" class="oe_highlight" groups="b2b_platform.group_qdoo_distributor_user"/>
+                        <button name="btn_confirm" string="供应商确认" type="object"
+                                attrs="{'invisible':['|',('state','!=','confirm'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user"/>
+                        <button name="btn_confirm_2_draft" string="退回" type="object"
+                                attrs="{'invisible':['|',('state','!=','confirm'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user"/>
+                        <button name="btn_reject" string="拒绝" type="object"
+                                attrs="{'invisible':['|',('state','!=','confirm'),('supp_orders','=',False)]}"
+                                groups="b2b_platform.group_qdoo_supplier_user"/>
+                        <button name="btn_accept" string="平台返款" states='accept' type="object" class="oe_highlight" groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_accept_2_confirm" string="退回" states='accept' type="object" groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,accept,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="applicant" readonly="True"/>
+                                <field name="supplier" options="{'no_create': True}" attrs="{'readonly':[('state','!=','draft')]}"
+                                                domain="[('parent_id','=',False),('is_company','=',True),('supplier','=',True)]"/>
+                                <field name="request_amt" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="confirm_amt"  attrs="{'invisible':[('state','=','draft')], 'readonly':[('state','!=','confirm')]}"/>
+                                <field name="supp_orders" invisible="True"/>
+                            </group>
+                            <group>
+                                <field name="date" readonly="True"/>
+                                <field name="sale_order" options="{'no_create': True}" domain="[('partner_id','=',applicant)]"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="purchase_order" options="{'no_create': True}" domain="[('partner_id','=',applicant)]"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="picking_order" options="{'no_create': True}" domain="[('partner_id','=',applicant)]"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="complaint" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="feedback" attrs="{'invisible':[('state','=','draft')], 'readonly':[('state','!=','confirm')]}"/>
+                        </group>
+                        <group>
+                            <field name="note" attrs="{'invisible':[('state','in',('draft','confirm'))], 'readonly':[('state','!=','accept')]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_b2b_complaint" model="ir.ui.view">
+            <field name="name">b2b_complaint_tree</field>
+            <field name="model">b2b.customer.complaint</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="申诉">
+                    <field name="name"/>
+                    <field name="applicant"/>
+                    <field name="sale_order"/>
+                    <field name="purchase_order"/>
+                    <field name="picking_order"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_complaint" model="ir.ui.view">
+            <field name="name">b2b_complaint_search</field>
+            <field name="model">b2b.customer.complaint</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="applicant"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_b2b_complaint_platform" model="ir.actions.act_window">
+            <field name="name">申诉</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.customer.complaint</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_complaint"/>
+            <field name="domain">[('state','not in',('draft','confirm'))]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_b2b_complaint_supplier" model="ir.actions.act_window">
+            <field name="name">申诉</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.customer.complaint</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_complaint"/>
+            <field name="domain">[('state','!=','draft')]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_b2b_complaint" model="ir.actions.act_window">
+            <field name="name">申诉</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.customer.complaint</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_complaint"/>
+            <field name="domain"></field>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+    </data>
+</odoo>

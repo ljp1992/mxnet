@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="qdoo_product_template_inherit" model="ir.ui.view">
+            <field name="name">qdoo.product.template.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//h1" position="replace">
+                </xpath>
+                <xpath expr="//div[@name='options']" position="before">
+                    <h4><field name="name" widget="text" style="background:white" placeholder="产品名称" readonly="context.get('collection_mark') == 'collected'"/></h4>
+                </xpath>
+                <xpath expr="//div[@name='options']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='general_information']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="replace">
+                </xpath>
+                <xpath expr="//page[@name='general_information']" position="before">
+                    <page string="基础">
+                        <field name="product_owner" invisible="True"/>
+                        <field name="modify_state" invisible="True"/>
+                        <field name="platform_published" invisible="True"/>
+                        <field name="user_is_product_owner" invisible="True"/>
+                        <field name="collected_mark"  invisible="True"/>
+                        <field name="to_collect_mark"  invisible="True"/>
+                        <field name="shop_collected" invisible="True"/>
+                        <field name="b2b_type" invisible="1"/>
+                        <field name="platform_published" invisible="1"/>
+                        <group>
+                            <group>
+                                <field name="categ_id" string="平台分类" options="{'no_create':True}"
+                                       attrs="{'readonly':[('b2b_type','!=','supplier')]}"/>
+                                <field name="trader_categ_id" string="内部分类"
+                                       attrs="{'invisible':[('b2b_type','=','supplier')],
+                                               'readonly':[('b2b_type','=','shop')]}"/>
+                            </group>
+                            <group>
+                                <field name="cost_price" attrs="{'invisible':['|',('platform_published','=',True),
+                                    ('b2b_type','!=','supplier')]}"/>
+                                <field name="platform_price" attrs="{'invisible':['|',('b2b_type','!=','supplier'),
+                                    ('platform_published','=',False)]}"/>
+                                <field name="seller_price" attrs="{'invisible':[('b2b_type','!=','seller')]}"/>
+                                <field name="shop_price" attrs="{'invisible':[('b2b_type','!=','shop')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="deal_days"/>
+                                <field name="prod_source" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="pack_weight" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="pack_method" readonly="context.get('collection_mark') == 'collected'"/>
+                            </group>
+                            <group>
+                                <field name="material" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="has_battery" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="cp_violation" widget="many2many_tags" string="侵权平台" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="target_users" readonly="context.get('collection_mark') == 'collected'"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//field[@name='purchase_method']" position="after">
+                    <field name="master_product" invisible="True"/>
+                    <field name="to_collect_mark" invisible="True"/>
+                </xpath>
+                <xpath expr="//page[@name='notes']" position="after">
+                    <page string="报关" name="customs">
+                        <group>
+                            <group>
+                                <field name="hs_code" readonly="context.get('collection_mark') == 'collected'"/>
+                                <field name="customs_unit_price" readonly="context.get('collection_mark') == 'collected'"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="declaration_chinese" readonly="context.get('collection_mark') == 'collected'"/>
+                        </group>
+                        <group>
+                            <field name="declaration_english" readonly="context.get('collection_mark') == 'collected'"/>
+                        </group>
+                    </page>
+                    <page string="产品描述" name="description">
+                        <group string="语言选项">
+                            <group>
+                                <field name="product_chinese"/>
+                                <field name="product_english"/>
+                                <field name="product_german"/>
+                                <field name="product_french"/>
+                            </group>
+                            <group>
+                                <field name="product_spanish"/>
+                                <field name="product_italian"/>
+                                <field name="product_japanese"/>
+                            </group>
+                        </group>
+                        <group name="chinese_description">
+                            <label string="中文内容" attrs="{'invisible':[('product_chinese','=',False)]}"/>
+                            <group>
+                                <field name="product_title" nolabel="1" placeholder="请填写产品的中文标题"
+                                       attrs="{'invisible':[('product_chinese','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword" nolabel="1" placeholder="请填写产品的中文关键词"
+                                   attrs="{'invisible':[('product_chinese','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing" nolabel="1" placeholder="请填写产品的中文重点说明'"
+                                   attrs="{'invisible':[('product_chinese','=',False)]}"/>
+                            <field name="product_description" nolabel="1" placeholder="请填写产品的中文详细描述"
+                                   attrs="{'invisible':[('product_chinese','=',False)]}"/>
+                        </group>
+                        <group name="english_description">
+                            <label string="英文内容" attrs="{'invisible':[('product_english','=',False)]}"/>
+                            <group>
+                                <field name="product_title_english" nolabel="1" placeholder="请填写产品的英文标题"
+                                        attrs="{'invisible':[('product_english','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_english" nolabel="1" placeholder="请填写产品的英文关键词"
+                                        attrs="{'invisible':[('product_english','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_english" nolabel="1" placeholder="请填写产品的英文重点说明'"
+                                        attrs="{'invisible':[('product_english','=',False)]}"/>
+                            <field name="product_description_english" nolabel="1" placeholder="请填写产品的英文详细描述"
+                                        attrs="{'invisible':[('product_english','=',False)]}"/>
+                        </group>
+                        <group name="german_description">
+                            <label string="德文内容" attrs="{'invisible':[('product_german','=',False)]}"/>
+                            <group>
+                                <field name="product_title_german" nolabel="1" placeholder="请填写产品的德文标题"
+                                        attrs="{'invisible':[('product_german','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_german" nolabel="1" placeholder="请填写产品的德文关键词"
+                                        attrs="{'invisible':[('product_german','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_german" nolabel="1" placeholder="请填写产品的德文重点说明'"
+                                        attrs="{'invisible':[('product_german','=',False)]}"/>
+                            <field name="product_description_german" nolabel="1" placeholder="请填写产品的德文详细描述"
+                                        attrs="{'invisible':[('product_german','=',False)]}"/>
+                        </group>
+                        <group name="french_description">
+                            <label string="法文内容" attrs="{'invisible':[('product_french','=',False)]}"/>
+                            <group>
+                                <field name="product_title_french" nolabel="1" placeholder="请填写产品的法文标题"
+                                        attrs="{'invisible':[('product_french','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_french" nolabel="1" placeholder="请填写产品的法文关键词"
+                                        attrs="{'invisible':[('product_french','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_french" nolabel="1" placeholder="请填写产品的法文重点说明'"
+                                        attrs="{'invisible':[('product_french','=',False)]}"/>
+                            <field name="product_description_french" nolabel="1" placeholder="请填写产品的法文详细描述"
+                                        attrs="{'invisible':[('product_french','=',False)]}"/>
+                        </group>
+                        <group name="spanish_description">
+                            <label string="西班牙文内容" attrs="{'invisible':[('product_spanish','=',False)]}"/>
+                            <group>
+                                <field name="product_title_spanish" nolabel="1" placeholder="请填写产品的西班牙文标题"
+                                        attrs="{'invisible':[('product_spanish','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_spanish" nolabel="1" placeholder="请填写产品的西班牙文关键词"
+                                        attrs="{'invisible':[('product_spanish','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_spanish" nolabel="1" placeholder="请填写产品的西班牙文重点说明'"
+                                        attrs="{'invisible':[('product_spanish','=',False)]}"/>
+                            <field name="product_description_spanish" nolabel="1" placeholder="请填写产品的西班牙文详细描述"
+                                        attrs="{'invisible':[('product_spanish','=',False)]}"/>
+                        </group>
+                        <group name="italian_description">
+                            <label string="意大利文内容" attrs="{'invisible':[('product_italian','=',False)]}"/>
+                            <group>
+                                <field name="product_title_italian" nolabel="1" placeholder="请填写产品的意大利文标题"
+                                        attrs="{'invisible':[('product_italian','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_italian" nolabel="1" placeholder="请填写产品的意大利文关键词"
+                                        attrs="{'invisible':[('product_italian','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_italian" nolabel="1" placeholder="请填写产品的意大利文重点说明'"
+                                        attrs="{'invisible':[('product_italian','=',False)]}"/>
+                            <field name="product_description_italian" nolabel="1" placeholder="请填写产品的意大利文详细描述"
+                                        attrs="{'invisible':[('product_italian','=',False)]}"/>
+                        </group>
+                        <group name="japanese_description">
+                            <label string="日文内容" attrs="{'invisible':[('product_japanese','=',False)]}"/>
+                            <group>
+                                <field name="product_title_japanese" nolabel="1" placeholder="请填写产品的日文标题"
+                                        attrs="{'invisible':[('product_japanese','=',False)]}"/>
+                            </group>
+                            <group>
+                            <field name="product_keyword_japanese" nolabel="1" placeholder="请填写产品的日文关键词"
+                                        attrs="{'invisible':[('product_japanese','=',False)]}"/>
+                            </group>
+                            <field name="product_briefing_japanese" nolabel="1" placeholder="请填写产品的日文重点说明'"
+                                        attrs="{'invisible':[('product_japanese','=',False)]}"/>
+                            <field name="product_description_japanese" nolabel="1" placeholder="请填写产品的日文详细描述"
+                                        attrs="{'invisible':[('product_japanese','=',False)]}"/>
+                        </group>
+                    </page>
+                    <page string="店铺参数" name="shop_param" attrs="{'invisible':[('b2b_type','!=','shop')]}">
+                        <group>
+                            <group>
+                                <field name="manufacture_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="product_brand_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="keywords"/>
+                        </group>
+                        <group>
+                            <field name="declaration"/>
+                        </group>
+                        <group>
+                            <field name="key_points"/>
+                        </group>
+                    </page>
+                    <page string="运费" name="freight">
+                        <group name="freight">
+                            <field name="freight_template_id" readonly="context.get('collection_mark') == 'collected'"/>
+                            <!--<field name="cny_freight"/>-->
+                        </group>
+                        <field name="freight_line" nolabel="True" readonly="context.get('collection_mark') == 'collected'">
+                            <tree editable="bottom">
+                                <field name="country_id"/>
+                                <field name="cny_amount"/>
+                                <!--<field name="foreigh_currency"/>-->
+                                <!--<field name="foreign_amount"/>-->
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="产品变更" name="modification" invisible="context.get('show_sync') != 'distributor'">
+                        <!--<group string="亚马逊数据同步状态">-->
+                        <group>
+                            <group>
+                                <field name="product_status" readonly="True"/>
+                                <field name="product_mod_time" readonly="True"/>
+                                <field name="product_up_time" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="price_update" readonly="True"/>
+                                <field name="price_mod_time" readonly="True"/>
+                                <field name="price_up_time" readonly="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="stock_update" readonly="True"/>
+                                <field name="stock_mod_time" readonly="True"/>
+                                <field name="stock_up_time" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="image_update" readonly="True"/>
+                                <field name="image_mod_time" readonly="True"/>
+                                <field name="image_up_time" readonly="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="relation_update" readonly="True"/>
+                                <field name="relation_mod_time" readonly="True"/>
+                                <field name="relation_up_time" readonly="True"/>
+                                <field name="shop_mod_list" invisible="True"/>
+                            </group>
+                        </group>
+                        <!--</group>-->
+                    </page>
+                    <!--<page string="产品变更" name="modification">-->
+                        <!--<group>-->
+                            <!--<group>-->
+                                <!--<field name="modify_state" readonly="True"/>-->
+                                <!--<field name="prod_mod_state" readonly="True"/>-->
+                                <!--<field name="variant_mod_state" readonly="True"/>-->
+                            <!--</group>-->
+                            <!--<group>-->
+                                <!--<field name="image_mod_state" readonly="True"/>-->
+                                <!--<field name="stock_mod_state" readonly="True"/>-->
+                            <!--</group>-->
+                        <!--</group>-->
+                    <!--</page>-->
+                </xpath>
+                <!--<xpath expr="//field[@name='sale_ok']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//field[@name='purchase_ok']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//label[1]" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//label[2]" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <xpath expr="//field[@name='uom_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='uom_po_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='purchase_method']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='sales']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='notes']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="b2b_view_template_property_form_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_template_property_form_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[1]" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//page[2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_account_view_template_property_form_inherit" model="ir.ui.view">
+            <field name="name">b2b_account_view_template_property_form_inherit_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="account.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='invoicing']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_product_template_only_form_inherit" model="ir.ui.view">
+            <field name="name">qdoo.product_template_only_form_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='%(stock.action_view_change_product_quantity)d']" position="after">
+                    <field name="b2b_type" invisible="1"/>
+                    <button name="%(product.product_variant_action)d" string="产品变体" type="action"/>
+                    <button name="button_publish" string="发布到平台" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', '|', ('user_is_product_owner','!=',True), ('platform_published','=',True), ('master_product','!=',False)]}"/>
+                    <button name="button_cancel_publish" string="从平台下架" type="object"
+                            attrs="{'invisible':['|', '|', ('user_is_product_owner','=',True), ('platform_published','=',False), ('master_product','=',False)]}"/>
+                    <button name="button_collect_product" string="收录该产品" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', '|',('collected_mark','=',True), ('master_product','!=',False), ('platform_published','=',False)]}"/>
+                    <button name="button_shop_collect_product" string="收录到店铺" type="object" class="oe_highlight"
+                            attrs="{'invisible':True}"/>
+                    <button name="button_operator_collect_product" string="收录到店铺" type="object" class="oe_highlight"
+                            attrs="{'invisible':[('to_collect_mark','=',False)]}"/>
+                    <button name="view_upload_log" string="查看上传记录" type="object" class="oe_highlight"
+                            attrs="{'invisible':[('b2b_type','!=','shop')]}"/>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.action_view_change_product_quantity)d']" position="attributes">
+                    <attribute name="groups">b2b_platform.group_qdoo_supplier_warehouse</attribute>
+                </xpath>
+                <xpath expr="//page[@name='variants']" position="attributes">
+                    <attribute name="string">变体</attribute>
+                </xpath>
+                <xpath expr="//field[@name='attribute_line_ids']" position="replace">
+                    <field name="attribute_line_ids" widget="one2many_list" context="{'show_attribute': False}" readonly="context.get('collection_mark') == 'collected'">
+                        <tree string="Variants" editable="bottom">
+                            <field name="attribute_id" domain="['|',('amazon_categ_id','=',parent.amazon_categ_id),
+                                ('amazon_categ_id','=',parent.child_categ_id)]"/>
+                            <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                        </tree>
+                    </field>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.act_make_procurement)d']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='description']" position="after">
+					<page string="产品图片">
+						<field name="images" context="{'default_name': name}" readonly="context.get('collection_mark') == 'collected'">
+							<tree editable="bottom" create="false">
+								<field name="sequence" widget="handle"/>
+								<field name="image" widget="image" height="64"/>
+							</tree>
+						</field>
+                   </page>
+				</xpath>
+            </field>
+        </record>
+
+        <record id="b2b_product_template_form_view_inherit" model="ir.ui.view">
+            <field name="name">b2b_product_template_form_view.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='%(product.product_attribute_value_action)d']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_product_template_hs_code_inherit" model="ir.ui.view">
+            <field name="name">b2b_product_template_hs_code_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="delivery.product_template_hs_code"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='hs_code']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_product_template_tree_view_inherit" model="ir.ui.view">
+            <field name="name">qdoo.product.template.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='list_price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="product_owner"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="replace">
+                    <field name="categ_id" string="平台分类"/>
+                    <field name="trader_categ_id" string="内部分类"/>
+                    <field name="collected_mark"/>
+                    <field name="overall_avail_qty"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_product_tree_view_ljp" model="ir.ui.view">
+            <field name="name">product_product_tree_view_ljp</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lst_price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_product_template_search_view_inherit" model="ir.ui.view">
+            <field name="name">b2b_product_template_search_view_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="system_id" string="系统编号" filter_domain="[('system_id','ilike',self)]"/>
+                    <field name="default_code" string="sku 编号"  filter_domain="[('default_code','ilike',self)]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_product_template_kanban_view_inherit" model="ir.ui.view">
+            <field name="name">product_template_kanban_view_view_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lst_price']" position="replace">
+                    <field name="list_price" widget="monetary"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_product_category_inherit" model="ir.ui.view">
+            <field name="name">qdoo.product.category.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="commission_rate"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_product_image_inherit" model="ir.ui.view">
+            <field name="name">qdoo.product.image.inherit</field>
+            <field name="model">product.image</field>
+            <field name="inherit_id" ref="website_sale.view_product_image_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_tmpl_id']" position="after">
+                    <!--<field name="product_prod_ids" widget="many2many_tags"/>-->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_product_product_view_form_easy_inherit_stock_inherit" model="ir.ui.view">
+            <field name="name">b2b_product_product_view_form_easy_inherit_stock.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_product_view_form_easy_inherit_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[2]" position="attributes">
+                <!--<xpath expr="//button[@name='%(stock.act_make_procurement)d']" position="attributes">-->
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="b2b_product_form_view_procurement_button_inherit" model="ir.ui.view">
+            <field name="name">b2b_product_form_view_procurement_button.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//button[2]" position="attributes">-->
+                <!--<xpath expr="//header/button[position()=2]" position="attributes">-->
+                <xpath expr="//button[@name='%(stock.act_make_procurement)d']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_stock_product_tree_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_stock_product_tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.view_stock_product_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='qty_available']" position="replace">
+                    <field name="system_avail_qty"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_operator_collect_product" model="ir.ui.view">
+            <field name="name">operator.collect.product.view.form</field>
+            <field name="model">b2b.operator.collect.product</field>
+            <field name="arch" type="xml">
+                <form string="发布产品到店铺">
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <field name="order_line">
+                        <tree editable="bottom" create="false">
+                            <field name="shop"/>
+                            <field name="select"/>
+                            <field name="collect"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="btn_collect" string="收录" type="object" class="btn-primary"/>
+                        <!--<button string="取消" class="btn-default" special="cancel" />-->
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="platform_products_publish_collect" model="ir.actions.server">
+            <field name="name">供应商批量发布产品</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                action = model.btn_publish_multi_collect(cr, uid, context.get('active_ids'))
+            </field>
+        </record>
+        <record id="ir_values_publish_multi_collect" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">供应商批量发布产品</field>
+            <field name="value" eval="'ir.actions.server,%d'%platform_products_publish_collect"/>
+        </record>
+
+        <record id="platform_products_distributor_collect" model="ir.actions.server">
+            <field name="name">经销商批量收录产品</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                action = model.btn_dist_multi_collect(cr, uid, context.get('active_ids'))
+            </field>
+        </record>
+        <record id="ir_values_distributor_multi_collect" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">经销商批量收录平台产品</field>
+            <field name="value" eval="'ir.actions.server,%d'%platform_products_distributor_collect"/>
+        </record>
+
+        <record id="distributor_products_shop_collect" model="ir.actions.server">
+            <field name="name">经销商产品发布到店铺</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                action = model.btn_shop_multi_collect(cr, uid, context.get('active_ids'))
+            </field>
+        </record>
+        <record id="ir_values_shop_multi_collect" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">经销商产品发布到店铺</field>
+            <field name="value" eval="'ir.actions.server,%d'%distributor_products_shop_collect"/>
+        </record>
+
+        <record id="distributor_products_assign_categ" model="ir.actions.server">
+            <field name="name">经销商指定产品内部分类</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                action = model.btn_dist_multi_assign_categ(cr, uid, context.get('active_ids'))
+            </field>
+        </record>
+        <record id="ir_values_distributor_products_assign_categ" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">经销商指定产品内部分类</field>
+            <field name="value" eval="'ir.actions.server,%d'%distributor_products_assign_categ"/>
+        </record>
+
+        <record id="shop_products_upload_amazon" model="ir.actions.server">
+            <field name="name">上传产品、图片、价格和库存</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                model.upload_product_all_data()
+            </field>
+        </record>
+        <record id="ir_values_shop_products_upload_amazon" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">店铺产品批量更新到亚马逊</field>
+            <field name="value" eval="'ir.actions.server,%d'%shop_products_upload_amazon"/>
+        </record>
+
+        <record id="view_form_b2b_distributor_amazon_template" model="ir.ui.view">
+            <field name="name">b2b_distributor_amazon_template_form</field>
+            <field name="model">b2b.distributor.amazon.template</field>
+            <field name="arch" type="xml">
+                <form string="店铺刊登模板">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                                <field name="partner" readonly="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="browse_node_id" options="{'no_create':True}"/>
+                                <field name="amazon_categ_id" string="模板" options="{'no_create':True}"/>
+                            </group>
+                            <group>
+                                <field name="product_brand_id" options="{'no_create':True}"/>
+                                <field name="manufacture_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="prefix"/>
+                                <field name="suffix"/>
+                                <field name="keywords"/>
+                            </group>
+                            <group>
+                                <field name="declaration"/>
+                                <field name="key_points"/>
+                                <field name="prefix_description"/>
+                                <field name="suffix_description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_b2b_distributor_amazon_template" model="ir.actions.act_window">
+            <field name="name">店铺刊登模板</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.distributor.amazon.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="domain">[('shop_mod_list','=',1)]</field>-->
+            <!--<field name="context">{'create': False, 'collection_mark':'collected','active_test':False}</field>-->
+        </record>
+
+        <record id="view_form_b2b_shop_product_convert" model="ir.ui.view">
+            <field name="name">b2b_shop_product_convert_form</field>
+            <field name="model">b2b.shop.collect.convert</field>
+            <field name="arch" type="xml">
+                <form string="店铺产品转化">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="shop_id" options="{'no_create':True}"/>
+                            </group>
+                            <group>
+                                <field name="template_id" string="刊登模板" required="1" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="country_id" invisible="1"/>
+                                <field name="browse_node_id" domain="[('country_id','=',country_id)]"
+                                       options="{'no_create':True}" required="1"/>
+                                <field name="amazon_categ_id" string="模板" required="1"
+                                       options="{'no_create':True}"/>
+                            </group>
+                            <group>
+                                <field name="product_brand_id" required="True" options="{'no_create':True}"/>
+                                <field name="manufacture_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="prefix"/>
+                                <field name="suffix"/>
+                                <field name="keywords"/>
+                            </group>
+                            <group>
+                                <field name="declaration"/>
+                                <field name="key_points"/>
+                                <field name="prefix_description"/>
+                                <field name="suffix_description"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="btn_collect" string="收录" type="object" class="btn-primary"/>
+                            <button string="取消" class="btn-default" special="cancel" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_form_b2b_dist_assign_categ" model="ir.ui.view">
+            <field name="name">b2b_dist_assign_categ_form</field>
+            <field name="model">b2b.dist.assign.categ</field>
+            <field name="arch" type="xml">
+                <form string="指定产品的内部分类">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="trader_categ_id" string="分类"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="btn_assign" string="更新" type="object" class="btn-primary"/>
+                            <!--<button string="取消" class="btn-default" special="cancel" />-->
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tree_b2b_product_modification" model="ir.ui.view">
+            <field name="name">b2b_product_modification_tree</field>
+            <field name="model">product.product</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <tree string="店铺产品变更">
+                    <field name="owner"/>
+                    <field name="default_code"/>
+                    <field name="name"/>
+                    <field name="attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant"/>
+                    <field name="lst_price"/>
+                    <field name="stock_level"/>
+                    <!--<field name="price" invisible="not context.get('pricelist',False)"/>-->
+                    <!--<field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="product.group_uom"/>-->
+                    <!--<field name="barcode"/>-->
+                    <field name="product_status" string="产品"/>
+                    <field name="price_update" string="价格"/>
+                    <field name="image_update" string="图片"/>
+                    <field name="stock_update" string="库存"/>
+                    <field name="relation_update" string="关系"/>
+                    <field name="product_tmpl_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_product_modification" model="ir.ui.view">
+            <field name="name">b2b_product_modification_search</field>
+            <field name="model">product.product</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter name="prod_mod" string="产品变更" domain="[('product_status','=', True)]"/>
+                    <filter name="price_mod" string="价格变更" domain="[('price_update','=', True)]"/>
+                    <filter name="image_mod" string="图片变更" domain="[('image_update','=', True)]"/>
+                    <filter name="stock_mod" string="库存变更" domain="[('stock_update','=', True)]"/>
+                    <filter name="variant_mod" string="关系变更" domain="[('relation_update','=', True)]"/>
+                </search>
+            </field>
+        </record>
+        <!--<record id="action_b2b_product_modification" model="ir.actions.act_window">-->
+            <!--<field name="name">店铺产品变更</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">product.product</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">tree,form</field>-->
+            <!--<field name="search_view_id" ref="search_b2b_product_modification"/>-->
+            <!--&lt;!&ndash;<field name="domain">['|','|','|','|',('prod_mod_state','=', True),('modify_state','=', True),&ndash;&gt;-->
+                                    <!--&lt;!&ndash;('image_mod_state','=', True),('stock_mod_state','=', True),&ndash;&gt;-->
+                                    <!--&lt;!&ndash;('variant_mod_state','=', True)]</field>&ndash;&gt;-->
+            <!--<field name="context">{'create': False}</field>-->
+        <!--</record>-->
+        <record id="action_b2b_product_modify_new" model="ir.actions.act_window">
+            <field name="name">店铺产品变更管理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('shop_mod_list','=',1)]</field>
+            <field name="context">{'create': False, 'collection_mark':'collected','active_test':False}</field>
+        </record>
+        <record id="action_b2b_product_modification_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+ 		    <field name="view_id" ref="view_tree_b2b_product_modification"/>
+ 		    <field name="act_window_id" ref="action_b2b_product_modify_new"/>
+        </record>
+        <record id="action_b2b_product_modification_form_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+ 		    <field name="view_id" ref="b2b_product_variant_easy_edit_view_inherit_view"/>
+ 		    <field name="act_window_id" ref="action_b2b_product_modify_new"/>
+        </record>
+
+        <record id="view_tree_b2b_product_modification_dist" model="ir.ui.view">
+            <field name="name">b2b_product_modification_dist_tree</field>
+            <field name="model">product.template</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <tree string="经销商产品变更">
+                    <field name="product_owner"/>
+                    <field name="system_id"/>
+                    <field name="trader_categ_id" string="内部分类"/>
+                    <field name="name"/>
+                    <field name="product_status" string="产品"/>
+                    <field name="price_update" string="价格"/>
+                    <field name="image_update" string="图片"/>
+                    <field name="stock_update" string="库存"/>
+                    <field name="relation_update" string="关系"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_product_modification_dist" model="ir.ui.view">
+            <field name="name">b2b_product_modification_dist_search</field>
+            <field name="model">product.template</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter name="prod_mod" string="产品变更" domain="[('product_status','=', True)]"/>
+                    <filter name="price_mod" string="价格变更" domain="[('price_update','=', True)]"/>
+                    <filter name="image_mod" string="图片变更" domain="[('image_update','=', True)]"/>
+                    <filter name="stock_mod" string="库存变更" domain="[('stock_update','=', True)]"/>
+                    <filter name="variant_mod" string="关系变更" domain="[('relation_update','=', True)]"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_product_modify_distributor" model="ir.actions.act_window">
+            <field name="name">经销商产品变更管理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_b2b_product_modification_dist"/>
+            <field name="domain">[('shop_mod_list','=',1)]</field>
+            <field name="context">{
+                'create': False,
+                'collection_mark':'collected',
+                'active_test':False,
+                'show_sync':'distributor',
+                'menu_name': '产品变更'}
+            </field>
+        </record>
+        <record id="action_b2b_product_modification_dist_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+ 		    <field name="view_id" ref="view_tree_b2b_product_modification_dist"/>
+ 		    <field name="act_window_id" ref="action_b2b_product_modify_distributor"/>
+        </record>
+        <record id="action_b2b_product_modification_form_dist_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+ 		    <field name="view_id" ref="product.product_template_only_form_view"/>
+ 		    <field name="act_window_id" ref="action_b2b_product_modify_distributor"/>
+        </record>
+
+        <record id="view_tree_b2b_distributor_product_list" model="ir.ui.view">
+            <field name="name">b2b_distributor_product_list_tree</field>
+            <field name="model">product.product</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <tree string="产品清单">
+                    <field name="id" string="ID"/>
+                    <field name="default_code"/>
+                    <field name="name"/>
+                    <field name="attribute_value_ids" widget="many2many_tags"/>
+                    <field name="owner" string="所有者"/>
+                    <field name="adjust_qty"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_b2b_distributor_product_list" model="ir.ui.view">
+            <field name="name">b2b_distributor_product_list_search</field>
+            <field name="model">product.product</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="default_code"/>
+                    <field name="owner"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_b2b_distributor_product_list" model="ir.actions.act_window">
+            <field name="name">产品清单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_b2b_distributor_product_list"/>
+            <field name="search_view_id" ref="search_b2b_distributor_product_list"/>
+            <field name="domain">[('my_products','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+
+    </data>
+</odoo>

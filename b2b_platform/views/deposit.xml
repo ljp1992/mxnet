@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_form_qdoo_deposit" model="ir.ui.view">
+            <field name="name">qdoo_deposit_form</field>
+            <field name="model">b2b.payment.deposit</field>
+            <field name="arch" type="xml">
+                <form string="充值" attrs="{'readonly':[('state','!=','draft')]}">
+                    <header>
+                        <button name="btn_notice" string="付款通知" states='draft' type="object" class="oe_highlight"
+                                        groups="b2b_platform.group_qdoo_distributor_manager"/>
+                        <button name="btn_done" string="确认" states='notice' type="object"
+                                        groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <button name="btn_cancel" string="取消" states='notice' type="object"
+                                        groups="b2b_platform.group_qdoo_platform_operator"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,notice,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="applicant" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="deposit_avail_amt" readonly="True"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="bank" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="account_journal_id" domain="[('bank_id','=',bank)]" context="{'customize_name':True}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="file_name" invisible="True"/>
+                                <field name="proof" filename="file_name" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note" attrs="{'readonly':[('state','not in',('draft','notice'))]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tree_qdoo_deposit" model="ir.ui.view">
+            <field name="name">qdoo_deposit_tree</field>
+            <field name="model">b2b.payment.deposit</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="充值">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="applicant"/>
+                    <field name="bank"/>
+                    <field name="amount" sum="合计"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="search_qdoo_deposit" model="ir.ui.view">
+            <field name="name">qdoo_deposit_search</field>
+            <field name="model">b2b.payment.deposit</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date" string="日期从（含）" filter_domain="[('date', '&gt;=', self)]"/>
+                    <field name="date" string="日期至（含）" filter_domain="[('date', '&lt;=', self)]"/>
+                    <field name="applicant"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_qdoo_deposit" model="ir.actions.act_window">
+            <field name="name">充值</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.payment.deposit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_deposit"/>
+            <field name="domain">[]</field>
+            <!--<field name="context">{}</field>-->
+        </record>
+        <record id="action_qdoo_deposit_platform" model="ir.actions.act_window">
+            <field name="name">充值审核</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">b2b.payment.deposit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="search_qdoo_deposit"/>
+            <field name="domain">[('state','!=','draft')]</field>
+            <!--<field name="context">{}</field>-->
+        </record>
+
+
+
+    </data>
+</odoo>

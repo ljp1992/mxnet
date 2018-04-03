@@ -1,0 +1,5 @@
+# -*- encoding: utf-8 -*-
+
+my_url = '''
+http://mws.amazonservices.com/FulfillmentOutboundShipment/2010-10-01?AWSAccessKeyId=AKIAICI2QBFVUDSSTXOA&Action=CreateFulfillmentOrder&DestinationAddress.City=ANTIOCH&DestinationAddress.CountryCode=US&DestinationAddress.Line1=2103%20W%2010TH%20ST%20STE%20C&DestinationAddress.StateOrProvinceCode=CA&DestinationAddress.name=JAC&DisplayableOrderComment=DisplayableOrderComment%20ljp&DisplayableOrderDateTime=2018-01-30&DisplayableOrderId=111-8146550-9829021&Items.member.1.Quantity=1&Items.member.1.SellerFulfillmentOrderItemId=24048027080882&Items.member.1.SellerSKU=18012826DAAG-002&SellerFulfillmentOrderId=111-8146550-9829021&SellerId=A2YUAAEMOGAIQV&ShippingSpeedCategory=Standard&SignatureMethod=HmacSHA256&SignatureVersion=2&Timestamp=2018-01-30T13%3A35%3A43Z&Version=2010-10-01&Signature=FNwOLmPqCsK7oA0i3GVM%2BGEl0hn7vh2cN4PdVoYPH5E%3D
+'''

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="browse_node_wizard" model="ir.ui.view">
+            <field name="name">browse_node_data_wizard</field>
+            <field name="model">browse.node.wizard</field>
+            <field name="arch" type="xml">
+				<form string="">
+					<div>点击【开始】按钮，系统将会后台执行该操作，请耐心等待！</div>
+                    <footer>
+                        <button name="get_product_data" string="开始" type="object" class="oe_highlight"/>
+                        <button string="取消" class="oe_highlight" special="cancel"/>
+                    </footer>
+				</form>
+			</field>
+        </record>
+    </data>
+</odoo>
+

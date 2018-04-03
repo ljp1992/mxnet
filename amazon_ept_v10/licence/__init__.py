@@ -1,0 +1,1 @@
+import amazon_config_settings

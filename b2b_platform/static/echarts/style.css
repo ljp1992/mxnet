@@ -1,0 +1,70 @@
+.main {
+	width:1349px;
+	height:768px;
+	background:#f3f6f9;
+}
+.main .main-top {
+	width:1349px;
+	height:378px;
+}
+.main .main-top .main-top1 {
+	width:356px;
+	height:378px;
+	background:#fff;
+	margin:10px;
+}
+.main .main-top .main-top1 .title,
+.main .main-top .main-top2 .title,
+.main .main-top .main-top3 .title,
+.main .main-bottom .main-bottom1 .title,
+.main .main-bottom .main-bottom2 .title,
+.main .main-bottom .main-bottom3 .title {
+	border-left:2px solid #6caff7;
+	padding-left:12px;
+	font-size:14px;
+	color:#333;
+	font-weight:700;
+	margin:16px 0 16px 10px;
+}
+.main .main-top .main-top2,
+.main .main-top .main-top3 {
+	width:476px;
+	height:378px;
+	background:#fff;
+	margin:10px 10px 10px 0;
+}
+.main .main-bottom {
+	width:1349px;
+	height:378px;
+}
+.main .main-bottom .main-bottom1 {
+	width:356px;
+	height:360px;
+	background:#fff;
+	margin:0 10px 10px 10px;
+}
+.main .main-bottom .main-bottom2,
+.main .main-bottom .main-bottom3 {
+	width:476px;
+	height:360px;
+	background:#fff;
+	margin:0 10px 10px 0;
+}
+.listContainer {
+	padding:0 20px;
+}
+.listContainer table th {
+	background:#f6f8fa;
+}
+.listContainer table th,
+.listContainer table td {
+	text-align: center;
+}
+.listContainer table td.number {
+	color:#6caff7;
+	text-decoration: underline;
+}
+.dataContainer table th,
+.dataContainer table td {
+	line-height:1;
+}

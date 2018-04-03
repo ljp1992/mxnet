@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_workflow_process_user,auto_invoice_workflow_ept_payment_sale_workflow_process_user,model_sale_workflow_process_ept,sales_team.group_sale_salesman,1,0,0,0
+access_sale_workflow_process_manager,auto_invoice_workflow_ept_payment_sale_workflow_process_manager,model_sale_workflow_process_ept,sales_team.group_sale_manager,1,1,1,1
+access_ept_app_key_data,ept_app_key_data,model_ept_app_key_data,,1,1,1,1
+access_transaction_log_ept,transaction_log_ept,model_transaction_log_ept,base.user_root,1,1,1,1

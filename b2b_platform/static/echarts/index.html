@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="public.css">
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<script src="echarts.common.min.js"></script>
+</head>
+<body>
+	<div class="main">
+		<div class="main-top clear">
+			<div class="main-top1 l">
+				<div class="title">销售数据-金额</div>
+				<div class="listContainer dataContainer">
+					<table class="table table-list table-hover table-bordered">
+						<thead>
+							<tr>
+								<th><span></span></th>
+								<th>美元</th>
+								<th>欧元</th>
+								<th>英镑</th>
+								<th>日币</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>新订单</td>
+								<td>144.3</td>
+								<td>23.6</td>
+								<td>16.99</td>
+								<td>4568</td>
+							</tr>
+							<tr>
+								<td>本月</td>
+								<td>2345.32</td>
+								<td>367.5</td>
+								<td>248.08</td>
+								<td>57384</td>
+							</tr>
+							<tr>
+								<td>上月</td>
+								<td>4500.8</td>
+								<td>564.8</td>
+								<td>381.3</td>
+								<td>360563</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="title">销售数据-订单</div>
+				<div class="listContainer dataContainer">
+					<table class="table table-list table-hover table-bordered">
+						<thead>
+							<tr>
+								<th><span></span></th>
+								<th>北美</th>
+								<th>欧洲</th>
+								<th>日本</th>
+								<th>澳大利亚</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>新订单</td>
+								<td>13</td>
+								<td>8</td>
+								<td>1</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>本月</td>
+								<td>157</td>
+								<td>75</td>
+								<td>17</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>上月</td>
+								<td>264</td>
+								<td>154</td>
+								<td>34</td>
+								<td>0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="main-top2 l">
+				<div class="title">销售趋势-金额</div>
+				<div id="money" style="width:460px;height:320px;"></div>
+			</div>
+			<div class="main-top3 r">
+				<div class="title">FBA销售趋势-订单数</div>
+				<div id="order" style="width:460px;height:320px;"></div>
+			</div>
+		</div>
+		<div class="main-bottom">
+			<div class="main-bottom1 l">
+				<div class="title">业务员工作看板</div>
+				<div class="listContainer">
+					<table class="table table-list table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>事项</th>
+								<th>数量</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>订单未处理</td>
+								<td class="number">5</td>
+							</tr>
+							<tr>
+								<td>订单未发货</td>
+								<td class="number">7</td>
+							</tr>
+							<tr>
+								<td>邮件未回复</td>
+								<td class="number">3</td>
+							</tr>
+							<tr>
+								<td>FBA库存预警</td>
+								<td class="number">2</td>
+							</tr>
+							<tr>
+								<td>申诉处理中</td>
+								<td class="number">0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="main-bottom2 l">
+				<div class="title">关键产品指标</div>
+				<div id="product" style="width:460px;height:320px;"></div>
+			</div>
+			<div class="main-bottom3 r">
+				<div class="title">销售区域比例</div>
+				<div id="area" style="width:460px;height:320px;"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+	// 销售趋势-金额
+		var myMoneyChart = echarts.init(document.getElementById('money'));
+		var colors = ['#5793f3', '#d14a61', '#675bba'];
+		option = {
+			tooltip : {
+				trigger: 'axis',
+	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	        }
+	    },
+	    legend: {
+	    	data:['北美','欧洲','日本']
+	    },
+	    grid: {
+	    	left: '3%',
+	    	right: '4%',
+	    	bottom: '3%',
+	    	containLabel: true
+	    },
+	    xAxis : [
+	    {
+	    	type : 'category',
+	    	data : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
+	    }
+	    ],
+	    yAxis : [
+	    {
+	    	type : 'value',
+	    	name : '金额',
+	    	min: 0,
+            max: 3000
+	    }
+	    ],
+	    series : [
+	    {
+	    	name:'北美',
+	    	type:'bar',
+	    	data:[1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800, 1800,1800, 1800, 1800, 1800],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#73e1ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#73e1ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    },
+	    {
+	    	name:'欧洲',
+	    	type:'bar',
+	    	stack: '广告',
+	    	data:[1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#73a9ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#73a9ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    },
+	    {
+	    	name:'日本',
+	    	type:'bar',
+	    	data:[800, 800, 800, 800, 800, 800, 800, 800, 800, 800, 800, 800, 800, 800, 800],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#b873ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#b873ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    }
+	    ]
+	};
+	myMoneyChart.setOption(option);
+
+	//FBA销售趋势-订单数
+	var myOrderChart = echarts.init(document.getElementById('order'));
+		option = {
+			tooltip : {
+				trigger: 'axis',
+	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	        }
+	    },
+	    legend: {
+	    	data:['北美','欧洲','日本']
+	    },
+	    grid: {
+	    	left: '3%',
+	    	right: '4%',
+	    	bottom: '3%',
+	    	containLabel: true
+	    },
+	    xAxis : [
+	    {
+	    	type : 'category',
+	    	data : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
+	    }
+	    ],
+	    yAxis : [
+	    {
+	    	type : 'value',
+	    	name : '订单数',
+	    	min: 0,
+            max: 30
+	    }
+	    ],
+	    series : [
+	    {
+	    	name:'北美',
+	    	type:'bar',
+	    	data:[18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#73e1ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#73e1ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    },
+	    {
+	    	name:'欧洲',
+	    	type:'bar',
+	    	stack: '广告',
+	    	data:[13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#73a9ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#73a9ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    },
+	    {
+	    	name:'日本',
+	    	type:'bar',
+	    	data:[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+	    	itemStyle : {  
+	    		normal : {  
+                    color:'#b873ff',  //圈圈的颜色
+                    lineStyle:{  
+                        color:'#b873ff'  //线的颜色
+                    }  
+                }  
+            },  
+	    }
+	    ]
+	};
+	myOrderChart.setOption(option);
+
+	//关键产品指标
+	var myProductChart = echarts.init(document.getElementById('product'));
+	option = {
+	    title : {
+	        x:'center'
+	    },
+	    tooltip : {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    },
+	    color:['#717acb','#50ceff','#8dd06b','#ffb760','#fc7257','#9a9792'],
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data: ['TUNN0704','1437068','WAY003','BAABAIY','1378218','其他']
+	    },
+	    series : [
+	        {
+	            name: '访问来源',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data:[
+	                {value:288, name:'TUNN0704'},
+	                {value:240, name:'1437068'},
+	                {value:192, name:'WAY003'},
+	                {value:96, name:'BAABAIY'},
+	                {value:90, name:'1378218'},
+	                {value:260, name:'其他'}
+	            ],
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+	myProductChart.setOption(option);
+
+	//销售区域比例
+	var myAreaChart = echarts.init(document.getElementById('area'));
+	option = {
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'right',
+	        data:['美国','加拿大','墨西哥','日本','英国','德国','法国','西班牙','意大利']
+	    },
+	    color:['#717acb','#ffb760','#50ceff','#717acb','#50ceff','#8dd06b','#fc7257','#9a9792','#717acb','#50ceff','#ff9999'],
+	    series: [
+	        {
+	            name:'访问来源',
+	            type:'pie',
+	            selectedMode: 'single',
+	            radius: [0, '30%'],
+
+	            label: {
+	                normal: {
+	                    position: 'inner'
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    show: false
+	                }
+	            },
+	            data:[
+	                {value:300, name:'北美'},
+	                {value:150, name:'日本'},
+	                {value:550, name:'欧洲'}
+	            ]
+	        },
+	        {
+	            name:'访问来源',
+	            type:'pie',
+	            radius: ['40%', '55%'],
+	            label: {
+	                normal: {
+	                    formatter: '{b}',
+	                    backgroundColor: '#eee',
+	                    borderColor: '#aaa',
+	                    borderWidth: 1,
+	                    borderRadius: 4,
+	                    // shadowBlur:3,
+	                    // shadowOffsetX: 2,
+	                    // shadowOffsetY: 2,
+	                    // shadowColor: '#999',
+	                    // padding: [0, 7],
+	                    rich: {
+	                        a: {
+	                            color: '#999',
+	                            lineHeight: 22,
+	                            align: 'center'
+	                        },
+	                        // abg: {
+	                        //     backgroundColor: '#333',
+	                        //     width: '100%',
+	                        //     align: 'right',
+	                        //     height: 22,
+	                        //     borderRadius: [4, 4, 0, 0]
+	                        // },
+	                        hr: {
+	                            borderColor: '#aaa',
+	                            width: '100%',
+	                            borderWidth: 0.5,
+	                            height: 0
+	                        },
+	                        b: {
+	                            fontSize: 16,
+	                            lineHeight: 33
+	                        },
+	                        per: {
+	                            color: '#eee',
+	                            backgroundColor: '#334455',
+	                            padding: [2, 4],
+	                            borderRadius: 2
+	                        }
+	                    }
+	                }
+	            },
+	            data:[
+	                {value:100, name:'美国'},
+	                {value:100, name:'加拿大'},
+	                {value:100, name:'墨西哥'},
+	                {value:150, name:'日本'},
+	                {value:110, name:'英国'},
+	                {value:110, name:'法国'},
+	                {value:110, name:'德国'},
+	                {value:110, name:'西班牙'},
+	                {value:110, name:'意大利'},
+	            ]
+	        }
+	    ]
+	};
+	myAreaChart.setOption(option);
+</script>

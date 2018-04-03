@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+down_sync_product_line_id,down_sync_product_line_name,model_down_sync_product_line,b2b_platform.group_qdoo_supplier_manager,1,1,1,1
+sync_browse_node_id,sync_browse_node_name,model_sync_browse_node,b2b_platform.group_qdoo_supplier_manager,1,1,1,1
+ir_sequence_id,ir_sequence_name,model_ir_sequence,amazon_ept_v10.group_amazon_user_ept,1,1,1,1
+
+amazon_seller_id,amazon_seller_name,model_amazon_seller_ept,b2b_platform.group_qdoo_supplier_user,1,1,1,1

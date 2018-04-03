@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="view_form_b2b_shop_product_convert_inherit" model="ir.ui.view">-->
+            <!--<field name="name">view_form_b2b_shop_product_convert_inherit</field>-->
+            <!--<field name="model">b2b.shop.collect.convert</field>-->
+            <!--<field name="inherit_id" ref="b2b_platform.view_form_b2b_shop_product_convert"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//field[@name='amazon_categ_id']" position="attributes">-->
+                    <!--<attribute name="context">{'form_view_ref':'amazon_api.amazon_category_form_view'}</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//field[@name='child_categ_id']" position="attributes">-->
+                    <!--<attribute name="context">{'form_view_ref':'amazon_api.amazon_category_form_view'}</attribute>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</odoo>
+

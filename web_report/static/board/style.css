@@ -1,0 +1,201 @@
+.main {
+	width:1349px;
+	height:732px;
+	background:#f3f6f9;
+	padding:10px;
+	display:flex;
+}
+.main .main-left {
+	width:340px;
+}
+.main-left .left-purchase {
+	width:100%;
+	height: 126px;
+	background:#fff;
+	margin-bottom:10px;
+	padding:10px 10px 0 0;
+}
+.left-purchase .left-flex {
+	display:flex;
+	margin-top:20px;
+}
+.left-purchase .left-flex .flex-single {
+	flex:1;
+	font-size:14px;
+	text-align:center;
+}
+.left-purchase .left-flex .flex-single span {
+	line-height:22px;
+}
+.left-purchase .left-flex .flex-single strong {
+	color:#5697ff;
+	text-decoration: underline;
+	font-size:22px;
+}
+.main-left .left-purchase .title span,
+.main-left .left-notice .title span,
+.main-center .center-orders .title span,
+.main-center .bottom-product .title span,
+.main-center .bottom-store .title span,
+.main-right .right-operate span,
+.main-right .right-handbook span,
+.main-right .right-customservice span {
+	float:left;
+	font-size:16px;
+	font-weight:700;
+	border-left:2px solid #5697ff;
+	padding-left:10px;
+}
+.main-left .left-notice {
+	width:100%;
+	height:250px;
+	background:#fff;
+	padding:10px 10px 0 0;
+}
+.main-left .left-notice .title b,
+.main-right .right-operate .title b,
+.main-right .right-handbook .title b {
+	float:right;
+	font-size:14px;
+	color:#999;
+	font-weight:200;
+}
+.main-left .left-notice .notice-list ul li {
+	line-height:34px;
+}
+.main-left .left-notice .notice-list ul li span {
+	float:left;
+	color:#333;
+	padding-left:16px;
+}
+.main-left .left-notice .notice-list ul li b {
+	float:right;
+	color:#999;
+	font-weight:200;
+}
+.main-left .left-img {
+	width:100%;
+	height:153px;
+}
+.main-left .left-img img {
+	width:100%;
+	height:100%;
+}
+.main-left .left-ad1 {
+	margin:10px 0;
+}
+.main .main-center {
+	width:700px;
+	margin:0 10px;
+}
+.main-center .center-bottom {
+	width:100%;
+	margin-top:10px;
+}
+.main-center .bottom-product {
+	width:300px;
+	height:264px;
+	background:#fff;
+	margin-right:10px;
+	padding-top:10px;
+}
+.main-center .bottom-store {
+	width:390px;
+	height:264px;
+	background:#fff;
+	padding-top:10px;
+}
+.main-center .bottom-store .listContainer {
+	padding:5px 10px;
+}
+.main-center .bottom-store .listContainer table {
+	border:1px solid #e5e5e5;
+}
+.main-center .bottom-store .listContainer table tr th {
+	background:#f3f5f8;
+	text-align:center;
+}
+.main-center .bottom-store .listContainer table tr td {
+	text-align:center;
+}
+.main-center .bottom-store .listContainer table tr td.money {
+	color:#ff5656;
+}
+.main-center .center-orders {
+	width:100%;
+	height:438px;
+	background:#fff;
+	padding-top:10px;
+}
+.main-center .center-flex {
+	display:flex;
+	margin:10px 0;
+}
+.main-center .center-flex .flex-single {
+	flex:1;
+	text-align:center;
+}
+.main-center .center-flex .flex-single strong {
+	color:#5697ff;
+	font-size:22px;
+	text-decoration:underline;
+}
+.main .main-right {
+	flex:1;
+}
+.main-right .right-operate {
+	width:100%;
+	height:229px;
+	background:#fff;
+	padding:10px 10px 0 0;
+}
+.right-operate .operate-list,
+.right-handbook .handbook-list {
+	margin-top:10px;
+}
+.right-operate .operate-list ul li,
+.right-handbook .handbook-list ul li {
+	padding-left:10px;
+	line-height:34px;
+}
+.main-right .right-handbook {
+	width:100%;
+	height:229px;
+	background:#fff;
+	padding:10px 10px 0 0;
+	margin:10px 0;
+}
+.main-right .right-customservice {
+	width:100%;
+	height:234px;
+	background:#fff;
+	padding:10px 10px 0 0;
+}
+.main-right .right-customservice .qq {
+	width:120px;
+	height:32px;
+	margin:12px auto;
+}
+.main-right .right-customservice .qq img {
+	width:100%;
+	height:100%;
+}
+.main-right .right-customservice .textarea {
+	padding-left:10px;
+	width:259px;
+	height:100px;
+}
+.main-right .right-customservice .textarea textarea {
+	width:100%;
+	height:100px;
+}
+.main-right .right-customservice .words {
+	width:70px;
+	height:26px;
+	line-height:26px;
+	color:#fff;
+	text-align: center;
+	background:#5697ff;
+	font-size:14px;
+	margin:10px auto;
+}

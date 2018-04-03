@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="amazon_feed_submission_history_search_view_ept"
+			model="ir.ui.view">
+			<field name="name">Amazon Feed Submission History Search</field>
+			<field name="model">feed.submission.history</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Feed Submission History">
+					<field name="feed_result_id" />
+					<field name="feed_submit_date" />
+					<field name="feed_result_date" />
+					<field name="instance_id" />
+					<group expand="0" string="Group By...">
+						<filter string="Instance" context="{'group_by':'instance_id'}" />
+						<filter string="Submit Date" context="{'group_by':'feed_submit_date'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="amazon_feed_submission_history_tree_view_ept"
+			model="ir.ui.view">
+			<field name="name">Amazon Feed Submission History Tree</field>
+			<field name="model">feed.submission.history</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Feed Submission History">
+					<field name="feed_result_id" />
+					<field name="feed_submit_date" />
+					<field name="feed_result_date" />
+					<field name="instance_id" />
+				</tree>
+			</field>
+		</record>
+		<record id="amazon_feed_submission_history_form_view_ept"
+			model="ir.ui.view">
+			<field name="name">Amazon Feed Submission History Form</field>
+			<field name="model">feed.submission.history</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Feed Submission History">
+					<header>
+						<button name="get_feed_submission_result" string="Get Feed Result"
+							attrs="{'invisible':[('feed_result','!=',False)]}" class="oe_highlight"
+							type="object" />
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="feed_result_id" readonly="1"/>
+								<field name="feed_submit_date" readonly="1"/>
+							</group>
+							<group>
+								<field name="instance_id" readonly="1"/>
+								<field name="feed_result_date" readonly="1"/>
+							</group>
+						</group>
+						<group string="Feed Message">
+							<field name="message" nolabel="1" readonly="1" />
+						</group>
+						<group string="Feed Result">
+							<field name="feed_result" nolabel="1" readonly="1" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_amazon_feed_submission_history_ept" model="ir.actions.act_window">
+			<field name="name">Feed Submission History</field>
+			<field name="res_model">feed.submission.history</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_feed_submission_history_tree_view_ept" />
+		</record>
+		
+		<record id="action_amazon_instance_feed_submission_history_ept" model="ir.actions.act_window">
+			<field name="name">Feed Submission History</field>
+			<field name="res_model">feed.submission.history</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_feed_submission_history_tree_view_ept" />
+			<field name="domain">[('instance_id','=',active_id)]</field>
+		</record>
+
+		<menuitem id="menu_amazon_feed_submission_log_ept" name="Log"
+			parent="amazon_ept_v10.amazon_instance_menu_item" groups="amazon_ept_v10.group_amazon_manager_ept"
+			sequence="16" />
+
+		<menuitem id="menu_amazon_feed_submission_history" name="Feed Submission History"
+			parent="menu_amazon_feed_submission_log_ept" action="action_amazon_feed_submission_history_ept" />
+	</data>
+</odoo>  

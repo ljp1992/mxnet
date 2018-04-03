@@ -1,0 +1,1 @@
+ept_apps=['woo_commerce_v10','woo_commerce_v10_win','amazon_ept_v10','amazon_fba_ept_v10']

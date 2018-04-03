@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+ <data noupdate="1">
+        <record id="seq_active_product_list" model="ir.sequence">
+            <field name="name">active_product_list</field>
+            <field name="code">active_product_list_sequence</field>
+            <field name="padding">5</field>
+            <field name="prefix">AP</field>
+            <field name="company_id" eval="False"/>
+        </record>
+  </data>
+    
+<data>
+	<record id="active_product_listing_tree_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Active Product Tree</field>
+		<field name="model">active.product.listing.report.ept</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+			<tree string="Active Products">
+				<field name="name" />
+				<field name="instance_id" />
+				<field name="report_id" />
+				<field name="report_request_id" />
+				<field name="attachment_id" invisible="1"/>
+				<button name="download_report" type="object" help="Click Here To download report" icon="STOCK_SAVE" attrs="{'invisible':[('attachment_id','=',False)]}"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="active_product_list_form_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Active Product Form</field>
+			<field name="model">active.product.listing.report.ept</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Active Product">
+					<header>
+						<button name="request_report" string="Request Report"
+						states="draft"
+						class="oe_highlight"
+						type="object" />
+						
+						<button name="get_report_request_list" string="Check Status"
+						states="_SUBMITTED_,_IN_PROGRESS_"
+						class="oe_highlight"
+						type="object" />
+						<button name="get_report" string="Get Report"
+							attrs="{'invisible':['|',('report_id','=',False),('attachment_id','!=',False)]}"
+							class="oe_highlight"
+							type="object" />
+						<button name="download_report" string="Download Report"
+							attrs="{'invisible':[('attachment_id','=',False)]}"
+							class="oe_highlight"
+							type="object" />
+						<button name="sync_products" string="Sync Products" 
+							attrs="{'invisible':['|',('state','!=','_DONE_'),('attachment_id','=',False)]}" 
+							class="oe_highlight" help="Click Here To Synchronize Products with Amazon." 
+							type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="_SUBMITTED_,_IN_PROGRESS_,_DONE_" />	
+					</header>
+					
+					<sheet>
+                        <div class="oe_title" style="width: 500px;">
+							<h1><field name="name" class="oe_inline" readonly="1"/></h1>
+						</div>
+						<group>
+							<group>
+								<field name="instance_id" attrs="{'readonly':[('state','!=','draft')]}" required="1"/>								
+								<field name="report_request_id" readonly="1"/>
+								<field name="user_id" readonly="1" invisible="1"/>
+								<field name="report_type" readonly="1" invisible="1" />								
+								<field name="attachment_id" invisible="1"/>
+							</group>
+							<group>
+								<field name="report_id" readonly="1"/>							
+							</group>
+						</group>
+					</sheet>
+					<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+                	</div>
+				</form>
+			</field>
+		</record>
+		
+	<record id="action_active_product_listing_ept" model="ir.actions.act_window">
+		<field name="name">Active Product List</field>
+		<field name="res_model">active.product.listing.report.ept</field>
+		<field name="view_type">form</field>
+		<field name="view_id" ref="active_product_listing_tree_view_ept" />
+	</record>
+
+	<menuitem id="active_product_listing_ept" name="Sync Active Products"
+	parent="amazon_ept_v10.menu_amazon_main_report_ept" action="action_active_product_listing_ept" />
+</data>
+</odoo>

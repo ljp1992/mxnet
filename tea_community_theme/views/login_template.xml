@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="login_assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css" href="/tea_community_theme/static/src/css/components.css"/>
+                <script src="/tea_community_theme/static/lib/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+                <t t-set="login_theme"
+                   t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.login_theme')"/>
+                <t t-if="login_theme">
+                    <link rel="stylesheet" type="text/less"
+                          t-att-href="'/tea_community_theme/static/src/less/login/login'+login_theme+'.less'"/>
+                    <link rel="stylesheet" type="text/css"
+                          t-att-href="'/tea_community_theme/static/src/css/login/select2-'+login_theme+'.css'"/>
+                    <script type="text/javascript"
+                            t-att-src="'/tea_community_theme/static/src/js/login/login'+ login_theme +'.js'"/>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

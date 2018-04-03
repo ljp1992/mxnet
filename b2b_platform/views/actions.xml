@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.actions.act_window" id="act_res_partner_supplier">
+            <field name="name">商户</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state', '=', 'approved')]</field>
+            <field name="context">{'create':False}</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_res_partner_supplier_new">
+            <field name="name">商户</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('category_id', '!=', False), ('qdoo_state', '=', 'new')]</field>
+            <field name="context">{'create':False, 'default_is_company': True,
+                'default_supplier': True,'default_customer': True}</field>
+        </record>
+
+        <record id="b2b_account_overview_view_kanban" model="ir.ui.view" >
+            <field name="name">b2b_account_overview</field>
+            <field name="model">res.partner</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_salesteam_kanban" create="0" js_class="sales_team_dashboard">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="credit"/>
+                    <field name="debit"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary"><field name="name"/></div>
+                                    </div>
+                                    <!--<div class="o_kanban_manage_button_section">-->
+                                        <!--<a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="container o_kanban_card_content o_visible">
+                                    <div class="row">
+                                        <div class="col-xs-6 o_kanban_primary_left">
+                                            <span style="font-size:14.0pt;">充值余额:<br/>
+                                            <field name="deposit_amt"/>
+                                            </span>
+                                            <br/><br/>
+                                            <span style="font-size:14.0pt;">充值可用余额:<br/>
+                                            <field name="deposit_avail_amt"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-xs-6 o_kanban_primary_right">
+                                            <span style="font-size:14.0pt;">待结算金额:<br/>
+                                            <field name="debit_value"/>
+                                            </span>
+                                            <br/><br/>
+                                            <span style="font-size:14.0pt;">可提现金额:<br/>
+                                            <field name="withdraw_balance"/>
+                                            </span>
+                                            <br/><br/>
+                                            <button name="get_list" type="object" class="btn btn-primary">交易明细</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="action_b2b_account_overview" model="ir.actions.act_window">
+            <field name="name">账户总览</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban</field>
+            <field name="domain">[('kanban_display','=',True)]</field>
+            <field name="view_id" ref="b2b_platform.b2b_account_overview_view_kanban"/>
+        </record>
+
+        <record id="view_product_category_tree_tree" model="ir.ui.view">
+            <field name="name">view_product_category_tree_tree</field>
+            <field name="model">product.category</field>
+            <field name="priority">100</field>
+            <field name="field_parent">child_id</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_qdoo_product_category" model="ir.actions.act_window">
+            <field name="name">产品分类树</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.category</field>
+            <field name="view_type">tree</field>
+            <field name="view_id" ref="view_product_category_tree_tree"/>
+            <field name="domain">[('parent_id','=',False)]</field>
+        </record>
+
+        <record id="action_qdoo_product_category_form" model="ir.actions.act_window">
+            <field name="name">产品分类</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="product.product_category_list_view"/>
+        </record>
+
+        <record id="action_qdoo_product_platform" model="ir.actions.act_window">
+            <field name="name">平台产品目录</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('platform_is_product_owner','=',True)]</field>
+            <field name="context">{'create': False, 'edit': False, 'menu_name':'平台产品库'}</field>
+        </record>
+
+        <record id="action_qdoo_product_collected" model="ir.actions.act_window">
+            <field name="name">已收录的产品</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('distributor_collected_product','=',True)]</field>
+            <field name="context">{'create': False, 'collection_mark':'collected', 'menu_name':'我的产品库'}</field>
+        </record>
+
+        <record id="action_qdoo_product_shop" model="ir.actions.act_window">
+            <field name="name">店铺中发布的产品</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('product_in_own_shops','=',True)]</field>
+            <field name="context">{'create': False, 'collection_mark':'collected', 'menu_name': '店铺中产品列表'}</field>
+        </record>
+
+        <record id="action_qdoo_so_new" model="ir.actions.act_window">
+            <field name="name">店铺新订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','=','new'),('own_orders','=',True)]</field>
+            <field name="context">{'entry':'shop_id','search_default_group_by_shop_id':1}</field>
+        </record>
+
+        <record id="action_b2b_so_his" model="ir.actions.act_window">
+            <field name="name">店铺历史订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','in',['own','po','part-deliver']),('own_orders','=',True)]</field>
+            <field name="context">{'create': False,'entry':'shop_id','search_default_group_by_shop_id':1}</field>
+        </record>
+
+        <record id="action_b2b_so_his_delivery" model="ir.actions.act_window">
+            <field name="name">店铺历史订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','in',['delivery','done']),('own_orders','=',True)]</field>
+            <field name="context">{'create': False,'entry':'shop_id','search_default_group_by_shop_id':1}</field>
+        </record>
+
+        <record id="action_qdoo_so_po" model="ir.actions.act_window">
+            <field name="name">店铺采购订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|',('qdoo_state','=','po'),('qdoo_state','=','part-deliver'),('own_orders','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_qdoo_delivered" model="ir.actions.act_window">
+            <field name="name">采购已发货订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','=','delivered'),('own_orders','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_qdoo_so_complaint" model="ir.actions.act_window">
+            <field name="name">申诉中的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','=','complaint'),('own_orders','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_qdoo_so_complaint_accepted" model="ir.actions.act_window">
+            <field name="name">申诉成功的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','=','accepted'),('own_orders','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_qdoo_so_complaint_rejected" model="ir.actions.act_window">
+            <field name="name">申诉失败的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('qdoo_state','=','rejected'),('own_orders','=',True)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_qdoo_po" model="ir.actions.act_window">
+            <field name="name">平台采购订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="domain">[('qdoo_state','=','new')]</field>-->
+            <field name="context">{'create': False,'search_default_todo':1, 'show_purchase': True}</field>
+        </record>
+
+        <record id="action_qdoo_wh_pending" model="ir.actions.act_window">
+            <field name="name">待发货的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','!=','done'),('supp_own_pick','=',True)]</field>
+            <field name="context">{'create': False, 'contact_display': 'partner_address'}</field>
+        </record>
+
+        <record id="action_qdoo_wh_pending_3pl" model="ir.actions.act_window">
+            <field name="name">待发货的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','!=','done')]</field>
+            <field name="context">{'create': False, 'contact_display': 'partner_address'}</field>
+        </record>
+
+        <record id="action_b2b_stock_transfer" model="ir.actions.act_window">
+            <field name="name">调拨</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('origin','=',False)]</field>
+            <field name="context">{'contact_display': 'partner_address', 'b2b_action':'transfer','default_picking_type_id':1}</field>
+        </record>
+
+        <record id="action_b2b_stock_transfer_3pl" model="ir.actions.act_window">
+            <field name="name">入库</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','!=','draft')]</field>
+            <field name="context">{'create': False, 'contact_display': 'partner_address', 'b2b_action':'transfer'}</field>
+        </record>
+
+        <record id="action_qdoo_wh_done" model="ir.actions.act_window">
+            <field name="name">发货完毕的订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','done')]</field>
+            <field name="context">{'create': False, 'contact_display': 'partner_address'}</field>
+        </record>
+
+        <record id="action_qdoo_dist_invoice" model="ir.actions.act_window">
+            <field name="name">采购订单发票</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','in',('out_invoice', 'out_refund'))]</field>
+            <field name="context">{'create': False,'type':'out_invoice', 'journal_type': 'sale'}</field>
+        </record>
+
+        <record id="action_qdoo_supp_invoice" model="ir.actions.act_window">
+            <field name="name">采购订单发票</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','in',('in_invoice', 'in_refund'))]</field>
+            <field name="context">{'create': False,'default_type': 'in_invoice', 'type': 'in_invoice', 'journal_type': 'purchase'}</field>
+        </record>
+
+        <record id="action_b2b_organization_supplier_portfolio" model="ir.actions.act_window">
+            <field name="name">商户资料</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('supplier_manager','=',uid)]</field>
+            <field name="context">{'create': False}</field>
+        </record>
+
+        <record id="action_b2b_amazon_config" model="ir.actions.act_window">
+            <field name="name">配置亚马逊</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amazon.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="domain">[('create_uid','=',uid)]</field>
+        </record>
+
+        <record id="action_b2b_amazon_seller_manager" model="ir.actions.act_window">
+            <field name="name">站点管理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amazon.seller.ept</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('create_uid','=',uid)]</field>
+            <field name="context">{'create': True}</field>
+        </record>
+
+        <record id="action_b2b_amazon_process_job_log" model="ir.actions.act_window">
+	        <field name="name">亚马逊处理任务日志</field>
+			<field name="res_model">amazon.process.log.book</field>
+	        <field name="view_type">form</field>
+			<field name="view_id" ref="amazon_ept_v10.amazon_process_job_tree_view_ept"/>
+	        <field name="search_view_id" ref="amazon_ept_v10.amazon_process_job_search_view_ept"/>
+    	</record>
+        <record id="action_b2b_amazon_mismatch_log" model="ir.actions.act_window">
+            <field name="name">亚马逊差异详情</field>
+            <field name="res_model">amazon.transaction.log</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|',('log_type','=','mismatch'),'|',('skip_record','=',True),('manually_processed','=',False)]</field>
+            <field name="search_view_id" ref="amazon_ept_v10.amazon_file_process_transaction_search_view_ept"/>
+        </record>
+        <record id="action_b2b_amazon_feed_submission_history" model="ir.actions.act_window">
+			<field name="name">Feed提交记录</field>
+			<field name="res_model">feed.submission.history</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="amazon_ept_v10.amazon_feed_submission_history_tree_view_ept" />
+            <field name="domain">[('create_uid','=',uid)]</field>
+		</record>
+
+        <record id="action_b2b_amazon_active_product_listing" model="ir.actions.act_window">
+            <field name="name">产品同步</field>
+            <field name="res_model">active.product.listing.report.ept</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="amazon_ept_v10.active_product_listing_tree_view_ept" />
+        </record>
+
+        <record id="action_b2b_wizard_amazon_import_export_operations" model="ir.actions.act_window">
+         	<field name="name">Amazon运营</field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.process.import.export</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="target">new</field>
+         </record>
+
+        <record id="action_b2b_organization_shop" model="ir.actions.act_window">
+            <field name="name">店铺管理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('own_shops','=',True)]</field>
+            <field name="context">{'create': False,'default_type': 'shop', 'default_company_type': 'person'}</field>
+        </record>
+        <record id="action_b2b_shop_tree_view1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="b2b_view_shop_tree"/>
+            <field name="act_window_id" ref="action_b2b_organization_shop"/>
+        </record>
+        <record id="action_b2b_shop_form_view1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="b2b_view_shop_form"/>
+            <field name="act_window_id" ref="action_b2b_organization_shop"/>
+        </record>
+
+        <record id="action_qdoo_organization_supplier_operator" model="ir.actions.act_window">
+            <field name="name">商户子账号管理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.users</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('partner_id.qdoo_func','=','supplier'),('partner_id.type','=','operator'),
+                                ('owner_manager','=',uid)]</field>
+            <field name="context">{'search_default_no_share': 1,
+                                    'default_qdoo_func': 'supplier',
+                                    'default_type': 'operator',
+                                    'visibility': 'supplier',
+                                    }
+            </field>
+        </record>
+        <record id="action_qdoo_organization_supp_op_tree_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+ 		    <field name="view_id" ref="base.view_users_tree"/>
+ 		    <field name="act_window_id" ref="action_qdoo_organization_supplier_operator"/>
+        </record>
+        <record id="action_qdoo_organization_supp_op_form_ref" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+ 		    <field name="view_id" ref="b2b_platform.b2b_view_supplier_users_form"/>
+ 		    <field name="act_window_id" ref="action_qdoo_organization_supplier_operator"/>
+        </record>
+
+        <record id="action_qdoo_product_own_published" model="ir.actions.act_window">
+            <field name="name">自有产品-已发布到平台</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('user_is_product_owner','=',True), ('platform_published','=',True), ('master_product','=',False)]</field>
+            <field name="context">{'published':'False', 'menu_name':'已发布产品'}</field>
+        </record>
+
+        <record id="action_qdoo_product_own_not_published" model="ir.actions.act_window">
+            <field name="name">自有产品-未发布到平台</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('user_is_product_owner','=',True), ('platform_published','=',False), ('master_product','=',False)]</field>
+            <field name="context">{'published':'False', 'menu_name':'未发布产品'}</field>
+        </record>
+
+        <record id="action_b2b_currency_form" model="ir.actions.act_window">
+            <field name="name">货币</field>
+            <field name="res_model">res.currency</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="base.view_currency_search"/>
+            <field name="context">{'active_test': False}</field>
+        </record>
+
+    </data>
+</odoo>

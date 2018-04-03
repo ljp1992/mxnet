@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<template id="login_layout_add" inherit_id="website.login_layout">-->
+            <!--<xpath expr="//t[@t-call='website.layout']" position="replace">-->
+                <!--<t name="Login Layout" t-name="web.login_layout">-->
+                    <!--<t t-call="web.layout">-->
+                        <!--<t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>-->
+                        <!--<t t-set="head">-->
+                            <!--<t t-call-assets="web.assets_common" t-js="false"/>-->
+                            <!--<t t-call-assets="web.assets_frontend" t-js="false"/>-->
+                            <!--<t t-call-assets="web.assets_common" t-css="false"/>-->
+                            <!--<t t-call-assets="web.assets_frontend" t-css="false"/>-->
+                        <!--</t>-->
+                        <!--<t t-set="body_classname" t-value="' login'"/>-->
+
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-6 col-md-offset-3 o_database_list">-->
+                                <!--<div class="text-center">-->
+                                    <!--<img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}"/>-->
+                                <!--</div>-->
+                                <!--<t t-raw="0"/>-->
+                                <!--<div class="text-center" t-if="not disable_footer">-->
+                                    <!--<t t-if="not disable_database_manager">-->
+                                        <!--<a class="" href="/web/database/manager">管理数据库</a> |-->
+                                    <!--</t>-->
+                                    <!--<a href="https://www.odoo.com" target="_blank">基于<span>Odoo</span></a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</t>-->
+                <!--</t>-->
+            <!--</xpath>-->
+        <!--</template>-->
+
+        <!--<template id="login_layout" inherit_id="web.login_layout">-->
+            <!--<xpath expr="//div[@class='row']" position="replace">-->
+                <!--<t t-set="login_theme"-->
+                   <!--t-value="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.login_theme')"/>-->
+                <!--<t t-if="login_theme == '1'">-->
+                    <!--<t t-call="tea_community_theme.login_form1"/>-->
+                <!--</t>-->
+                <!--<t t-if="login_theme == '2'">-->
+                    <!--<t t-call="tea_community_theme.login_form2"/>-->
+                <!--</t>-->
+                <!--<t t-if="login_theme == '3'">-->
+                    <!--<t t-call="tea_community_theme.login_form3"/>-->
+                <!--</t>-->
+                <!--<t t-if="login_theme == '4'">-->
+                    <!--<t t-call="tea_community_theme.login_form4"/>-->
+                <!--</t>-->
+                <!--<t t-if="login_theme == '5'">-->
+                    <!--<t t-call="tea_community_theme.login_form5"/>-->
+                <!--</t>-->
+                <!--<t t-if="login_theme == '6'">-->
+                    <!--<t t-call="tea_community_theme.login_form6"/>-->
+                <!--</t>-->
+            <!--</xpath>-->
+        <!--</template>-->
+
+        <template id="tea_community_theme.login_form1">
+            <div class="logo">
+                <a>
+                    <img src='/web/binary/company_logo'/>
+                </a>
+            </div>
+            <div class="content">
+                <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                      method="post" onsubmit="this.action = this.action + location.hash">
+                    <h3 class="form-title">
+                        <label for="login" class="control-label">Login to your account</label>
+                    </h3>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group" t-if="databases and len(databases) &gt; 1">
+                        <label class="control-label visible-ie8 visible-ie9">Database</label>
+                        <select name="db" id="db_list" class="form-control">
+                            <option selected="selected" t-att-value="request.db">
+                                <t t-esc="request.db"/>
+                            </option>
+                            <option t-foreach="databases" t-as="db" t-att-value="db">
+                                <t t-esc="db"/>
+                            </option>
+                        </select>
+                    </div>
+                    <div class="alert alert-danger" t-if="error">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="error"/>
+                        </span>
+                    </div>
+                    <div class="alert alert-success" t-if="message">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="message"/>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                        <label for="login" class="control-label visible-ie8 visible-ie9">Email</label>
+                        <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                               class="form-control form-control-solid placeholder-no-fix" required="required" autofocus="autofocus"
+                               autocapitalize="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label visible-ie8 visible-ie9">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Password"
+                               class="form-control form-control-solid placeholder-no-fix" required="required"
+                               autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                               maxlength="4096"/>
+                    </div>
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="form-actions">
+                        <button type="submit" class="btn green uppercase">Log in</button>
+                    </div>
+                </form>
+            </div>
+            <div class="copyright">
+                <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+            </div>
+        </template>
+
+        <template id="tea_community_theme.login_form2">
+            <div class="logo">
+                <a>
+                    <img src='/web/binary/company_logo'/>
+                </a>
+            </div>
+            <div class="content">
+                <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                      method="post" onsubmit="this.action = this.action + location.hash">
+                    <h3 class="form-title">
+                        <label for="login" class="control-label">Login to your account</label>
+                    </h3>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group" t-if="databases and len(databases) &gt; 1">
+                        <label class="control-label visible-ie8 visible-ie9">Database</label>
+                        <select name="db" id="db_list" class="form-control" placeholder="Database">
+                            <option selected="selected" t-att-value="request.db">
+                                <t t-esc="request.db"/>
+                            </option>
+                            <option t-foreach="databases" t-as="db" t-att-value="db">
+                                <t t-esc="db"/>
+                            </option>
+                        </select>
+                    </div>
+                    <div class="alert alert-danger" t-if="error">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="error"/>
+                        </span>
+                    </div>
+                    <div class="alert alert-success" t-if="message">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="message"/>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                        <label for="login" class="control-label visible-ie8 visible-ie9">Email</label>
+                        <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                               class="form-control form-control-solid placeholder-no-fix" required="required" autofocus="autofocus"
+                               autocapitalize="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label visible-ie8 visible-ie9">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Password"
+                               class="form-control form-control-solid placeholder-no-fix" required="required"
+                               autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                               maxlength="4096"/>
+                    </div>
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="form-actions">
+                        <button type="submit" class="btn red btn-block uppercase">Log in</button>
+                    </div>
+                </form>
+            </div>
+            <div class="copyright">
+                <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+            </div>
+        </template>
+
+        <template id="tea_community_theme.login_form3">
+            <div class="logo">
+                <a>
+                    <img src='/web/binary/company_logo'/>
+                </a>
+            </div>
+            <div class="content">
+                <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                      method="post" onsubmit="this.action = this.action + location.hash">
+                    <h3 class="form-title">
+                        <label for="login" class="control-label">Login to your account</label>
+                    </h3>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group" t-if="databases and len(databases) &gt; 1">
+                        <label class="control-label visible-ie8 visible-ie9">Database</label>
+                        <div class="input-icon">
+                            <i class="fa fa-database"/>
+                            <select name="db" id="db_list" class="form-control select2" placeholder="Database">
+                                <option selected="selected" t-att-value="request.db">
+                                    <t t-esc="request.db"/>
+                                </option>
+                                <option t-foreach="databases" t-as="db" t-att-value="db">
+                                    <t t-esc="db"/>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" t-if="error">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="error"/>
+                        </span>
+                    </div>
+                    <div class="alert alert-success" t-if="message">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="message"/>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                        <label for="login" class="control-label visible-ie8 visible-ie9">Email</label>
+                        <div class="input-icon">
+                            <i class="fa fa-user"/>
+                            <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                                   class="form-control form-control-solid placeholder-no-fix" required="required" autofocus="autofocus"
+                                   autocapitalize="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label visible-ie8 visible-ie9">Password</label>
+                        <div class="input-icon">
+                            <i class="fa fa-lock"/>
+                            <input type="password" name="password" id="password" placeholder="Password"
+                                   class="form-control form-control-solid placeholder-no-fix" required="required"
+                                   autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                                   maxlength="4096"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="form-actions">
+                        <button type="submit" class="btn green pull-right">Log in</button>
+                    </div>
+                    <div class="login-options"></div>
+                    <div class="forget-password"></div>
+                    <div class="create-account"></div>
+                </form>
+            </div>
+            <div class="copyright">
+                <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+            </div>
+        </template>
+
+        <template id="tea_community_theme.login_form4">
+            <div class="logo">
+                <a>
+                    <img src='/web/binary/company_logo'/>
+                </a>
+            </div>
+            <div class="content">
+                <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                      method="post" onsubmit="this.action = this.action + location.hash">
+                    <h3 class="form-title">
+                        <label for="login" class="control-label">Login to your account</label>
+                    </h3>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group" t-if="databases and len(databases) &gt; 1">
+                        <label class="control-label visible-ie8 visible-ie9">Database</label>
+                        <div class="input-icon">
+                            <i class="fa fa-database"></i>
+                            <select name="db" id="db_list" class="select2 form-control" placeholder="Database">
+                                <option selected="selected" t-att-value="request.db">
+                                    <t t-esc="request.db"/>
+                                </option>
+                                <option t-foreach="databases" t-as="db" t-att-value="db">
+                                    <t t-esc="db"/>
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="alert alert-danger" t-if="error">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="error"/>
+                        </span>
+                    </div>
+                    <div class="alert alert-success" t-if="message">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            <t t-esc="message"/>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                        <label for="login" class="control-label visible-ie8 visible-ie9">Email</label>
+                        <div class="input-icon">
+                            <i class="fa fa-user"/>
+                            <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                                   class="form-control form-control-solid placeholder-no-fix" required="required" autofocus="autofocus"
+                                   autocapitalize="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label visible-ie8 visible-ie9">Password</label>
+                        <div class="input-icon">
+                            <i class="fa fa-lock"/>
+                            <input type="password" name="password" id="password" placeholder="Password"
+                                   class="form-control form-control-solid placeholder-no-fix" required="required"
+                                   autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                                   maxlength="4096"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="form-actions">
+                        <button type="submit" class="btn green pull-right">Log in</button>
+                    </div>
+                </form>
+            </div>
+            <div class="copyright">
+                <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+            </div>
+
+        </template>
+
+        <template id="tea_community_theme.login_form5">
+            <div class="user-login-5">
+                <div class="row bs-reset">
+                    <div class="col-md-6 bs-reset mt-login-5-bsfix">
+                        <div class="login-bg" style="background-image:url(/tea_community_theme/static/src/img/login/bg1.jpg)">
+                            <img class="login-logo" src='/web/binary/company_logo'/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
+                        <div class="login-content">
+                            <h1>
+                                <label for="login">Login to your account</label>
+                            </h1>
+                            <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                                  method="post" onsubmit="this.action = this.action + location.hash">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="alert alert-danger" t-if="error">
+                                    <button class="close" data-close="alert"></button>
+                                    <span>
+                                        <t t-esc="error"/>
+                                    </span>
+                                </div>
+                                <div class="alert alert-success" t-if="message">
+                                    <button class="close" data-close="alert"></button>
+                                    <span>
+                                        <t t-esc="message"/>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <select name="db" id="db_list" class="select2 form-control form-control-solid placeholder-no-fix form-group" placeholder="Database">
+                                            <option selected="selected" t-att-value="request.db">
+                                                <t t-esc="request.db"/>
+                                            </option>
+                                            <option t-foreach="databases" t-as="db" t-att-value="db">
+                                                <t t-esc="db"/>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                                               class="form-control form-control-solid placeholder-no-fix form-group" required="required" autofocus="autofocus"
+                                               autocapitalize="off"/>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input type="password" name="password" id="password" placeholder="Password"
+                                               class="form-control form-control-solid placeholder-no-fix form-group" required="required"
+                                               autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                                               maxlength="4096"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-8 text-right">
+                                            <button type="submit" class="btn green">Log in</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="login-footer">
+                            <div class="row bs-reset">
+                                <div class="col-xs-5 bs-reset">
+                                    <ul class="login-social"></ul>
+                                </div>
+                                <div class="col-xs-7 bs-reset">
+                                    <div class="login-copyright text-right">
+                                        <p>
+                                            <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tea_community_theme.login_form6">
+            <div class="user-login-6">
+                <div class="row bs-reset">
+                    <div class="col-md-6 login-container bs-reset">
+                        <img class="login-logo login-6" src='/web/binary/company_logo'/>
+                        <div class="login-content">
+                            <h1>
+                                <label for="login">Login to your account</label>
+                            </h1>
+                            <form class="login-form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}"
+                                  method="post" onsubmit="this.action = this.action + location.hash">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="alert alert-danger" t-if="error">
+                                    <button class="close" data-close="alert"></button>
+                                    <span>
+                                        <t t-esc="error"/>
+                                    </span>
+                                </div>
+                                <div class="alert alert-success" t-if="message">
+                                    <button class="close" data-close="alert"></button>
+                                    <span>
+                                        <t t-esc="message"/>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <select name="db" id="db_list" class="select2 form-control form-control-solid placeholder-no-fix form-group" placeholder="Database">
+                                            <option selected="selected" t-att-value="request.db">
+                                                <t t-esc="request.db"/>
+                                            </option>
+                                            <option t-foreach="databases" t-as="db" t-att-value="db">
+                                                <t t-esc="db"/>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <input type="text" name="login" t-att-value="login" id="login" placeholder="Email"
+                                               class="form-control form-control-solid placeholder-no-fix form-group" required="required" autofocus="autofocus"
+                                               autocapitalize="off"/>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input type="password" name="password" id="password" placeholder="Password"
+                                               class="form-control form-control-solid placeholder-no-fix form-group" required="required"
+                                               autocomplete="current-password" t-att-autofocus="'autofocus' if login else None"
+                                               maxlength="4096"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-8 text-right">
+                                            <button type="submit" class="btn green">Log in</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="login-footer">
+                            <div class="row bs-reset">
+                                <div class="col-xs-5 bs-reset">
+                                    <ul class="login-social"></ul>
+                                </div>
+                                <div class="col-xs-7 bs-reset">
+                                    <div class="login-copyright text-right">
+                                        <p>
+                                            <t t-esc="request and request.env['ir.config_parameter'].get_debranding_parameters().get('web.copyright')"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 bs-reset">
+                        <div class="login-bg"> </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </data>
+</odoo>

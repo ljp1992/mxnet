@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <!--<record id="product_template_only_form_view" model="ir.ui.view">-->
+            <!--<field name="name">product.template.product.form</field>-->
+            <!--<field name="model">product.template</field>-->
+            <!--<field name="inherit_id" ref="product.product_template_only_form_view"/>-->
+            <!--<field name="arch" type="xml">-->
+            	 <!--<field name="attribute_line_ids" position="before">-->
+            			<!--<group string="Amazon Info">-->
+	            			<!--<group>-->
+								<!--<field name="amazon_categ_id" options="{'no_create':True,'no_create_edit': True}" domain="[('parent_id', '=',False)]"/>-->
+								<!--<field name="is_child_categ" invisible="1"/>-->
+								<!--<field name="child_categ_id" options="{'no_create':True,'no_create_edit': True}" domain="[('parent_id','=',amazon_categ_id)]" attrs="{'required':[('is_child_categ','!=',False)]}"/>-->
+	            			<!--</group>-->
+	            			<!--<group>-->
+	            				<!--<field name="variation_theme_id" options="{'no_create':True,'no_create_edit': True}" domain="['|',('amazon_categ_id','=',amazon_categ_id),('amazon_categ_id','=',child_categ_id)]" />-->
+	            				<!--<field name="parent_sku" attrs="{'required':[('variation_theme_id','!=',False)]}" />-->
+	            			<!--</group>-->
+						<!--</group>-->
+				<!--</field>-->
+				<!--<field name="attribute_id" position="attributes">-->
+					<!--<attribute name="domain">['|',('amazon_categ_id','=',parent.amazon_categ_id),('amazon_categ_id','=',parent.child_categ_id)]</attribute>-->
+				<!--</field>-->
+
+			<!--</field>-->
+		<!--</record>-->
+		<record model="ir.ui.view" id="product_form_view_amazon_products_button_ept">
+			<field name="name">product.product.amazon.ept</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view" />
+			<field name="groups_id" eval="[(4, ref('amazon_ept_v10.group_amazon_manager_ept'))]" />
+			<field name="arch" type="xml">
+				<div class="oe_button_box" name="button_box" position="inside">
+					<button class="oe_inline oe_stat_button" name="action_view_amazon_products" icon="fa fa-navicon fa-lg"
+						type="object">
+						<field string="Amazon Products" name="amazon_variant_count" widget="statinfo" />
+					</button>
+				</div>
+				<xpath expr="//notebook" position='inside'>
+					<page string="Images">
+						<group string="Images Info">
+							<field name="ept_image_ids" nolabel="1">
+								<tree editable="bottom">
+									<field name="name" />
+									<field name="image_type" />
+									<field name="url" required="1" />
+								</tree>
+							</field>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="amazon_product_tree_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Product Tree View</field>
+			<field name="model">amazon.product.ept</field>
+			<field name="arch" type="xml">
+				<tree string="Amazon Product Tree View" create="false">
+					<field name="name"/>	
+					<field name="title"/>									
+					<field name="seller_sku"/>
+					<field name="asin_qty"></field>
+					<field name="fix_stock_type" />
+					<field name="fix_stock_value" />
+					<field name="exported_to_amazon" />
+					<field name="fulfillment_by"/>
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="amazon_product_search_view_ept">
+			<field name="name">amazon.product.ept</field>
+			<field name="model">amazon.product.ept</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Amazon Products">
+					<field name="name" string="Product"
+						filter_domain="['|',('default_code','ilike',self),('name','ilike',self)]" />
+					<field name="barcode" />
+					<field name="seller_sku"/>					
+					<field name="product_asin" />
+					<field name="fulfillment_by"/>
+					<filter string="Exported To Amazon" icon="terp-accessories-archiver"
+						domain="[('exported_to_amazon','=','True')]" />
+					<filter string="Allow Package Qty" icon="terp-accessories-archiver"
+						domain="[('allow_package_qty','=','True')]" />
+					<field name="product_id" string="Product" />
+					<field name="product_tmpl_id" string="Product Template" />
+					<group expand="0" string="Group By">
+						<filter string="Instance" domain="[]"
+							context="{'group_by':'instance_id'}" />
+						<filter string="Fulfillment By" domain="[]"
+							context="{'group_by':'fulfillment_by'}" />							
+						<filter string="Exported To Amazon" domain="[]"
+							context="{'group_by':'exported_to_amazon'}" />
+						<filter string="Seller Sku" domain="[]"
+							context="{'group_by':'seller_sku'}" />
+						<filter string="Allow Package Qty" domain="[]"
+							context="{'group_by':'allow_package_qty'}" />						
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="amazon_product_form_view_ept" model="ir.ui.view">
+			<field name="name">Amazon Product Form View</field>
+			<field name="model">amazon.product.ept</field>
+			<field name="arch" type="xml">
+				<form string="Amazon Product Form View">
+					<sheet>
+						<div class="oe_right oe_button_box" style="width: 300px;"
+							name="buttons">
+							<button class="oe_inline oe_stat_button" name="list_of_logs"
+								type="object" icon="terp-product">
+								<field string="Logs" name="log_count" widget="statinfo" />
+							</button>
+						</div>
+
+						<div class="oe_title" style="width: 390px;">
+							<label class="oe_edit_only" for="name" string="Product Name" />
+							<h1>
+								<field name="name" class="oe_inline" />
+							</h1>
+						</div>
+						<notebook>
+							<page string="Product Info">
+								<group>
+									<group>
+										<field name="type" />
+										<field name="amazon_price_ept" />
+										<field name="company_id" />
+									</group>
+									<group>
+										<field name="seller_sku" required="1" />
+										<field name="currency_id"/>
+										<field name="fix_stock_type" />
+										<field name="fix_stock_value" />
+									</group>
+								</group>
+							</page>
+							<page string="Amazon Info">
+								<group>
+									<group>
+										<field name="instance_id"
+											attrs="{'readonly': [('exported_to_amazon','=',True)]}" />
+										<field name="fulfillment_by" required="1"
+											attrs="{'readonly': [('exported_to_amazon','=',True)]}" />
+										<field name="exported_to_amazon" />
+									</group>
+									<group>
+										<field name="launch_date" />
+										<field name="release_date" />
+										<field name="discontinue_date"/>
+									</group>
+								</group>
+								<group>
+									<group>
+										<field name="amazon_vendor_cost"/>
+										<field name="tier"/>
+										<field name="purchasing_category"/>
+										<field name="purchasing_sub_category"/>
+									</group>
+									<group>
+										<field name="packaging_type"/>
+										<field name="underlying_availability"/>
+										<field name="replenishment_category"/>
+										<field name="drop_ship_status"/>
+										<field name="out_of_stock_website_message"/>
+									</group>
+								</group>
+							</page>
+							<page string="Product Listing Elements">
+								<group>
+									<group>
+										<field name="title" />
+										<field name="designer" />
+										<field name="mfr_part_number" />
+										<field name="item_type_keyword"/>
+									</group>
+									<group>
+										<field name="brand" />
+										<field name="manufacturer" />
+										<field name="merchant_catalog_number" />
+										<field name="variation_theme_id" readonly="1"/>
+									</group>
+									<group>
+										<field name="amazon_browse_node_id" />
+										<field name="amazon_browse_node_id2" />		
+										<field name="related_product_type"/>
+										<field name="related_product_value"  attrs="{'required':[('related_product_type','!=',False)]}" />								
+									</group>
+									<group>
+										<field name="tax_code_id" />
+										<field name="condition" />
+										<field name="standard_product_id_type" />
+										<field name="gtin_exemption_reason" 
+											attrs="{'invisible':[('standard_product_id_type','!=','GTIN')],'required':[('standard_product_id_type','=','GTIN')]}" />
+										<field name="product_asin"
+											attrs="{'invisible':[('standard_product_id_type','!=','ASIN')],'required':[('standard_product_id_type','=','ASIN')]}" />
+										<field name="product_isbn"
+											attrs="{'invisible':[('standard_product_id_type','!=','ISBN')],'required':[('standard_product_id_type','=','ISBN')]}" />
+										<field name="product_upc"
+											attrs="{'invisible':[('standard_product_id_type','!=','UPC')],'required':[('standard_product_id_type','=','UPC')]}" />
+										<field name="barcode"
+											attrs="{'invisible':[('standard_product_id_type','!=','EAN')],'required':[('standard_product_id_type','=','EAN')]}" />
+										<field name="pzn_number"
+											attrs="{'invisible':[('standard_product_id_type','!=','PZN')],'required':[('standard_product_id_type','=','PZN')]}" />
+
+									</group>
+									<group>
+										<field name="package_weight" />
+										<field name="shipping_weight" />
+										<field name="delivery_channel"/>
+										<field name="priority"/>
+									</group>
+									<group>
+										<field name="package_weight_uom" />
+										<field name="shipping_weight_uom" />
+										<field name="browse_exclusion"/>
+										<field name="recommendation_exclusion"/>
+									</group>
+									<group>
+										<field name="max_order_quantity" />
+										<field name="max_aggregate_ship_quantity" />
+										<field name="item_package_qty" />
+										<field name="asin_qty" />
+									</group>
+									<group>
+										<field name="allow_package_qty" />
+										<field name="is_gift_wrap_available" />
+										<field name="is_gift_message_available" />
+										<field name="is_discontinued_by_manufacturer" />
+									</group>
+									<group>
+										<field name="purchase_off_amazon_channel"/>
+										<field name="purchase_on_amazon_channel"/>
+										<field name="child_display_per_page" attrs="{'invisible':[('variation_theme_id','=',False)],'required':[('variation_theme_id','!=',False)]}"/>
+										<field name="relation_type" attrs="{'invisible':[('variation_theme_id','=',False)],'required':[('variation_theme_id','!=',False)]}"/>
+										
+									</group>
+									<group>
+										<field name="payment_option_ids" widget="many2many_tags"/>
+										<field name="registerd_parameter"/>
+										<field name="variation_data"/>
+										<field name="amazon_categ_id" options="{'no_create':True,'no_create_edit': True}"/>
+										<field name="child_categ_id" options="{'no_create':True,'no_create_edit': True}"/>
+									</group>
+									<group>
+										<field name="prop"/>
+										<field name="serial_number_required"/>																										
+										<field name="shipped_by_freight"/>
+										<field name="is_customizable"/>
+									</group>
+									<group>
+										<field name="liquid_volume"/>
+										<field name="liquid_uom" attrs="{'required':[('liquid_volume','!=',0.0)]}" />   
+										<field name="merchant_shipping_group_name"/>    
+										<field name="customizable_template_name" attrs="{'required':[('is_customizable','!=',False)]}" />                                
+									</group>
+									<group>
+										<field name="distribution_designation"/>
+										<field name="delivery_schedule_group"/>
+										<field name="fedas_id"/>
+									</group>
+									<group>
+										<field name="is_memorabilia"/>
+										<field name='is_auto_graphed'/>
+									</group>
+								</group>
+							</page>
+							<page string="Features &amp; Search Terms">
+								<group string="Search Terms" colspan="4">
+									<field name="search_term_ids" nolabel="1">
+										<tree editable="top">
+											<field name="name" required='1' />
+										</tree>
+									</field>
+								</group>
+								<group string="Product Features" colspan="4">
+									<field name="bullet_point_ids" nolabel="1">
+										<tree editable="top">
+											<field name="name" required='1' />
+										</tree>
+									</field>
+								</group>
+							</page>
+							<page string="Other Attributes">
+								<group>
+									<group>
+										<field name="used_for_ids" widget="many2many_tags"/>
+									</group>
+									<group>
+										<field name="target_audience_ids" widget="many2many_tags"/>																		
+									</group>
+									<group>
+										<field name="subject_content_ids" widget="many2many_tags"/>									
+									</group>
+									<group>
+										<field name="other_attribute_ids" widget="many2many_tags"/>									
+									</group>			
+									<group>
+										<field name="platinum_keyword_ids" widget="many2many_tags"/>
+									</group>				
+								</group>								
+							</page>
+							<page string="Description &amp; Disclaimer">
+								<group>
+									<group colspan="4" string="Description">
+										<field name="long_description" placeholder="Add Product Description"
+											nolabel="1" />
+									</group>
+									<group colspan="4" string="Disclaimer">
+										<field name="legal_disclaimer" placeholder="Add Legal Desclaimer"
+											nolabel="1" />
+									</group>
+								</group>
+							</page>
+							<page string="CPSIAWarning &amp; TSD Warning">
+									<group>
+										<group>
+											<field name="cspia_warning_ids"  widget="many2many_tags"/>
+										</group>
+										<group>										
+											<field name="tsd_language_ids"  widget="many2many_tags"/> 
+										</group>
+										<group>
+											<field name="tsd_warning_ids" widget="many2many_tags"/>										
+										</group>
+										<group>
+											<field name="tsd_age_warning"/>
+										</group>									
+									</group>
+									<group string="CPSIAWarning Description">
+										<field name="cpsia_warning_description" nolabel="1"/>
+									</group>								
+							</page>
+							<page string="Attributes">
+							
+								<group string="Catalog Product Data">
+			                        <field name="attribute_ids" widget="one2many_list" context="{'show_attribute': False}" nolabel="1">
+			                            <tree string="Attributes" editable="bottom">
+			                                <field name="attribute_id" domain="['|',('amazon_categ_id','=',parent.child_categ_id),('amazon_categ_id','=',parent.amazon_categ_id)]" required="1" options="{'no_create':True,'no_create_edit': True}" />
+			                                <field name="value_ids" widget="many2many_tags"  attrs="{'required':[('attribute_id','!=',False)]}" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+			                                <field name="uom_type_id" invisible="1"/>
+			                                <field name="uom_type" attrs="{'required':[('uom_type_id','!=',False)]}"/>
+			                                <field name="value_id" attrs="{'required':[('uom_type_id','!=',False)],'readonly':[('uom_type_id','=',False)]}" domain="[('uom_type_id', '=',uom_type_id)]"/>
+			                            </tree>
+			                        </field>								
+								</group>
+							</page>
+							<page string="Promotion &amp; Rebate">
+								<group string="Promotion">
+									<group>
+										<field name="promo_tag_type"/>
+										<field name="promotion_keywords_ids" widget="many2many_tags" attrs="{'required':[('promo_tag_type','!=',False)]}"/>								
+									</group>
+									<group>
+										<field name="effective_from_date" attrs="{'required':[('promo_tag_type','!=',False)]}"/>
+										<field name="effective_through_date" attrs="{'required':[('promo_tag_type','!=',False)]}"/>
+									</group>
+								</group>
+								<group string="Rebate">
+									<group>
+										<field name="rebate_start_date"/>
+										<field name="rebate_end_date"/>
+									</group>
+									<group>
+										<field name="rebate_name"/>
+									</group>
+								</group>
+								<group string="Rebate Message">
+									<field name="rebate_message"/>
+								</group>
+							</page>
+							<page string="Child Variants"  attrs="{'invisible':[('variation_data','=','child')]}">
+								<group>
+									<field name="child_variant_ids" nolabel="1" >
+										<tree>
+										 <field name="name"/>
+										 <field name="seller_sku"/>
+										</tree>
+									</field>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_amazon_parent_product_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('variation_data','=','parent')]</field>
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_products">
+					<br/>
+					<br/>
+					<br/>
+					<p>
+						<b>There is no any Amazon Product Created yet</b>
+					</p>
+					<p>
+						You can't create Amazon products directly from here. In order to
+						create products for Amazon,
+						You need to go to menu
+						<b>Sales >> Products >> Products</b>
+						and in list view of Product, select one or more products which you
+						want to export to Amazon.
+						At the top side, under the "More" section, you will find an option
+						<b>"Prepare Product for Export"</b>
+						.
+						Clicking on that option, you will be asked to select Amazon Instance.After
+						those products successfully prepared for Amazon, you can see all
+						of them over here in this menu.
+						However here you can open those products and add more Amazon specific
+						attribute values to products. Once all products are well
+						configured with proper values, you can export
+						them to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+
+		<record id="action_amazon_product_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>
+			<field name="context">{'do_not_allow_update_amazon_operations':True}</field>
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_products">
+					<br />
+					<br />
+					<br />
+					<p>
+						<b>There is no any Amazon Product Created yet</b>
+					</p>
+					<p>
+						You can't create Amazon products directly from here. In order to
+						create products for Amazon,
+						You need to go to menu
+						<b>Sales >> Products >> Products</b>
+						and in list view of Product, select one or more products which you
+						want to export to Amazon.
+						At the top side, under the "More" section, you will find an option
+						<b>"Prepare Product for Export"</b>
+						.
+						Clicking on that option, you will be asked to select Amazon Instance.After
+						those products successfully prepared for Amazon, you can see all
+						of them over here in this menu.
+						However here you can open those products and add more Amazon specific
+						attribute values to products. Once all products are well
+						configured with proper values, you can export
+						them to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+
+		<record id="action_amazon_product_exported_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('instance_id','!=',False),('exported_to_amazon','=',True)]</field>
+			
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_products">
+					<br />
+					<br />
+					<br />
+					<p>
+						<b>There is no any Amazon Product Created yet</b>
+					</p>
+					<p>
+						You can't create Amazon products directly from here. In order to
+						create products for Amazon,
+						You need to go to menu
+						<b>Sales >> Products >> Products</b>
+						and in list view of Product, select one or more products which you
+						want to export to Amazon.
+						At the top side, under the "More" section, you will find an option
+						<b>"Prepare Product for Export"</b>
+						.
+						Clicking on that option, you will be asked to select Amazon Instance.After
+						those products successfully prepared for Amazon, you can see all
+						of them over here in this menu.
+						However here you can open those products and add more Amazon specific
+						attribute values to products. Once all products are well
+						configured with proper values, you can export
+						them to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+		<record id="action_amazon_product_not_exported_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('instance_id','!=',False),('exported_to_amazon','=',False)]
+			</field>
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_products">
+					<br />
+					<br />
+					<br />
+					<p>
+						<b>There is no any Amazon Product Created yet</b>
+					</p>
+					<p>
+						You can't create Amazon products directly from here. In order to
+						create products for Amazon,
+						You need to go to menu
+						<b>Sales >> Products >> Products</b>
+						and in list view of Product, select one or more products which you
+						want to export to Amazon.
+						At the top side, under the "More" section, you will find an option
+						<b>"Prepare Product for Export"</b>
+						.
+						Clicking on that option, you will be asked to select Amazon Instance.After
+						those products successfully prepared for Amazon, you can see all
+						of them over here in this menu.
+						However here you can open those products and add more Amazon specific
+						attribute values to products. Once all products are well
+						configured with proper values, you can export
+						them to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+		<record id="action_amazon_non_variation_product_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('variation_data','=',False)]</field>
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="help" type="html">
+				<div class="oe_empty_amazon_products">
+					<br/>
+					<br/>
+					<br/>
+					<p>
+						<b>There is no any Amazon Product Created yet</b>
+					</p>
+					<p>
+						You can't create Amazon products directly from here. In order to
+						create products for Amazon,
+						You need to go to menu
+						<b>Sales >> Products >> Products</b>
+						and in list view of Product, select one or more products which you
+						want to export to Amazon.
+						At the top side, under the "More" section, you will find an option
+						<b>"Prepare Product for Export"</b>
+						.
+						Clicking on that option, you will be asked to select Amazon Instance.After
+						those products successfully prepared for Amazon, you can see all
+						of them over here in this menu.
+						However here you can open those products and add more Amazon specific
+						attribute values to products. Once all products are well
+						configured with proper values, you can export
+						them to Amazon.
+					</p>
+				</div>
+			</field>
+		</record>
+		
+		<record id="action_instance_amazon_product_ept" model="ir.actions.act_window">
+			<field name="name">Amazon Product</field>
+			<field name="res_model">amazon.product.ept</field>
+			<field name="view_type">form</field>			
+			<field name="view_id" ref="amazon_product_tree_view_ept" />
+			<field name="domain">[('instance_id','=',active_id)]</field>			
+		</record>		
+		<record id="action_amazon_instance_product_exported_ept" model="ir.actions.act_window">
+	        <field name="name">Exported Product</field>
+			<field name="res_model">amazon.product.ept</field>
+	        <field name="view_type">form</field>
+	        <field name="view_id" ref="amazon_product_tree_view_ept"/>
+			<field name="domain">[('exported_to_amazon','=',True),('instance_id','=',active_id)]</field>
+		</record>
+		<record id="action_amazon_instance_product_not_exported_ept" model="ir.actions.act_window">
+	        <field name="name">Ready to Export Product</field>
+			<field name="res_model">amazon.product.ept</field>
+	        <field name="view_type">form</field>
+	        <field name="view_id" ref="amazon_product_tree_view_ept"/>
+			<field name="domain">[('exported_to_amazon','=',False),('instance_id','=',active_id)]</field>
+		</record>		
+		
+		<menuitem id="menu_item_parent_amazon_products_ept" name="Products"
+			parent="amazon_ept_v10.amazon_instance_menu_item" sequence="3" />
+
+		<menuitem id="menu_item_amazon_products_ept_2" name="Variation Products" parent="amazon_ept_v10.menu_item_parent_amazon_products_ept" action="action_amazon_parent_product_ept" sequence="3" />
+
+		<menuitem id="menu_item_amazon_products_ept_3" name="Non-Variation Products" parent="amazon_ept_v10.menu_item_parent_amazon_products_ept" action="action_amazon_non_variation_product_ept" sequence="3" />
+
+		<menuitem id="menu_item_amazon_products_ept" name="All Variants"
+			parent="amazon_ept_v10.menu_item_parent_amazon_products_ept" sequence="6"
+			action="action_amazon_product_ept" />
+
+	</data>
+</odoo>

@@ -1,0 +1,10 @@
+import sale
+import sale_order_line
+import sale_workflow_process
+import res_partner
+import stock_picking
+import custom_base_sale
+import custom_base
+import environment
+import procurement_group
+import transaction_log_ept

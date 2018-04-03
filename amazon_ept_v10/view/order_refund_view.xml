@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+	 <record model="ir.ui.view" id="view_search_amazon_order_refund_ept">
+		<field name="name">Amazon Order Refund Search View</field>
+		<field name="model">amazon.order.refund.ept</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+			<search string="Order Refund">
+				<field name = "order_id"/>
+				<field name="invoice_id"/>
+				<group expand="0" string="Group By...">
+					 <filter string="Instance" icon="terp-personal" context="{'group_by':'instance_id'}"/>
+					 <filter string="Status" icon="terp-personal" context="{'group_by':'state'}"/>
+			    </group>
+			</search>
+		</field>
+	</record>  	
+	<record id="amazon_order_refund_ept" model="ir.ui.view">
+	    <field name="name">Amazon Order Refund</field>
+	    <field name="model">amazon.order.refund.ept</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Order Refund" colors="red:state=='cancel'; green:state=='validate';">
+            	<field name="order_id"/>
+            	<field name="instance_id"/>
+            	<field name="journal_id"/>
+            	<field name="invoice_id"/>
+            	<field name="state"/>
+			</tree>
+		</field>
+	</record>
+	<record id="amazon_order_refund_form_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Order Refund</field>
+		<field name="model">amazon.order.refund.ept</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Instance" version='7.0'>
+               <header>
+                       <button name="validate" string="Validate" type="object" states="draft" class="oe_highlight"/>
+                       <button name="cancel_refund" string="Cancel" type="object" states="draft" class="oe_highlight"/>
+                       <button name="reset_to_draft" string="Reset To Draft" type="object" states="cancel"/>				
+					   <field name="state" widget="statusbar" statusbar_visible="draft,validate,refund"/>
+			   </header>
+				<sheet>						
+					<group>
+						<group>
+							<field name="order_id" required="1"  options="{'no_create':True,'no_create_edit': True}" attrs="{'readonly': [('state','!=','draft')]}" domain="[('state','in',['done','shipping_except']),('fulfillment_by','=','MFN')]"/>
+							<field name="instance_id"/>
+							<field name="company_id" invisible="1"/>
+							<field name="auto_create_picking" invisible="1"/>
+						</group>
+						<group>
+						</group>
+					</group>
+					<notebook>
+						<page string="Refund Lines">
+							<group>
+							<field name="amazon_refund_line_ids" nolabel="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+							</group>
+						</page>
+						<page string="Account Info">
+							<group>
+								<group>
+									<field name="journal_id" widget='selection' required="1" attrs="{'readonly': [('state','!=','draft')]}" domain="[('company_id','=',company_id)]" />
+									<field name="date_ept" attrs="{'readonly': [('state','!=','draft')]}"/>															
+								</group>
+								<group>
+									<field name="invoice_id" readonly="1"/>					
+								</group>						
+							</group>
+						</page>
+						<page string="Picking Info">
+							<group>
+								<field name="picking_ids" readonly="1" nolabel="1"/>
+							</group>
+						</page>
+					</notebook>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+               	</div>					
+
+			</form>
+		</field>
+	</record>
+	<record id="amazon_order_line_refund_ept" model="ir.ui.view">
+	    <field name="name">Amazon Order Line Refund</field>
+	    <field name="model">amazon.refund.order.lines</field>
+		<field name="arch" type="xml">
+            <tree string="Amazon Order Line Refund" create="false">
+            	<field name="amazon_product_id"/>
+	            <field name="product_qty" sum="Total"/>
+	            <field name="price_subtotal" sum="Total"/>
+				<field name="total_refund" sum="Total"/>				
+
+			</tree>
+		</field>
+	</record>
+
+	<record id="amazon_order_line_refund_form_view_ept" model="ir.ui.view">
+		<field name="name">Amazon Order Line Refund</field>
+		<field name="model">amazon.refund.order.lines</field>
+		<field name="arch" type="xml">
+			<form string="Amazon Order Line Refund" version='7.0'>
+				<group attrs="{'readonly': [('state','!=','draft')]}">
+					<group >
+						<field name="amazon_product_id" readonly="1" />
+						<field name="message" required="1"/>
+						<field name="state" invisible="1"/>
+					</group>
+					<group>
+						<field name="product_qty" />
+						<field name="qty_canceled"/>
+						<field name="price_subtotal" invisible="1"/>	
+					</group>
+					<group>
+						<field name="order_line_amount" attrs="{'invisible': [('order_line_amount','=',0.0)]}" />
+						<field name="order_line_tax" attrs="{'invisible': [('order_line_tax','=',0.0)]}" />
+						<field name="shipping_charge"  attrs="{'invisible': [('shipping_charge','=',0.0)]}"/>
+						<field name="shipping_tax" attrs="{'invisible': [('shipping_tax','=',0.0)]}"/>
+						<field name="gift_wrap_charge" attrs="{'invisible': [('gift_wrap_charge','=',0.0)]}"/>
+						<field name="gift_wrap_tax" attrs="{'invisible': [('gift_wrap_tax','=',0.0)]}"/>
+						<field name="item_promotion_adjust"/>
+						<field name="item_promotion_id"/>
+					</group>
+					<group>
+						<field name="shipping_promotion_adjust"/>
+						<field name="shipping_promotion_id"/>				
+						<field name="total_refund"/>				
+					</group>
+			</group>
+			</form>
+		</field>
+	</record>
+   	
+	<record id="action_amazon_order_refund_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Refund</field>
+		<field name="res_model">amazon.order.refund.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_order_refund_ept"/>
+        <field name="help" type="html">
+              <div class="oe_empty_amazon_refund">
+                  <br/><br/><br/>
+                  <p>
+                   There is no Refund Order created for any of Amazon Instance yet. Clicking on "Create" button, you can create new Refund order for Amazon.
+                   To create Refund at Amazon, you need to select Amazon Order no. and set the refund Qty &amp; Amount per product of that Order.
+                  </p>
+              </div>
+           </field>
+   	</record>
+   	
+	<record id="action_amazon_instance_order_refund_ept" model="ir.actions.act_window">
+        <field name="name">Amazon Refund</field>
+		<field name="res_model">amazon.order.refund.ept</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="amazon_order_refund_ept"/>
+        <field name="domain">[('instance_id','=',active_id)]</field>
+   	</record>   	
+   	
+	<record id="action_draft_tree_amazon_refunds" model="ir.actions.act_window">
+        <field name="name">Amazon Refund</field>
+		<field name="res_model">amazon.order.refund.ept</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="view_id" ref="amazon_order_refund_ept"/>
+        <field name="help" type="html">
+              <div class="oe_empty_amazon_refund">
+                  <br/><br/><br/>
+                  <p>
+                   There is no Refund Order created for any of Amazon Instance yet. Clicking on "Create" button, you can create new Refund order for Amazon.
+                   To create Refund at Amazon, you need to select Amazon Order no. and set the refund Qty &amp; Amount per product of that Order.
+                  </p>
+              </div>
+           </field>
+   	</record>
+
+	<record id="action_paid_tree_amazon_refunds" model="ir.actions.act_window">
+        <field name="name">Amazon Refund</field>
+		<field name="res_model">amazon.order.refund.ept</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','validate')]</field>
+        <field name="view_id" ref="amazon_order_refund_ept"/>
+        <field name="help" type="html">
+              <div class="oe_empty_amazon_refund">
+                  <br/><br/><br/>
+                  <p>
+                   There is no Refund Order created for any of Amazon Instance yet. Clicking on "Create" button, you can create new Refund order for Amazon.
+                   To create Refund at Amazon, you need to select Amazon Order no. and set the refund Qty &amp; Amount per product of that Order.
+                  </p>
+              </div>
+           </field>
+   	</record>   	   	   	
+
+     <menuitem id="amazon_refund_config_menu_item" name="Refund Orders" parent="amazon_ept_v10.amazon_instance_menu_item"  sequence="11"/>
+
+     <menuitem id="amazon_refund_menu_item" name="Refund"
+      parent="amazon_ept_v10.amazon_refund_config_menu_item" action="action_amazon_order_refund_ept" sequence="10"/>
+      
+   </data>
+</odoo>
+	

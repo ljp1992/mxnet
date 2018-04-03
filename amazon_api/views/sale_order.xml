@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_order_ljp" model="ir.ui.view">
+            <field name="name">sale_order_ljp</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="b2b_platform.qdoo_sale_order_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='e_order_amount']" position="replace">
+                    <field name="currency_id_amazon" invisible="1"/>
+                    <label for="e_order_amount" string="订单金额"/>
+                        <div >
+                            <field name="e_order_amount"  readonly="1"/>
+                            <field name="amount_currency" nolabel="1" readonly="1"/>
+                        </div>
+                </xpath>
+                <xpath expr="//field[@name='e_order_freight']" position="replace">
+                    <label for="e_order_freight" string="运费"/>
+                        <div class="oe_inline">
+                            <field name="e_order_freight" readonly="1"/>
+                            <field name="freight_currency" nolabel="1" readonly="1"/>
+                        </div>
+                </xpath>
+                <xpath expr="//field[@name='e_order_commission']" position="replace">
+                    <label for="e_order_commission" string="佣金"/>
+                        <div class="oe_inline">
+                            <field name="e_order_commission" class="oe_inline" readonly="1"/>
+                            <field name="commission_currency" nolabel="1" readonly="1" class="oe_inline"/>
+                        </div>
+                </xpath>
+                <xpath expr="//field[@name='shop_unit_price']" position="after">
+                    <field name="amazon_shipping_price" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='delivery_mode']" position="after">
+                    <field name="amazon_state" readonly="1" groups="amazon_api.see_amazon_api"/>
+                    <field name="shipment_service_level_category" readonly="1" groups="amazon_api.see_amazon_api"/>
+                </xpath>
+                <xpath expr="//field[@name='shop_product']" position="before">
+                    <field name="order_item_id" readonly="1" groups="amazon_api.see_amazon_api"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

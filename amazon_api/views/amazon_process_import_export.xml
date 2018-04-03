@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="amazon_process_import_export_form" model="ir.ui.view">
+            <field name="name">amazon_process_import_export_form</field>
+            <field name="model">amazon.process.import.export</field>
+            <field name="arch" type="xml">
+                <form string="Import/Export">
+                	<group>
+	                	<field name='instance_ids' string="店铺" required="1" widget="many2many_tags" options="{'no_create':True,'no_create_edit': True}"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="start_date" required="1"/>
+                            <field name="end_date" required="1"/>
+                        </group>
+                    </group>
+                	<footer>
+                        <!--<button name="download_sale_order" string="同步" type="object" class="oe_highlight"/>-->
+                        <button name="import_export_processes" string="同步" type="object" class="oe_highlight"/>
+                        <button string="取消" class="oe_highlight" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="amazon_process_import_export_act" model="ir.actions.act_window">
+         	<field name="name">订单同步</field>
+         	<field name="type">ir.actions.act_window</field>
+         	<field name="res_model">amazon.process.import.export</field>
+         	<field name="view_type">form</field>
+         	<field name="view_mode">form</field>
+         	<field name="target">new</field>
+            <!--<field name="context">{'default_import_sale_order': True}</field>-->
+        </record>
+
+        <record id="amazon_process_import_export_act_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="amazon_process_import_export_form"/>
+            <field name="act_window_id" ref="amazon_process_import_export_act"/>
+        </record>
+
+        <menuitem name="订单同步" id="amazon_process_import_export_menu" parent="b2b_platform.menu_ecommerce_admin"
+                  action="amazon_process_import_export_act" sequence="50"
+                  groups="b2b_platform.group_qdoo_distributor_user"/>
+    </data>
+</odoo>
+

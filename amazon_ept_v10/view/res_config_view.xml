@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="view_form_res_config_amazon_seller" model="ir.ui.view">
+            <field name="name">Configure Seller</field>
+            <field name="model">res.config.amazon.seller</field>
+            <field name="arch" type="xml">
+                <form string="Configure Seller" class="oe_form_configuration">
+					<group>
+                    	<group>
+                    		<field name="name" required="1"/>
+                    		<field name='access_key' required="1"/>
+                    		<field name='merchant_id' required="1"/>
+                    	</group>
+                    	<group>
+                    		<field name='country_id' domain="[('amazon_marketplace_code','!=',False)]" widget="selection" required="1"/>
+                    		<field name='secret_key' required="1"/>
+                    	</group>
+                    </group>                    
+                	<footer>
+                        <button string="Create" type="object" name="test_amazon_connection" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>                    
+                </form>
+            </field>
+        </record>
+                        
+        <record id="res_config_action_amazon_seller" model="ir.actions.act_window">
+            <field name="name">Seller</field>
+            <field name="res_model">res.config.amazon.seller</field>
+            <field name="view_mode">form</field>
+            <field name="view_type">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_form_res_config_amazon_seller"/>
+        </record> 
+        
+        <record id="view_res_config_amazon_instance" model="ir.ui.view">
+            <field name="name">Configure Instance</field>
+            <field name="model">res.config.amazon.instance</field>
+            <field name="arch" type="xml">
+                <form string="Configure Instance" class="oe_form_configuration">
+					<group>
+                    	<group>
+                    		<field name="name" required="1"/>
+                    		<field name='seller_id' required="1"/>
+                    	</group>
+                    	<group>
+                    		<field name='marketplace_id' required="1"/>
+                    	</group>
+                    </group>        
+                	<footer>
+                        <button string="Create" type="object" name="create_amazon_instance" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>                    
+                </form>
+            </field>
+        </record>                
+        <record id="res_config_action_amazon_instance" model="ir.actions.act_window">
+            <field name="name">Instances</field>
+            <field name="res_model">res.config.amazon.instance</field>
+            <field name="view_mode">form</field>
+            <field name="view_type">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_res_config_amazon_instance"/>
+        </record>        
+
+        <record id="view_amazon_config_settings" model="ir.ui.view">
+            <field name="name">Amazon Settings</field>
+            <field name="model">amazon.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="Configure Amazon" class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                    </header>
+                    <separator string="Amazon Seller" groups="amazon_ept_v10.group_amazon_manager_ept"/>
+                    <group groups="amazon_ept_v10.group_amazon_manager_ept">
+                        <label for="id" string="Amazon Seller"/>
+                        <div name="seller_config">
+                            <div>
+                                <label for="seller_id" string="Select Seller"/>
+                                <field name="seller_id"
+                                    widget="selection"
+                                    on_change="onchange_seller_id(seller_id,instance_id,product_ads_account)"
+                                    attrs="{'required':[('seller_id','!=',False)]}"
+                                    class="oe_inline"/>
+                                <button string="Create More Seller"
+                                    icon="fa-arrow-right text-success"
+                                    name="%(res_config_action_amazon_seller)d"
+                                    type="action"
+                                    class="oe_link"
+                                    />
+                            </div>
+                                     
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+                                <label for="order_auto_update"/>
+                                <field name="order_auto_update" class="oe_inline" help="If Ticked, Order shipment will be automatically updated by system to Amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="order_update_interval_number" attrs="{'required': [('order_auto_update', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_update', '=', False)]}" class="oe_inline"/>
+                                <field name="order_update_interval_type" attrs="{'required': [('order_auto_update', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_update', '=', False)]}" class="oe_inline"/>
+                                <field name="order_update_next_execution" attrs="{'required': [('order_auto_update', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_update', '=', False)]}" class="oe_inline"/>
+                                <field name="order_update_user_id" attrs="{'required': [('order_auto_update', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_update', '=', False)]}" class="oe_inline"/>
+
+                            </div>
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+                                <label for="stock_auto_export"/>
+                                <field name="stock_auto_export" class="oe_inline" help="If Ticked, Product stock will be automatically Exported by system to Amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="inventory_export_interval_number" attrs="{'required': [('stock_auto_export', '=', True),('seller_id','!=',False)],'invisible': [('stock_auto_export', '=', False)]}" class="oe_inline"/>
+                                <field name="inventory_export_interval_type" attrs="{'required': [('stock_auto_export', '=', True),('seller_id','!=',False)],'invisible': [('stock_auto_export', '=', False)]}" class="oe_inline"/>
+                                <field name="inventory_export_next_execution" attrs="{'required': [('stock_auto_export', '=', True),('seller_id','!=',False)],'invisible': [('stock_auto_export', '=', False)]}" class="oe_inline"/>
+                                <field name="inventory_export_user_id" attrs="{'required': [('stock_auto_export', '=', True),('seller_id','!=',False)],'invisible': [('stock_auto_export', '=', False)]}" class="oe_inline"/>
+
+                            </div>                                                        
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+                                <label for="auto_send_invoice"/>
+                                <field name="auto_send_invoice" class="oe_inline" help="If Ticked, System will send invoice by email."/>
+                                <label for="id" string="  "/>
+                                <field name="auto_send_invoice_interval_number" attrs="{'required': [('auto_send_invoice', '=', True),('seller_id','!=',False)],'invisible': [('auto_send_invoice', '=', False)]}" class="oe_inline"/>
+                                <field name="auto_send_invoice_process_interval_type" attrs="{'required': [('auto_send_invoice', '=', True),('seller_id','!=',False)],'invisible': [('auto_send_invoice', '=', False)]}" class="oe_inline"/>
+                                <field name="auto_send_invoice_next_execution" attrs="{'required': [('auto_send_invoice', '=', True),('seller_id','!=',False)],'invisible': [('auto_send_invoice', '=', False)]}" class="oe_inline"/>
+                                <field name="auto_send_invoice_user_id" attrs="{'required': [('auto_send_invoice', '=', True),('seller_id','!=',False)],'invisible': [('auto_send_invoice', '=', False)]}" class="oe_inline"/>
+                            </div>                                                        
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+                                <label for="settlement_report_auto_create"/>
+                                <field name="settlement_report_auto_create" class="oe_inline" help="If Ticked, System will import settlement report from amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="settlement_report_create_interval_number" attrs="{'required': [('settlement_report_auto_create', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_create', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_create_interval_type" attrs="{'required': [('settlement_report_auto_create', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_create', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_create_next_execution" attrs="{'required': [('settlement_report_auto_create', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_create', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_create_user_id" attrs="{'required': [('settlement_report_auto_create', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_create', '=', False)]}" class="oe_inline"/>
+                            </div>                                                        
+
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+                                <label for="settlement_report_auto_process"/>
+                                <field name="settlement_report_auto_process" class="oe_inline" help="If Ticked, System will process settlement report from amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="settlement_report_process_interval_number" attrs="{'required': [('settlement_report_auto_process', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_process', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_process_interval_type" attrs="{'required': [('settlement_report_auto_process', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_process', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_process_next_execution" attrs="{'required': [('settlement_report_auto_process', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_process', '=', False)]}" class="oe_inline"/>
+                                <field name="settlement_report_process_user_id" attrs="{'required': [('settlement_report_auto_process', '=', True),('seller_id','!=',False)],'invisible': [('settlement_report_auto_process', '=', False)]}" class="oe_inline"/>
+                            </div>       
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+								<label for="create_new_product"/>
+								<field name="create_new_product" class='oe_inline' help="If true then system will allow to create new product if not found in odoo"/>
+							</div>                                                                             
+                            <div attrs="{'invisible': [('seller_id', '=', False)]}" >
+								<label for="manage_multi_tracking_number_in_delivery_order"/>
+								<field name="manage_multi_tracking_number_in_delivery_order" class='oe_inline' help="If true then system will allow to Manage multi tracking number in delivery order"/>
+							</div>                                                                             
+						
+                        </div>
+                    </group>
+                    <separator string="Amazon Instances" groups="amazon_ept_v10.group_amazon_manager_ept" attrs="{'invisible': [('seller_id', '=', False)]}"/>
+                    <group groups="amazon_ept_v10.group_amazon_manager_ept" attrs="{'invisible': [('seller_id', '=', False)]}">
+                        <label for="id" string="Amazon Instances"/>
+                        <div>
+                            <div>
+                                <label for="instance_id" string="Select Instance"/>
+                                <field name="instance_id"
+                                    widget="selection"
+                                    on_change="onchange_instance_id(instance_id,product_ads_account)"
+                                    attrs="{'required':[('instance_id','!=',False)]}"
+                                    class="oe_inline"/>
+                                <button string="Create More Instance"
+                                    icon="fa-arrow-right text-success"
+                                    context="{'default_seller_id':seller_id}"
+                                    name="%(res_config_action_amazon_instance)d"
+                                    type="action"
+                                    class="oe_link"
+                                    />
+                            </div>
+                        </div>
+                    </group>
+                    <separator string="Product Advertising Account" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Advertising Account"/>
+                        <div name="ads_config">
+                            <div>
+                                <label for="product_ads_account"/>
+                                <field name="product_ads_account" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('product_ads_account', '=', False)]}">
+                                <label for="pro_advt_access_key"/>
+                                <field name="pro_advt_access_key" attrs="{'required': [('product_ads_account', '=', True),('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('product_ads_account', '=', False)]}">
+                                <label for="pro_advt_scrt_access_key"/>
+                                <field name="pro_advt_scrt_access_key" attrs="{'required': [('product_ads_account', '=', True),('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('product_ads_account', '=', False)]}">
+                                <label for="pro_advt_associate_tag" attrs="{'invisible': [('product_ads_account', '=', False)]}"/>
+                                <field name="pro_advt_associate_tag" attrs="{'required': [('product_ads_account', '=', True),('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+                    <separator string="General Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Options"/>
+                        <div name="general_config">
+                            <div>
+                                <label for="warehouse_id"/>
+                                <field name="warehouse_id"
+                                widget="selection" 
+                                attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <field name="country_id" invisible="1" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="company_id"/>
+                                <field name="company_id" widget="selection" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="team_id" />
+                                <field name="team_id" widget="selection"  class="oe_inline"/>
+                            </div>
+
+                            <div invisible="1">
+                                <label for="partner_id" />
+                                <field name="partner_id" class="oe_inline" />
+                            </div>
+                            <div>
+                                <label for="customer_is_company" attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                                <field name="customer_is_company" class="oe_inline" attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                            </div>
+                            <div>
+                                <label for="lang_id"/>
+                                <field name="lang_id" widget="selection" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="auto_workflow_id"/>
+                                <field name="auto_workflow_id" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            
+                        </div>
+                    </group>  
+                    <separator string="Product Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Products"/>
+                        <div name="product_config">
+                            <div>
+                                <label for="shipment_charge_product_id"/>
+                                <field name="shipment_charge_product_id" class="oe_inline" attrs="{'required':[('instance_id','!=',False)]}"/>
+                            </div>
+                            <div>
+                                <label for="gift_wrapper_product_id"/>
+                                <field name="gift_wrapper_product_id" class="oe_inline" attrs="{'required':[('instance_id','!=',False)]}"/>
+                            </div>
+                            <div>
+                                <label for="promotion_discount_product_id"/>
+                                <field name="promotion_discount_product_id" class="oe_inline" attrs="{'required':[('instance_id','!=',False)]}"/>
+                            </div>
+                            <div>
+                                <label for="ship_discount_product_id"/>
+                                <field name="ship_discount_product_id" class="oe_inline" attrs="{'required':[('instance_id','!=',False)]}"/>
+                            </div>
+                            <div>
+                                <label for="condition"/>
+                                <field name="condition" class="oe_inline"/>
+                            </div>
+                            <div>
+                            	<label for="settlement_report_journal_id"/>
+								<field name="settlement_report_journal_id" class="oe_inline"  domain="[('company_id','=',company_id),('type','in',['cash','bank'])]"/>
+                            </div>	
+                            <div>
+                            	<label for="ending_balance_account_id"/>
+                            	<field name="ending_balance_account_id" class="oe_inline" domain="[('company_id','=',company_id)]"/>
+                            </div>
+                            <div attrs="{'invisible':[('ending_balance_account_id','=',False)]}">
+                            	<label for="ending_balance_description"/>
+                            	<field name="ending_balance_description" class="oe_inline"  domain="[('company_id','=',parent.company_id)]" attrs="{'required':[('ending_balance_account_id','!=',False)]}"/>
+                            </div>
+                            <div invisible="1">
+                                <label for="price_tax_included"/>
+                                <field name="price_tax_included" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+                    <separator string="Payment Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Payment"/>
+                        <div name="payment_config">
+                            <div>
+                                <label for="pricelist_id"/>
+                                <field name="pricelist_id" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="payment_term_id"/>
+                                <field name="payment_term_id" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+					<group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Taxes"/>
+                        <div name="taxes_config">
+                            <div>
+                                <label for="fiscal_position_id"/>
+                                <field name="fiscal_position_id" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="tax_id" invisible="1"/>
+                                <field name="tax_id" class="oe_inline" invisible="1"/>
+                            </div>
+                        </div>
+                    </group>
+                                
+                    <separator string="Order Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Orders"/>
+                        <div name="order_config">
+                        	<div>
+                        		<label for="is_default_odoo_sequence_in_sales_order"/>
+                        		<field name="is_default_odoo_sequence_in_sales_order" class="oe_inline"/>
+                        	</div>
+                            <div attrs="{'invisible': [('is_default_odoo_sequence_in_sales_order', '=',True)]}">
+                                <label for="order_prefix" />
+                                <field name="order_prefix" class="oe_inline"/>
+                            </div>
+                                                    
+	                       <div attrs="{'invisible': [('instance_id', '=',False)]}">
+                               <label for="create_sale_order_from_flat_or_xml_report"/>                               
+                               <field name="create_sale_order_from_flat_or_xml_report"  attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline" />
+	                       		
+	                       </div>
+	                       	                           
+                           	<div attrs="{'invisible': ['|',('instance_id', '=', False),('create_sale_order_from_flat_or_xml_report','!=','api')]}" >
+                                <label for="order_auto_import" />
+                                <field name="order_auto_import" class="oe_inline"  help="If Ticked, Order will be automatically Imported by system from Amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="order_import_interval_number" attrs="{'required': [('order_auto_import', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_import', '=', False)]}" class="oe_inline"/>
+                                <field name="order_import_interval_type" attrs="{'required': [('order_auto_import', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_import', '=', False)]}" class="oe_inline"/>
+                                <field name="order_import_next_execution" attrs="{'required': [('order_auto_import', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_import', '=', False)]}" class="oe_inline"/>
+                                <field name="order_import_user_id" attrs="{'required': [('order_auto_import', '=', True),('seller_id','!=',False)],'invisible': [('order_auto_import', '=', False)]}" class="oe_inline"/>
+                           	</div>                    	    
+                      		
+                      		<div attrs="{'invisible': ['|',('instance_id', '=', False),('create_sale_order_from_flat_or_xml_report','=','api')]}" >
+                                <label for="order_auto_import_xml_or_flat" />
+                                <field name="order_auto_import_xml_or_flat" class="oe_inline"  help="If Ticked, Order will be automatically Imported by system from Amazon."/>
+                                <label for="id" string="  "/>
+                                <field name="order_auto_import_xml_or_flat_interval_number" attrs="{'required': [('order_auto_import_xml_or_flat', '=', True),('instance_id','!=',False)],'invisible': [('order_auto_import_xml_or_flat', '=', False)]}" class="oe_inline"/>
+                                <field name="order_auto_import_xml_or_flat_interval_type" attrs="{'required': [('order_auto_import_xml_or_flat', '=', True),('instance_id','!=',False)],'invisible': [('order_auto_import_xml_or_flat', '=', False)]}" class="oe_inline"/>
+                                <field name="order_auto_import_xml_or_flat_next_execution" attrs="{'required': [('order_auto_import_xml_or_flat', '=', True),('instance_id','!=',False)],'invisible': [('order_auto_import_xml_or_flat', '=', False)]}" class="oe_inline"/>
+                                <field name="order_auto_import_xml_or_flat_user_id" attrs="{'required': [('order_auto_import_xml_or_flat', '=', True),('instance_id','!=',False)],'invisible': [('order_auto_import_xml_or_flat', '=', False)]}" class="oe_inline"/>
+                            </div>
+                            
+                            <div name="import_shipped_fbm_orders" attrs="{'invisible': [('instance_id', '=', False)]}">
+	                          		<label for="import_shipped_fbm_orders"/>
+	                     		    <field name="import_shipped_fbm_orders" class="oe_inline" help="If Ticked, Shipped FBM Orders will be Imported by system from Amazon."/>
+                    	</div>
+                      
+                      	   <!--  process report -->
+	                       <div name="auto_process_sale_order_report" attrs="{'invisible': ['|',('create_sale_order_from_flat_or_xml_report','=','api'),('instance_id', '=', False)]}" >
+	                         <label for="auto_process_sale_order_report"/>
+	                         <field name="auto_process_sale_order_report" class="oe_inline" help="If Ticked, Order will be automatically Imported by system from Amazon."/>
+	                         <label for="id" string="  "/>
+	                         <field name="order_process_interval_number" attrs="{'required': [('auto_process_sale_order_report', '=', True),('instance_id','!=',False)],'invisible': [('auto_process_sale_order_report', '=', False)]}" class="oe_inline"/>
+	                         <field name="order_process_interval_type" attrs="{'required': [('auto_process_sale_order_report', '=', True),('instance_id','!=',False)],'invisible': [('auto_process_sale_order_report', '=', False)]}" class="oe_inline"/>
+	                         <field name="order_process_next_execution" attrs="{'required': [('auto_process_sale_order_report', '=', True),('instance_id','!=',False)],'invisible': [('auto_process_sale_order_report', '=', False)]}" class="oe_inline"/>
+	                     	</div>   
+	                       <!--  process report -->
+		                     
+		                     <label for="is_another_soft_create_fbm_reports" attrs="{'invisible': ['|',('create_sale_order_from_flat_or_xml_report','=','api'),('instance_id', '=', False)]}"/>
+		                     <field name="is_another_soft_create_fbm_reports" attrs="{'invisible': ['|',('create_sale_order_from_flat_or_xml_report','=','api'),('instance_id', '=', False)]}"/>	
+		                   </div>
+                    </group>
+                    <separator string="Stock Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Stock"/>
+                        <div name="stock_config">
+                            <div>
+                                <label for="stock_field" />
+                                <field name="stock_field" attrs="{'required':[('instance_id','!=',False)]}" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="update_stock_on_fly"/>
+                                <field name="update_stock_on_fly" class="oe_inline" help="If it is ticked, real time stock updated in Amazon."/>
+                            </div>
+                        </div>
+                    </group>
+                    <separator string="Refund/Return Information" attrs="{'invisible': [('instance_id', '=', False)]}"/>
+                    <group attrs="{'invisible': [('instance_id', '=', False)]}">
+                        <label for="id" string="Refund"/>
+                        <div name="refund_config">
+                            <div>
+                                <label for="auto_create_return_picking"/>
+                                <field name="auto_create_return_picking" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="auto_create_refund"/>
+                                <field name="auto_create_refund" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>                                                                                                    
+                </form>
+            </field>
+        </record>
+
+        <record id="action_amazon_config" model="ir.actions.act_window">
+            <field name="name">Configure Amazon</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amazon.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+        
+        <record id="action_amazon_instance_config" model="ir.actions.act_window">
+            <field name="name">Configure Amazon</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amazon.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'default_instance_id': active_id}</field>
+            <field name="target">inline</field>
+        </record>        
+        
+         
+        
+		<menuitem id="amazon_instance_menu_item" name="Amazon" web_icon="amazon_ept_v10,static/description/icon.png"
+			groups="amazon_ept_v10.group_amazon_user_ept" sequence="20"/>
+
+		<menuitem id="menu_configuration_ept" parent="amazon_instance_menu_item"
+			sequence="20" name="Configuration" groups="amazon_ept_v10.group_amazon_manager_ept" />
+
+        <menuitem id="menu_amazon_config" name="Settings" parent="amazon_ept_v10.menu_configuration_ept"
+            sequence="1" action="action_amazon_config"/>
+    </data>
+</odoo>
+

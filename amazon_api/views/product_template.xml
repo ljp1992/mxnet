@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="product_template_form_ept_inherit" model="ir.ui.view">-->
+            <!--<field name="name">product_template_form_ept_inherit</field>-->
+            <!--<field name="model">product.template</field>-->
+            <!--<field name="inherit_id" ref="amazon_ept_v10.product_template_only_form_view"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--&lt;!&ndash;<xpath expr="//group[2]" position="attributes">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<attribute name="invisible">1</attribute>&ndash;&gt;-->
+                <!--&lt;!&ndash;</xpath>&ndash;&gt;-->
+                <!--<xpath expr="//group/group/field[@name='amazon_categ_id']" position="replace">-->
+                    <!--<field name="browse_node_id" readonly="1" options="{'no_create':True}"/>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//group/group/field[@name='child_categ_id']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//group/group/field[@name='variation_theme_id']" position="replace">-->
+                    <!--<field name="amazon_categ_id" readonly="1" string="模板"-->
+                                   <!--options="{'no_create':True,'no_create_edit': True}"/>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//group/group/field[@name='parent_sku']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record id="product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="attribute_line_ids" position="before">
+                    <group string="" attrs="{'invisible':[('product_in_own_shops','=',False)]}">
+                        <field name="product_in_own_shops" invisible="1"/>
+                        <group>
+                            <field name="browse_node_id" readonly="1" options="{'no_create':True,'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="amazon_categ_id" readonly="1" string="模板"
+                                   options="{'no_create':True,'no_create_edit': True}"/>
+                        </group>
+                    </group>
+				</field>
+			</field>
+		</record>
+
+        <record id="product_template_image_inherit" model="ir.ui.view">
+            <field name="name">product_template_image_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="b2b_platform.qdoo_product_template_only_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='attribute_id']" position="replace">
+                    <field name="attribute_id" options="{'no_create':True}"
+                           context="{'tree_view_ref': 'amazon_api.product_attribute_tree_view'}"/>
+                </xpath>
+                <xpath expr="//field[@name='value_ids']" position="attributes">
+                    <attribute name="options">{}</attribute>
+                    <attribute name="context">
+                        {'default_attribute_id': attribute_id, 'form_view_ref': 'product_attribute_value_form'}
+                    </attribute>
+                </xpath>
+                <xpath expr="//page/field[@name='images']" position="replace">
+                    <field name="main_images">
+                        <tree editable="bottom" create="false">
+                            <field name="name" readonly="1"/>
+                            <field name="oss2_url" widget="image" height="64" readonly="1" string="主图"/>
+                            <!--<field name="tmpl_main" readonly="1"/>-->
+                            <button name="set_minor_image" type="object" string="设置为副图"/>
+                        </tree>
+                    </field>
+                    <field name="minor_images">
+                        <tree editable="bottom" create="false">
+                            <field name="name" readonly="1"/>
+                            <field name="oss2_url" widget="image" height="64" readonly="1" string="副图"/>
+                            <!--<field name="tmpl_main" readonly="1"/>-->
+                            <button name="set_main_image" type="object" string="设置为主图"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_only_form_view_inherit" model="ir.ui.view">
+            <field name="name">product_only_form_view_inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="shop_retail_price"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="upload_product_server_ljp" model="ir.actions.server">
+            <field name="name">上传产品</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                model.upload_product_ljp()
+            </field>
+        </record>
+        <record id="upload_product_value_ljp" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">上传产品</field>
+            <field name="value" eval="'ir.actions.server,%d' % upload_product_server_ljp"/>
+        </record>
+
+        <record id="upload_price_server_ljp" model="ir.actions.server">
+            <field name="name">上传价格</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                model.upload_price_ljp()
+            </field>
+        </record>
+
+        <record id="upload_price_value_ljp" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">上传价格</field>
+            <field name="value" eval="'ir.actions.server,%d' % upload_price_server_ljp"/>
+        </record>
+
+        <record id="upload_image_server_ljp" model="ir.actions.server">
+            <field name="name">上传图片</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                model.upload_image_ljp()
+            </field>
+        </record>
+        <record id="upload_image_value_ljp" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">上传图片</field>
+            <field name="value" eval="'ir.actions.server,%d' % upload_image_server_ljp"/>
+        </record>
+
+        <record id="upload_stock_server_ljp" model="ir.actions.server">
+            <field name="name">上传库存</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">
+                model.upload_stock_ljp()
+            </field>
+        </record>
+        <record id="upload_stock_value_ljp" model="ir.values">
+            <field name="key2">client_action_multi</field>
+            <field name="model">product.template</field>
+            <field name="name">上传库存</field>
+            <field name="value" eval="'ir.actions.server,%d' % upload_stock_server_ljp"/>
+        </record>
+
+    </data>
+</odoo>

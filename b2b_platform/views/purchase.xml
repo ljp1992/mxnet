@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="qdoo_purchase_order_inherit" model="ir.ui.view">
+            <field name="name">qdoo_purchase_order_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//button[@name='button_approve']" position="after">-->
+                    <!--<button name="btn_confirm_and_supplier_wh" type="object" states="draft" string="确认平台采购单" class="oe_highlight"/>-->
+                <!--</xpath>-->
+                <xpath expr="//button[@name='action_rfq_send']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='print_quotation']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='print_quotation']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_approve']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_view_picking']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_done']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_unlock']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="distributor"/>
+                    <field name="origin_so"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_picking']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_view_picking']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <button type="object"
+                        name="action_view_pickings"
+                        class="oe_stat_button"
+                        icon="fa-truck">
+                        <field name="ship_picking_count" widget="statinfo" string="发货单"/>
+                        <field name="picking_ids" invisible="1"/>
+                    </button>
+                    <!--<button type="object"  name="action_view_invoice"-->
+                        <!--class="oe_stat_button"-->
+                        <!--icon="fa-pencil-square-o"-->
+                        <!--attrs="{'invisible':[('state', 'in', ('draft','sent','to approve')),-->
+                                            <!--('invoice_ids','=',[]),-->
+                                            <!--('user_is_distributor','=',True)]}">-->
+                        <!--<field name="invoice_count" widget="statinfo" string="供应商账单"/>-->
+                        <!--<field name='invoice_ids' invisible="1"/>-->
+                    <!--</button>-->
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

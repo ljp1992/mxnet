@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="qdoo_account_invoice_inherit" model="ir.ui.view">
+            <field name="name">qdoo_account_invoice_inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="supplier"/>
+                    <field name="origin_doc"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_account_invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">qdoo_account_invoice_tree_inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="supplier"/>
+                    <!--<field name="origin_doc"/>-->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="qdoo_account_invoice_supplier_inherit" model="ir.ui.view">
+            <field name="name">qdoo_account_invoice_supplier_inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="distributor"/>
+                    <!--<field name="origin_doc"/>-->
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

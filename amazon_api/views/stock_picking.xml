@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="picking_form_inherit_ljp" model="ir.ui.view">-->
+            <!--<field name="name">picking_form_inherit_ljp</field>-->
+            <!--<field name="model">stock.picking</field>-->
+            <!--<field name="inherit_id" ref="stock.view_picking_form"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//button[@name='do_new_transfer']" position="replace">-->
+                    <!--<button name="do_new_transfer" string="cs" type="object" class="oe_highlight"/>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+
+         <!--<record id="picking_form_inherit_ljp" model="ir.ui.view">-->
+            <!--<field name="name">picking_form_inherit_ljp</field>-->
+            <!--<field name="model">stock.picking</field>-->
+            <!--<field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//field[@name='carrier_id']" position="attributes">-->
+                    <!--<attribute name="required">1</attribute>/-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</odoo>

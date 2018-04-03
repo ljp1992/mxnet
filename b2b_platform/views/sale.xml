@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="qdoo_sale_order_inherit" model="ir.ui.view">
+            <field name="name">qdoo_sale_order_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='print_quotation']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='print_quotation']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_done']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="btn_cancel" string="取消" attrs="{'invisible':[('qdoo_state','not in',('new','own','po'))]}" type="object"/>
+                    <button name="btn_own" string="自有发货" type="object" attrs="{'invisible':True}" class="oe_highlight"/>
+                    <button name="btn_platform" string="平台采购" type="object" attrs="{'invisible':['|',('qdoo_state','!=','new'),('delivery_mode','=','fba')]}" class="oe_highlight"/>
+                    <button name="btn_ship" string="发货完成" type="object" attrs="{'invisible':[('qdoo_state','!=','own')]}" class="oe_highlight"/>
+                    <button name="btn_ship" string="假发货" type="object" attrs="{'invisible':[('qdoo_state','!=','po')]}" class="oe_highlight"/>
+                    <button name="btn_return" string="退货" type="object" attrs="{'invisible':[('qdoo_state','!=','delivered')]}"/>
+                    <!--<button name="btn_complaint" string="申诉" type="object" attrs="{'invisible':[('qdoo_state','!=','delivered')]}"/>-->
+                    <button name="btn_resend_submit" string="补发货" type="object" attrs="{'invisible':[('qdoo_state','not in',('delivered','complaint','accepted','rejected'))]}"/>
+                    <field name="qdoo_state" widget="statusbar" statusbar_visible="new,po,delivered"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <field name="po_ids" invisible="1"/>
+                    <button type="object" name="action_view_purchase" class="oe_stat_button" icon="fa-cart-plus" attrs="{'invisible': [('po_count', '=', 0)]}" groups="base.group_user">
+                        <field name="po_count" widget="statinfo" string="采购单"/>
+                    </button>
+                </xpath>
+
+                <xpath expr="//field[@name='name']" position="replace">
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="e_order_from" readonly="1"/>
+                    <field name="shop_id" requred="True" options="{'no_create': True}" domain="[('own_shops','=',True)]"
+                                    attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="origin_doc" readonly="1" attrs="{'invisible':[('fba_order','!=',False)]}"/>
+                    <field name="fba_order" readonly="1" attrs="{'invisible':[('fba_order','=',False)]}"/>
+                    <field name="name" readonly="1"/>
+                    <field name="e_order_country" readonly="1"/>
+                    <field name="e_order_amount" readonly="1"/>
+                    <field name="e_order_freight" readonly="1"/>
+                    <field name="e_order_commission" readonly="1"/>
+                    <field name="e_order_email" readonly="1"/>
+                    <field name="own_orders" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="partner_shipping_id" string="姓名" domain="[('cust_to_shop','!=',False)]"/>
+                    <field name="e_order_company" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="e_order_address" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="e_order_city" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="e_order_state" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="e_order_zip" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="e_order_phone" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                    <field name="delivery_mode" attrs="{'readonly':[('qdoo_state','!=','new')]}"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='product_id']" position="before">
+                    <field name="shop_product" domain="[('product_owner','=',parent.shop_id)]"  options="{'no_create': True}"/>
+                    <!--<field name="shop_product" domain="[('product_owner','=',parent.shop_id),('master_product.product_owner','=',parent.supplier)]"/>-->
+                    <field name="shop_currency"/>
+                    <field name="shop_unit_price"/>
+                    <field name="need_procure"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='name']" position="replace">
+                </xpath>
+                <xpath expr="//tree/field[@name='tax_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="editable='bottom'"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='order_line']" position="attributes">-->
+                    <!--<attribute name="readonly">[('qdoo_state','!=','new')]</attribute>-->
+                <!--</xpath>-->
+            </field>
+        </record>
+
+        <record id="b2b_sale_order_list_inherit" model="ir.ui.view">
+            <field name="name">b2b_sale_order_list_tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="shop_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--record id="search_b2b_sale_order_list" model="ir.ui.view">
+            <field name="name">b2b_sale_order_search</field>
+            <field name="model">sale.order</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="shop_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_shop_id" string="店铺" domain="[]"
+                                context="{'group_by': 'shop_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record-->
+        <record id="b2b_sale_order_carrier_inherit" model="ir.ui.view">
+            <field name="name">b2b_sale_order_carrier_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="delivery.view_order_form_with_carrier"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='carrier_id']" position="replace">
+                    <!--<attribute name="invisible">1</attribute>-->
+                </xpath>
+                <xpath expr="//field[@name='delivery_price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='delivery_set']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_order_form_inherit_sale_stock_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_order_form_inherit_sale_stock_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_policy']" position="after">
+                    <field name="act_carrier" attrs="{'readonly':[('qdoo_state','not in',('own','po'))]}"/>
+                    <field name="act_waybill" attrs="{'readonly':[('qdoo_state','not in',('own','po'))]}"/>
+                    <field name="act_deliver_date" attrs="{'readonly':[('qdoo_state','not in',('own','po'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='route_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='route_id']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+   <data noupdate="1">
+
+       <record id="seq_mfn_sales_report" model="ir.sequence">
+           <field name="name">MFN Sales Report</field>
+           <field name="code">mfn.sales.report.ept</field>
+           <field name="prefix">SR</field>
+           <field name="padding">4</field>
+           <field name="company_id" eval="False"/>
+       </record>
+   </data>
+</openerp>

@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<odoo>
+  <data>	
+        <record id="action_picking_tree_done_ept" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('picking_type_id.code','=','outgoing')]</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+
+     <!-- <menuitem id="menu_item_parent_amazon_delivery_order_ept" name="Transfer Details"
+      parent="amazon_ept.amazon_instance_menu_item" sequence="5"/>
+
+     <menuitem id="menu_item_amazon_delivery_order_ept" name="Delivery Order"
+      parent="menu_item_parent_amazon_delivery_order_ept" action="action_picking_tree_done_ept" sequence="5"/> -->
+
+  </data>
+</odoo>

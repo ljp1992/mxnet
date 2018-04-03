@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="see_amazon_api" model="res.groups">
+            <field name="name">可以看到亚马逊接口菜单</field>
+        </record>
+        <!--<menuitem id="amazon_ept_v10.amazon_instance_menu_item" name="Amazon"-->
+			<!--groups="amazon_api.see_amazon_api" sequence="20"/>-->
+        <record model="ir.ui.menu" id="amazon_ept_v10.amazon_instance_menu_item">
+            <field name="name" >Amazon</field>
+            <field name="groups_id" eval="[(6,0,[ref('see_amazon_api'),]),]"/>
+            <field name="sequence">1</field>
+        </record>
+    </data>
+</odoo>

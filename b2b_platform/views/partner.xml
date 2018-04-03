@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--<record model="ir.ui.view" id="qdoo_view_partner_category_form">-->
+            <!--<field name="name">qdoo_res_partner_category_form</field>-->
+            <!--<field name="model">res.partner.category</field>-->
+            <!--<field name="inherit_id" ref="base.view_partner_category_form"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//field[@name='parent_id']" position="before">-->
+                    <!--<field name="qdoo_func" attrs="{'invisible':[('is_company','=', True)]}"/>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record model="ir.ui.view" id="view_partner_form">
+            <field name="name">res.partner.supplier.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales_purchases']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="btn_registration_pass" string="审核通过" type="object" attrs="{'invisible':['|',('qdoo_state','!=','new'),('type','=','shop')]}" class="oe_highlight"/>
+                        <field name="qdoo_state" widget="statusbar" statusbar_visible="new,approved" attrs="{'invisible':[('qdoo_func','!=','supplier')]}"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='website']" position="after">
+                    <field name="qdoo_func" attrs="{'invisible':[('is_company','=', True)]}"/>
+                    <field name="product_disclosure" attrs="{'invisible':[('disclosure_is_visible','=', False)]}"/>
+                    <field name="disclosure_is_visible" invisible="1"/>
+                    <field name="type"/>
+                    <field name="shop_language"  attrs="{'invisible':[('type','!=', 'shop')]}"/>
+                    <field name="shop_operator"  attrs="{'invisible':[('type','!=', 'shop')]}" options="{'no_create': True}"/>
+                    <!--<field name="shop_operator"  attrs="{'invisible':[('type','!=', 'shop')]}" options="{'no_create': True}"-->
+                                    <!--domain="['|','&amp;',('parent_id','=',parent_id),('type','=','operator'),('id','=',uid.partner_id)]"/>-->
+                    <field name="shop_markup"  attrs="{'invisible':[('type','!=', 'shop')]}"/>
+                    <!--<field name="cust_to_shop"  attrs="{'invisible':[('customer','=', False), ('qdoo_func','!=',False)]}"-->
+                                    <!--domain="[('type','=','shop')]"/>-->
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('is_company','!=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='mobile']" position="after">
+                    <field name="qq_id"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <page name="sales_purchases" position="after">
+                    <page string="公司简介">
+                        <field name="introduction" placeholder="公司简介..."/>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_view_partner_property_form_ljp">
+            <field name="name">account_view_partner_property_form_ljp</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="qdoo_res_partner_account_form_inherit">
+            <field name="name">qdoo_res_partner_account_form_inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='credit']" position="after">
+                    <field name="deposit_amt"/>
+                    <field name="deposit_avail_amt"/>
+                </xpath>
+            </field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='debit']" position="after">
+                    <field name="withdraw_balance"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="qdoo_res_users_form_inherit">
+            <field name="name">qdoo_res_users_form_inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="qdoo_func" invisible="context.get('visibility') in ('dist_user','supplier')"/>
+                    <!--<field name="qdoo_func" attrs="{'invisible':1}"/>-->
+                    <field name="type" stirng="商户角色" attrs="{'invisible':True}"/>
+                    <field name="ownership" attrs="{'invisible':True}"/>
+                    <!--<field name="shop_operator" attrs="{'invisible':[('type','!=', 'shop')]}" domain="[('parent_id','=',ownership),('type','=','operator')]"/>-->
+                </xpath>
+
+                <!--<xpath expr="//page[@name='access_rights']" position="inside">-->
+                    <!--<group>-->
+                        <!--<separator colspan="4" string="B2B供应商权限管理"/>-->
+                        <!--<field name="in_group_58"/>-->
+                        <!--<field name="in_group_61"/>-->
+                        <!--<field name="in_group_57"/>-->
+                    <!--</group>-->
+
+                    <!--&lt;!&ndash;<attribute name="invisible">context.get('visibility') == 'Hidden'</attribute>&ndash;&gt;-->
+                <!--</xpath>-->
+
+            </field>
+        </record>
+
+        <record id="b2b_view_supplier_users_form" model="ir.ui.view">
+            <field name="name">b2b.res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="priority">200</field>
+            <field name="arch" type="xml">
+                <form string="用户">
+                    <header>
+                        <button string="修改密码" type="action" name="%(base.change_password_wizard_action)d" help="修改用户的密码"/>
+                        <button string="发送重置密码邮件" type="object" name="action_reset_password" attrs="{'invisible': [('state', '!=', 'active')]}"/>
+                        <button string="发送邀请邮件" type="object" name="action_reset_password" context="{'create_user': 1}" attrs="{'invisible': [('state', '!=', 'new')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <field name="id" invisible="1"/>
+                        <!--<div class="oe_button_box" name="button_box">-->
+                            <!--<button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">-->
+                                <!--<field name="active" widget="boolean_button" options='{"terminology": "active"}'/>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium"}'/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" required="1"/></h1>
+                            <field name="email" invisible="1"/>
+                            <label for="login" class="oe_edit_only" string="Email地址"/>
+                            <h2><field name="login"/></h2>
+                            <group>
+                                <field name="partner_id" readonly="1" required="0" groups="base.group_no_one"
+                                        attrs="{'invisible': [('id', '=', False)]}"/>
+                            </group>
+                        </div>
+                        <notebook colspan="4">
+                            <page name="access_rights" string="访问权限">
+                                <group col="6">
+                                    <separator colspan="6" string="B2B商户权限管理" invisible="context.get('visibility') != 'supplier'"/>
+                                    <field name="in_group_%(b2b_platform.group_qdoo_supplier_manager)d" invisible="context.get('visibility') != 'supplier'"/>
+                                    <field name="in_group_%(b2b_platform.group_qdoo_supplier_user)d" invisible="context.get('visibility') != 'supplier'"/>
+                                    <field name="in_group_%(b2b_platform.group_qdoo_supplier_warehouse)d" invisible="context.get('visibility') != 'supplier'"/>
+                                </group>
+                                <!--<separator string="B2B经销商权限管理" invisible="context.get('visibility') != 'dist_user'"/>-->
+                                <!--<group>-->
+                                    <!--<group>-->
+                                        <!--&lt;!&ndash;<field name="in_group_%(b2b_platform.group_qdoo_distributor_manager)d" invisible="context.get('visibility') != 'dist_user'"/>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<field name="in_group_%(b2b_platform.group_qdoo_distributor_user)d" invisible="context.get('visibility') != 'dist_user'"/>&ndash;&gt;-->
+                                        <!--<field name="sel_groups_%(b2b_platform.group_qdoo_distributor_user)d_%(b2b_platform.group_qdoo_distributor_manager)d" invisible="context.get('visibility') != 'dist_user'"/>-->
+                                    <!--</group>-->
+                                <!--</group>-->
+                                <!--<group>-->
+                                <!--</group>-->
+                            </page>
+                            <page string="首选项">
+                                <group>
+                                    <group string="Localization" name="preferences">
+                                        <field name="lang"/>
+                                        <field name="tz" widget="timezone_mismatch" options="{'tz_offset_field': 'tz_offset'}" />
+                                        <field name="tz_offset" invisible="1"/>
+                                    </group>
+                                    <group string="Menus Customization" groups="base.group_no_one">
+                                        <field name="action_id"/>
+                                    </group>
+                                </group>
+                                <group string="Messaging and Social" name="messaging">
+                                    <field name="signature"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--<record id="b2b_view_distributor_users_form" model="ir.ui.view">-->
+            <!--<field name="name">b2b.res.users.form</field>-->
+            <!--<field name="model">res.users</field>-->
+            <!--<field name="priority">200</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<form string="用户">-->
+                    <!--<header>-->
+                        <!--<button string="修改密码" type="action" name="%(base.change_password_wizard_action)d" help="修改用户的密码"/>-->
+                        <!--<button string="发送重置密码邮件" type="object" name="action_reset_password" attrs="{'invisible': [('state', '!=', 'active')]}"/>-->
+                        <!--<button string="发送邀请邮件" type="object" name="action_reset_password" context="{'create_user': 1}" attrs="{'invisible': [('state', '!=', 'new')]}"/>-->
+                        <!--<field name="state" widget="statusbar"/>-->
+                    <!--</header>-->
+                    <!--<sheet>-->
+                        <!--<field name="id" invisible="1"/>-->
+                        <!--&lt;!&ndash;<div class="oe_button_box" name="button_box">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<field name="active" widget="boolean_button" options='{"terminology": "active"}'/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium"}'/>-->
+                        <!--<div class="oe_title">-->
+                            <!--<label for="name" class="oe_edit_only"/>-->
+                            <!--<h1><field name="name" required="1"/></h1>-->
+                            <!--<field name="email" invisible="1"/>-->
+                            <!--<label for="login" class="oe_edit_only" string="Email地址"/>-->
+                            <!--<h2><field name="login"/></h2>-->
+                            <!--<group>-->
+                                <!--<field name="partner_id" readonly="1" required="0" groups="base.group_no_one"-->
+                                        <!--attrs="{'invisible': [('id', '=', False)]}"/>-->
+                            <!--</group>-->
+                        <!--</div>-->
+                        <!--<notebook colspan="4">-->
+                            <!--<page name="access_rights" string="访问权限">-->
+                                <!--<separator string="B2B经销商权限管理" invisible="context.get('visibility') != 'dist_user'"/>-->
+                                <!--<group>-->
+                                    <!--<group>-->
+                                        <!--&lt;!&ndash;<field name="in_group_%(b2b_platform.group_qdoo_distributor_manager)d" invisible="context.get('visibility') != 'dist_user'"/>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<field name="in_group_%(b2b_platform.group_qdoo_distributor_user)d" invisible="context.get('visibility') != 'dist_user'"/>&ndash;&gt;-->
+                                        <!--<field name="sel_groups_%(b2b_platform.group_qdoo_distributor_user)d_%(b2b_platform.group_qdoo_distributor_manager)d" invisible="context.get('visibility') != 'dist_user'"/>-->
+                                    <!--</group>-->
+                                <!--</group>-->
+                                <!--<group>-->
+                                <!--</group>-->
+                            <!--</page>-->
+                            <!--<page string="首选项">-->
+                                <!--<group>-->
+                                    <!--<group string="Localization" name="preferences">-->
+                                        <!--<field name="lang"/>-->
+                                        <!--<field name="tz" widget="timezone_mismatch" options="{'tz_offset_field': 'tz_offset'}" />-->
+                                        <!--<field name="tz_offset" invisible="1"/>-->
+                                    <!--</group>-->
+                                    <!--<group string="Menus Customization" groups="base.group_no_one">-->
+                                        <!--<field name="action_id"/>-->
+                                    <!--</group>-->
+                                <!--</group>-->
+                                <!--<group string="Messaging and Social" name="messaging">-->
+                                    <!--<field name="signature"/>-->
+                                <!--</group>-->
+                            <!--</page>-->
+                        <!--</notebook>-->
+                    <!--</sheet>-->
+                <!--</form>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record id="qdoo_res_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">qdoo.res.partner.tree.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="after">
+                    <field name="qdoo_state"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_delivery_carrier_form_inherit" model="ir.ui.view">
+            <field name="name">b2b_view_delivery_carrier_form</field>
+            <field name="model">delivery.carrier</field>
+            <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='title']" position="replace">
+                    <label for="name" string="Name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" placeholder="e.g. UPS Express"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="delivery_type" widget="radio"/>
+                            <label for="margin"/>
+                            <div>
+                                <field name="margin" class="oe_inline"/>%
+                            </div>
+                        </group>
+                        <group>
+                            <!--<button string="Install more Providers" name="install_more_provider" type="object" class="oe_link oe_edit_only"/>-->
+                        </group>
+                    </group>
+                    <group>
+                        <field name="integration_level" widget="radio" attrs="{'invisible': ['|', ('delivery_type', '=', 'fixed'), ('delivery_type', '=', 'base_on_rule')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="b2b_view_shop_form" model="ir.ui.view">
+            <field name="name">b2b.res.shop.form</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="100"/>
+            <field name="arch" type="xml">
+                <form string="店铺">
+                <sheet>
+                    <div class="oe_title">
+                        <field name="is_company" invisible="1"/>
+                        <field name="commercial_partner_id" invisible="1"/>
+                        <field name="company_type" widget="radio"
+                            class="oe_edit_only"
+                            options="{'horizontal': true}" invisible="1"/>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="店铺名称" attrs="{'required' : [('type', '=', 'contact')]}"/>
+                        </h1>
+                        <div class="o_row">
+                            <field name="parent_id" readonly="True"/>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="type" invisible="1"/>
+                            <field name="country_id" placeholder="国家" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                            <field name="shop_language"  attrs="{'invisible':[('type','!=', 'shop')]}"/>
+                            <field name="amazon_seller_id"  attrs="{'invisible':[('type','!=', 'shop')]}"/>
+                            <field name="amazon_instance_id"  attrs="{'invisible':[('type','!=', 'shop')]}"/>
+                        </group>
+                        <group>
+                            <field name="shop_operator"  options="{'no_create': True}"/>
+                            <field name="shop_markup"/>
+                            <field name="shop_currency"/>
+                        </group>
+                    </group>
+
+                    <!--<notebook colspan="4">-->
+                    <!--</notebook>-->
+                </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="b2b_view_shop_tree" model="ir.ui.view">
+            <field name="name">b2b_view_shop_tree</field>
+            <field name="model">res.partner</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <tree string="店铺">
+                    <field name="parent_id"/>
+                    <field name="name"/>
+                    <field name="country_id"/>
+                    <field name="shop_operator"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="b2b_view_trader_accounting_tree" model="ir.ui.view">
+            <field name="name">b2b_view_trader_accounting_tree</field>
+            <field name="model">b2b.trader.accounting</field>
+            <field name="arch" type="xml">
+                <tree string="商户交易明细" default_order="date_invoice">
+                    <field name="partner_id"/>
+                    <field name="categ"/>
+                    <field name="number"/>
+                    <field name="origin"/>
+                    <field name="date_invoice"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>
